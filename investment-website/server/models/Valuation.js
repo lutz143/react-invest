@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/connection'); // Import the Sequelize instance
 
-const Stock = sequelize.define('Stock', {
+const Valuation = sequelize.define('Valuation', {
   Ticker: {
     type: DataTypes.STRING(10),
     allowNull: false,
@@ -84,4 +84,4 @@ const Stock = sequelize.define('Stock', {
   },
 });
 
-module.exports = Stock;
+module.exports = Valuation;

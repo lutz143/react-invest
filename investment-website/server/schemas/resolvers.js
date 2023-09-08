@@ -1,13 +1,24 @@
-const User = require('./models/user'); // Import your Sequelize User model
+const Valuation = require('../models/Valuation');
 
 const resolvers = {
   Query: {
-    getUsers: async () => {
+    getValuations: async () => {
       try {
-        const users = await User.findAll();
-        return users;
+        const valuations = await Valuation.findAll();
+        return valuations;
       } catch (error) {
-        throw new Error('Failed to fetch users');
+        throw new Error('Failed to fetch valuations');
+      }
+    },
+    getValuation: async (_, { id }) => {
+      try {
+        const valuation = await Valuation.findByPk(id);
+        if (!valuation) {
+          throw new Error('Valuation not found');
+        }
+        return valuation;
+      } catch (error) {
+        throw new Error('Failed to fetch valuation');
       }
     },
   },

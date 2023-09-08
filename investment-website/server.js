@@ -1,46 +1,44 @@
 const path = require('path');
+const { ApolloServer } = require("apollo-server-express");
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const routes = require('./controllers');
 const helpers = require('./utils/helpers');
 
-const sequelize = require('./config/connection');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const db = require("./server/config/connection");
+const { typeDefs, resolvers } = require("./server/schemas");
 
-const app = express();
 const PORT = process.env.PORT || 3001;
+const app = express();
 
-// Set up Handlebars.js engine with custom helpers
-const hbs = exphbs.create({ helpers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers, 
+  // context: authMiddleware,
+  persistedQueries: false, 
+});
 
-const sess = {
-  secret: 'Super secret secret',
-  cookie: {
-    maxAge: 300000,
-    httpOnly: true,
-    secure: false,
-    sameSite: 'strict',
-  },
-  resave: false,
-  saveUninitialized: true,
-  store: new SequelizeStore({
-    db: sequelize
-  })
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// if we're in production, serve client/build as static assets
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
 };
 
-app.use(session(sess));
+// create a new instance of Apollo Server using GraphQL schema
+const startApolloServer = async (typeDefs, resolvers) => {
+  await server.start();
+  server.applyMiddleware({ app });
 
-// Inform Express.js on which template engine to use
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+  db.once("open", () => {
+    app.listen(PORT, () => {
+      console.log(`Server now running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`)
+    });
+  });
+};
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(routes);
-
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log(`API server running on port http://localhost:${PORT}`));
-});
+// start server
+startApolloServer(typeDefs, resolvers);
