@@ -11,24 +11,23 @@ router.get('/', async (req, res) => {
   }
 });
 
-// // GET a single traveller
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const travellerData = await Traveller.findByPk(req.params.id, {
-//       // JOIN with locations, using the Trip through table
-//       include: [{ model: Location, through: Trip, as: 'planned_trips' }]
-//     });
+// GET a single valuation
+router.get('/:id', async (req, res) => {
+  try {
+    const valuationData = await Valuation.findByPk(req.params.id, {
+      // JOIN with locations, using the Trip through table
+      // include: [{ model: Valuation, through: Trip, as: 'planned_trips' }]
+    });
 
-//     if (!travellerData) {
-//       res.status(404).json({ message: 'No traveller found with this id!' });
-//       return;
-//     }
-
-//     res.status(200).json(travellerData);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+    if (!valuationData) {
+      res.status(404).json({ message: 'No stock found with this id!' });
+      return;
+    }
+    res.status(200).json(valuationData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // // CREATE a traveller
 // router.post('/', async (req, res) => {

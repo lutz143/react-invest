@@ -6,6 +6,12 @@ class Valuation extends Model {}
 
 Valuation.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     Ticker: {
       type: DataTypes.STRING(10),
       allowNull: false,
@@ -91,7 +97,7 @@ Valuation.init(
     sequelize,
     timestamps: false,
     freezeTableName: true,
-    underscored: true,
+    // underscored: true,
     modelName: 'valuation'
   }
 );
