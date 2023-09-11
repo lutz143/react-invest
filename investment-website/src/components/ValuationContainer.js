@@ -32,7 +32,7 @@ function DataRenderer() {
       <h1>Data from API Endpoint:</h1>
       <ul>
         {data.map(item => (
-          <li key={item.id}>{item.ticker}</li>
+          <li key={item.id}>{item.Ticker}</li>
         ))}
       </ul>
     </div>
