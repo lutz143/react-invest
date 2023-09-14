@@ -1,19 +1,12 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import Container from './Container';
-import Row from './Row';
-import Col from './Col';
-import Card from './Card';
-// import SearchForm from './SearchForm';
-import MovieDetail from './MovieDetail';
-import API from '../utils/API';
+import React, { useState, useEffect } from 'react';
+import PageContainer from "../containers/PageContainer";
+import { Link } from 'react-router-dom';
+import classes from "./Home.module.css";
+import { Nav } from 'react-bootstrap';
 
-// can remove after test:
 import axios from 'axios';
 
-
-
-function DataRenderer() {
+function Home() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -28,16 +21,14 @@ function DataRenderer() {
   }, []); // Empty dependency array means this effect runs once after initial render
 
   return (
-    <div>
-      <h1>Data from API Endpoint:</h1>
-      <ul>
+    <PageContainer>
+      <section className={classes.gridContainer}>
         {data.map(item => (
           <li key={item.id}>{item.id} {item.Ticker} {item.Assessment_Date} {item.previousClose}</li>
         ))}
-      </ul>
-    </div>
+      </section>
+    </PageContainer>
   );
 }
 
-
-export default DataRenderer;
+export default Home

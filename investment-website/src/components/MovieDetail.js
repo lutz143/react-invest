@@ -6,7 +6,6 @@ function MovieDetail(props) {
       <img
         alt={props.ticker}
         className="img-fluid"
-        src={props.src}
         style={{ margin: '0 auto' }}
       />
       <h3>Director(s): {props.ticker}</h3>
