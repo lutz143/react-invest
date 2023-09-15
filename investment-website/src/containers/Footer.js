@@ -17,7 +17,7 @@ function Footer(props) {
         <a href="https://github.com/lutz143" target="_blank" rel="noopener noreferrer">
           <img className={classes.githubIcon} src={GitHubLogo} alt="GitHub Icon"/>
         </a>
-        <a href="mailto:lutz2k7@gmail.com?subject=eFolio&body=Let's Connect!">
+        <a href="mailto:lutz2k7@gmail.com?subject=Investment Website&body=Let's Connect!">
           <img className={classes.gmailIcon} src={GmailLogo} alt="Email Icon"/>
         </a>
       </div>
