@@ -22,11 +22,23 @@ function Home() {
 
   return (
     <PageContainer>
-      <section className={classes.gridContainer}>
+      {/* <section className={classes.gridContainer}>
         {data.map(item => (
           <li key={item.id}>{item.id} {item.Ticker} {item.Assessment_Date} {item.previousClose}</li>
         ))}
+      </section> */}
+
+      <section className={classes.gridContainer}>
+        {data.map((stock, index) => 
+          <Nav.Link className={classes.gridCard} as={Link} to={`/stock/${stock.id}`}>            
+            <p>{stock.Ticker}</p>
+            <p>{stock.Assessment_Date}</p>
+            <p>{stock.previousClose}</p>
+          </Nav.Link>)}
       </section>
+
+
+
     </PageContainer>
   );
 }
