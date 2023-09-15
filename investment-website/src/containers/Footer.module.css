@@ -1,1 +1,186 @@
-/* TODO */
+@import '../App.css';
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  max-height: 8em;
+  min-height: 5.5em;
+  margin-top: 25px;
+  background-color: var(--dark-gray);
+  border-top: solid var(--yellow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.footerIcon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footerIcon a{
+  margin: 0 20px 0 20px;
+  margin-top: 2px;
+}
+
+.linkedinIcon {
+  transition: all 0.3s ease-in;
+  width: 38px;
+  filter: grayscale(75%);
+  border-radius: 8px;
+  /* background-color: white; */
+}
+
+.linkedinIcon:hover {
+  transition: all 0.3s ease-in;
+  background-color: var(--white);
+  filter: grayscale(0%);
+  /* background-color: white; */
+}
+
+.githubIcon {
+  transition: all 0.3s ease-in;
+  width: 38px;
+  filter: grayscale(70%);
+  border-radius: 8px;
+  /* background-color: white; */
+}
+
+.githubIcon:hover {
+  transition: all 0.3s ease-in;
+  background-color: var(--white);
+  filter: grayscale(0%);
+  /* background-color: white; */
+}
+
+.gmailIcon {
+  transition: all 0.3s ease-in;
+  margin-top: 3px;
+  width: 38px;
+  filter: grayscale(80%);
+  border-radius: 8px;
+  /* background-color: white; */
+}
+
+.gmailIcon:hover {
+  transition: all 0.3s ease-in;  
+  filter: grayscale(0%) contrast(135%);
+  /* background-color: white; */
+}
+
+
+
+/* Media query styling */
+/* ===================================================================================================================================== */
+@media screen and (max-width: 970px) {
+  #download {
+    justify-content: start;
+  }
+
+  header {
+    display: flex;
+    position: relative;
+    padding: 0 0 10px 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .left-section{
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .middle-section{
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .right-section{
+    display: none;
+  }
+
+  .current-user{
+    display: none;
+  }
+
+  header h1 {
+    width: 100%;
+    font-size: 10vw;
+  }
+
+  header nav {        
+    justify-content: center;
+    margin: 8px 0 0 0;
+  }
+
+  nav a:last-child{
+    margin-right: 0;
+  }
+
+  .main-section > h2,
+  .main-section > div {
+    flex: 0 0 100%;
+  }
+
+  .main-section {
+    margin-top: 0;
+    padding-left: 3px;
+    padding-bottom: 5.5rem;
+  }
+
+  .top-banner {
+    height: 50%;
+  }
+
+  .main-section > h2 {
+    border-right: none;
+    border-bottom: 4px solid var(--dark-gray);
+    margin-bottom: 15px;
+    margin-top: 0;
+    padding-bottom: 10px;
+    text-align: left;
+    font-size: 7vw;
+  }
+
+  .about-me-img {
+    width: 25%;
+  }
+
+  footer{
+    position: fixed;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  header nav{
+    font-size: 65%;
+  }
+
+  .flex-item,
+  .flex-item:first-child {
+    flex-basis: 100%;
+  }
+
+  .flex-item:first-child {
+    min-height: 150px;
+  }
+
+  .top-banner {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .about-me-img {
+    width: 25%;
+  }
+
+  footer{
+    position: fixed;
+  }
+}
