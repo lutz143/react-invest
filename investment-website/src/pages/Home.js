@@ -10,10 +10,10 @@ function Home() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Make a GET request to your API endpoint
-    axios.get('http://localhost:3001/api/valuations/') // Replace with your API URL
+    // Make a GET request to API endpoint
+    axios.get('http://localhost:3001/api/valuations/')
       .then(response => {
-        setData(response.data); // Assuming the response is an array of data
+        setData(response.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -22,23 +22,14 @@ function Home() {
 
   return (
     <PageContainer>
-      {/* <section className={classes.gridContainer}>
-        {data.map(item => (
-          <li key={item.id}>{item.id} {item.Ticker} {item.Assessment_Date} {item.previousClose}</li>
-        ))}
-      </section> */}
-
       <section className={classes.gridContainer}>
         {data.map((stock, index) => 
-          <Nav.Link className={classes.gridCard} as={Link} to={`/stock/${stock.id}`}>            
+          <Nav.Link className={classes.gridCard} as={Link} to={`/valuations/${stock.id}`}>            
             <p>{stock.Ticker}</p>
             <p>{stock.Assessment_Date}</p>
             <p>{stock.previousClose}</p>
           </Nav.Link>)}
       </section>
-
-
-
     </PageContainer>
   );
 }

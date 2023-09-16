@@ -1,6 +1,20 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+  type Game {
+    _id: ID
+    company: [String]
+    description: String
+    title: String
+    image: String
+    link: String
+    comments: [Comment]
+    upVotes: Int
+    downVotes: Int
+  }
+
+
+
   type Valuation {
     id: ID!
     Ticker: String!
@@ -27,7 +41,7 @@ const typeDefs = gql`
 
   type Query {
     getValuations: [Valuation]
-    getValuation(id: ID!): Valuation
+    stock(stockId: ID!): Valuation
   }
 `;
 
