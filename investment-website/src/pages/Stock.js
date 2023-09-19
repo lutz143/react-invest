@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery, useMutation } from "@apollo/client";
 import axios from 'axios';
 
 import PageContainer from "../containers/PageContainer";
 import classes from "./Game.module.css";
-// import { BiUpvote, BiDownvote } from "react-icons/bi";
 
-import { QUERY_SINGLE_STOCK } from '../utils/queries';
+// import { BiUpvote, BiDownvote } from "react-icons/bi";
+// import { useQuery, useMutation } from "@apollo/client";
+// import { QUERY_SINGLE_STOCK } from '../utils/queries';
 // import { ADD_VOTE } from '../utils/mutations';
 // import { DOWN_VOTE } from '../utils/mutations';
 // import { ADD_COMMENT } from '../utils/mutations';
-
 // import Auth from '../utils/auth';
 
 

@@ -7,6 +7,21 @@ import { Nav } from 'react-bootstrap';
 import axios from 'axios';
 
 function Home() {
+
+  // const [data, setStockData] = useState([]);
+
+  // useEffect(() => {
+    // Make an API request to backend to fetch the most recent stock data
+  //   axios.get('http://localhost:3001/api/recents/') // Replace with your API endpoint
+  //     .then((response) => {
+  //       setStockData(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching stock data:', error);
+  //     });
+  // }, []);
+
+
   const [data, setData] = useState([]);
 
   useEffect(() => {

@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // GET a single valuation
 router.get('/:id', async (req, res) => {
   try {
