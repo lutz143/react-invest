@@ -3,7 +3,7 @@ const { Valuation } = require('../../models');
 const stocksController = require('../../controllers/stocksController.js');
 
 // GET most recent stock Valuation
-router.get('/recent', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const mostRecentStock = await stocksController.getMostRecentStock();
     res.json(mostRecentStock);

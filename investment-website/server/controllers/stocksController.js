@@ -1,4 +1,5 @@
-const db = require('../db/schema.sql'); // Import database connection
+const db = require('../config/connection.js'); // Import database connection
+console.log('i\'m here')
 
 const getMostRecentStock = async () => {
   try {
