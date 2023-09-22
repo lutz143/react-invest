@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PageContainer from "../containers/PageContainer";
 import { Link } from 'react-router-dom';
 import classes from "./Home.module.css";
-import { Nav } from 'react-bootstrap';
+import { Nav, Button, Card } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios';
 
@@ -38,12 +39,28 @@ function Home() {
   return (
     <PageContainer>
       <section className={classes.gridContainer}>
-        {data.map((stock, index) => 
-          <Nav.Link className={classes.gridCard} as={Link} to={`/valuations/${stock.id}`}>            
-            <p>{stock.Ticker}</p>
-            <p>{stock.Assessment_Date}</p>
-            <p>{stock.previousClose}</p>
-          </Nav.Link>)}
+        {data.map((stock, index) =>
+          <div>
+            <Card className='mb-3'>
+              <Card.Body>
+                <Card.Header className={classes.cardHeader}>
+                  <div>
+                    <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
+                  </div>
+                </Card.Header>
+                <Card.Text>
+                  <div>{stock.Assessment_Date}</div>
+                  <div>{stock.previousClose}</div>
+                  <div>{stock.CAGR_CPS}</div>
+                  <div>{stock.NOM_CPS}</div>
+                  <div>{stock.CON_CPS}</div>
+                </Card.Text>
+                <Button>
+                  <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
+                </Button>
+              </Card.Body>
+            </Card>
+          </div>)}
       </section>
     </PageContainer>
   );

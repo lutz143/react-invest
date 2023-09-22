@@ -1,11 +1,8 @@
-h1,
-h2 {
-  color: #66c0f4;
-  text-align: center;
-}
+@import '../App.css';
 
-h2 {
-  color: rgb(255, 255, 255);
+.cardHeader {
+  background-color: var(--yellow) !important;
+  font-style: italic;
 }
 
 .gridContainer {
