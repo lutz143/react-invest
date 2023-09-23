@@ -18,7 +18,11 @@ function Home() {
       .then(response => {
         const formattedData = response.data.map((stock) => ({
           ...stock,
-          Assessment_Date: moment(stock.Assessment_Date).format('M/DD/YYYY') // Format the date as you desire
+          Assessment_Date: moment(stock.Assessment_Date).format('M/DD/YYYY'),
+          previousClose: parseFloat(stock.previousClose).toFixed(2),
+          CAGR_CPS: parseFloat(stock.CAGR_CPS).toFixed(2),
+          NOM_CPS: parseFloat(stock.NOM_CPS).toFixed(2),
+          CON_CPS: parseFloat(stock.CON_CPS).toFixed(2)
         }));
         setData(formattedData);
       })
@@ -41,10 +45,10 @@ function Home() {
                 </Card.Header>
                 <Card.Text>
                   <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
-                  <div>{stock.previousClose}</div>
-                  <div>{stock.CAGR_CPS}</div>
-                  <div>{stock.NOM_CPS}</div>
-                  <div>{stock.CON_CPS}</div>
+                  <div>Previous Close: {stock.previousClose}</div>
+                  <div>CAGR CPS: {stock.CAGR_CPS}</div>
+                  <div>NOM CPS: {stock.NOM_CPS}</div>
+                  <div>CON CPS: {stock.CON_CPS}</div>
                 </Card.Text>
                 <Button>
                   <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
