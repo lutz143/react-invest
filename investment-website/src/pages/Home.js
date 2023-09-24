@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PageContainer from "../containers/PageContainer";
 import { Link } from 'react-router-dom';
 import classes from "./Home.module.css";
-import { Nav, Button, Card } from 'react-bootstrap';
+import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 
@@ -33,29 +33,35 @@ function Home() {
 
   return (
     <PageContainer>
-      <section className={classes.gridContainer}>
-        {data.map((stock, index) =>
-          <div>
-            <Card className='mb-3'>
-              <Card.Body>
-                <Card.Header className={classes.cardHeader}>
-                  <div>
-                    <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
-                  </div>
-                </Card.Header>
-                <Card.Text>
-                  <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
-                  <div>Previous Close: {stock.previousClose}</div>
-                  <div>CAGR CPS: {stock.CAGR_CPS}</div>
-                  <div>NOM CPS: {stock.NOM_CPS}</div>
-                  <div>CON CPS: {stock.CON_CPS}</div>
-                </Card.Text>
-                <Button>
-                  <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
-                </Button>
-              </Card.Body>
-            </Card>
-          </div>)}
+      <section>
+        <Container>
+          <Row lg={4}>
+            {data.map((stock, index) =>
+              <div>
+                <Col>
+                  <Card className='mb-3'>
+                    <Card.Body>
+                      <Card.Header className={classes.cardHeader}>
+                        <div>
+                          <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
+                        </div>
+                      </Card.Header>
+                      <Card.Text>
+                        <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
+                        <div>Previous Close: {stock.previousClose}</div>
+                        <div>CAGR CPS: {stock.CAGR_CPS}</div>
+                        <div>NOM CPS: {stock.NOM_CPS}</div>
+                        <div>CON CPS: {stock.CON_CPS}</div>
+                      </Card.Text>
+                      <Button>
+                        <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </div>)}
+            </Row>
+          </Container>
       </section>
     </PageContainer>
   );
