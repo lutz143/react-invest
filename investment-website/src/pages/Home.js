@@ -46,16 +46,18 @@ function Home() {
                           <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
                         </div>
                       </Card.Header>
-                      <Card.Text>
+                      <Card.Text className={classes.cardBody}>
                         <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
                         <div>Previous Close: {stock.previousClose}</div>
                         <div>CAGR CPS: {stock.CAGR_CPS}</div>
                         <div>NOM CPS: {stock.NOM_CPS}</div>
                         <div>CON CPS: {stock.CON_CPS}</div>
                       </Card.Text>
-                      <Button>
-                        <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
-                      </Button>
+                      <Card.Footer className={classes.cardFooter}>
+                        <Button className={classes.cardButton}>
+                          <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
+                        </Button>
+                      </Card.Footer>
                     </Card.Body>
                   </Card>
                 </Col>

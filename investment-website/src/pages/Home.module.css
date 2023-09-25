@@ -2,7 +2,46 @@
 
 .cardHeader {
   background-color: var(--yellow) !important;
+  text-align: center;
   font-style: italic;
+}
+
+.cardBody {
+  margin: 0 0 10px 5px;
+}
+
+.cardBody div:first-child {
+  text-align: center;
+}
+
+.cardButton {
+  font-weight: 700;
+  min-width: 85px;
+  background-color: var(--dark-gray) !important;
+  border-color: var(--light-gray) !important;
+}
+
+.cardButton:hover {
+  transition: all 0.3s ease-in;
+  background-color: var(--yellow) !important;
+}
+
+.cardButton:hover {
+  transition: all 0.1s ease-in;
+  font-weight: 800;
+  color: var(--black) !important;
+  border-color: var(--black) !important;
+}
+
+.cardButton:hover {
+  background-color: var(--light-gray);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: center !important;
 }
 
 @media screen and (max-width: 1200px) {
