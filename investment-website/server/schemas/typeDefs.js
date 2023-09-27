@@ -1,18 +1,31 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-  type Game {
+  type User {
     _id: ID
-    company: [String]
-    description: String
-    title: String
-    image: String
-    link: String
-    comments: [Comment]
-    upVotes: Int
-    downVotes: Int
+    username: String
+    email: String
+    totalPlayTime: Int
+    games: [Game]
+    password: String
   }
 
+  type Auth {
+    token: ID!
+    user: User
+  }
+
+  type Query {
+    me: User
+    users: [User]
+    search: [Valuation]
+    valuation(valuationId: ID!): Valuation
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+  }
 
 
   type Valuation {

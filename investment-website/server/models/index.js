@@ -1,4 +1,5 @@
 const Valuation = require('./Valuation');
+const User = require('./User');
 // placeholder index.js for when I add in invested tabled and price tables into MySQL db
 
 // const Location = require('./Location');
@@ -24,4 +25,4 @@ const Valuation = require('./Valuation');
 //   as: 'location_travellers'
 // });
 
-module.exports = { Valuation };
+module.exports = { User, Valuation };
