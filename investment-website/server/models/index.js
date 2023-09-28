@@ -1,28 +1,13 @@
-const Valuation = require('./Valuation');
 const User = require('./User');
-// placeholder index.js for when I add in invested tabled and price tables into MySQL db
+const Valuation = require('./Valuation');
 
-// const Location = require('./Location');
-// const Trip = require('./Trip');
+User.hasMany(Valuation, {
+  foreignKey: 'user_id',
+  onDelete: 'CASCADE'
+});
 
-// Traveller.belongsToMany(Location, {
-//   // Define the third table needed to store the foreign keys
-//   through: {
-//     model: Trip,
-//     unique: false
-//   },
-//   // Define an alias for when data is retrieved
-//   as: 'planned_trips'
-// });
-
-// Location.belongsToMany(Traveller, {
-//   // Define the third table needed to store the foreign keys
-//   through: {
-//     model: Trip,
-//     unique: false
-//   },
-//   // Define an alias for when data is retrieved
-//   as: 'location_travellers'
-// });
+Valuation.belongsTo(User, {
+  foreignKey: 'user_id'
+});
 
 module.exports = { User, Valuation };
