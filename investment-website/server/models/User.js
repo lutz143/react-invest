@@ -35,6 +35,13 @@ User.init(
         len: [8],
       },
     },
+    valuation_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'valuation',
+        key: 'id'
+      }
+    },
   },
   {
     hooks: {
