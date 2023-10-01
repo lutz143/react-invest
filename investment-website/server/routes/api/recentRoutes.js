@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { Valuation } = require('../../models');
 const stocksController = require('../../controllers/stocksController.js');
 
 // GET most recent stock Valuation

@@ -34,6 +34,7 @@
     "build": "react-scripts build",
     "develop": "concurrently \"node server.js\" \"npm start\"",
     "test": "react-scripts test",
+    "seed": "node server/seeds/seed.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
