@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = '/api/users';
+const REGISTER_URL = 'http://localhost:3001/api/users';
 
 const Register = () => {
     const userRef = useRef();
@@ -61,29 +61,30 @@ const Register = () => {
             return;
         }
         try {
-            // const response = await axios.post(REGISTER_URL,
-            //     JSON.stringify({ user, pwd }),
-            //     {
-            //         method: 'POST',
-            //         headers: { 'Content-Type': 'application/json' },
-            //         body: JSON.stringify({ user, pwd })
-            //         // withCredentials: true
-            //     }
-            // );
+            fetch(REGISTER_URL,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                    // withCredentials: true
+                }
+            );
 
-            axios.post('/api/users', { username, password }) // Replace with your form data
-            .then((response) => {
-              if (response.data.error) {
-                console.log(response);
-                console.log(response.data.error);
-                // Display registration error message
-              } else {
-                // Registration successful, you can redirect the user to the login page
-              }
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+            // axios.post('/api/users', { username, password }) // Replace with your form data
+            // .then((response) => {
+            //   if (response.data.error) {
+            //     console.log(response);
+            //     console.log(response.data.error);
+            //     // Display registration error message
+            //   } else {
+            //     console.log(response)
+            //     console.log('it worker, loser')
+            //     // Registration successful, you can redirect the user to the login page
+            //   }
+            // })
+            // .catch((error) => {
+            //   console.error('Error:', error);
+            // });
             
             // console.log(response);
             // console.log(response?.data);
