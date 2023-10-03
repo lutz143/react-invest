@@ -28,7 +28,7 @@ function Header() {
         ></input>
       </div>
       <div className={classes.rightSection}>
-        <NavLink to="/Profile" className={classes.profile}>
+        <NavLink to="/register" className={classes.profile}>
           <img
             src={profilePic}
             alt="User profile"

@@ -15,7 +15,7 @@ import Footer from "./containers/Footer";
 
 import Home from "./pages/Home";
 import Stock from "./pages/Stock";
-// import Login from "./pages/Login";
+import Register from "./pages/Register";
 // import SignUp from "./pages/Signup";
 // import Profile from "./pages/Profile";
 // import SearchResults from "./pages/SearchResults";
@@ -49,7 +49,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />          
           <Route path="/valuations/:id" element={<Stock />} />
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/register" element={<Register />} />
           {/* <Route path="/profile" element={<Profile />} /> */}
           {/* <Route path="/signup" element={<SignUp />} /> */}
           {/* <Route path="/search" element={<SearchResults />} /> */}

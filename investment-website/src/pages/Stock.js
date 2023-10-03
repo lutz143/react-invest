@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 import axios from 'axios';
 
 import PageContainer from "../containers/PageContainer";
 import classes from "./Game.module.css";
 
 
-const Game = () => {
+const Stock = () => {
   const [stock, setValuation] = useState([]);
   const { id } = useParams();
 
@@ -39,7 +39,7 @@ const Game = () => {
             <svg ref={svgRef}></svg>
           </div>
           <div className={classes.detailHolder}>
-            <h1 className={classes.gameTitle}>{stock.Ticker}</h1>
+            <h1 className={classes.stockTitle}>{stock.Ticker}</h1>
             <p>
               {stock.previousClose}
             </p>
@@ -49,4 +49,4 @@ const Game = () => {
   );
 }
 
-export default Game;
+export default Stock;
