@@ -1,6 +1,7 @@
 import classes from "./Form.module.css";
 import { useRef, useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 const REGISTER_URL = 'http://localhost:3001/api/users';
 
@@ -143,6 +144,7 @@ const Register = () => {
           Submit
         </Button>
       </Form>
+      <NavLink to="/login">Hello</NavLink>
     </>
   );
 };
