@@ -39,7 +39,8 @@ const LoginForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        Auth.login(data.response.token);
+        Auth.login(data.token);
+        document.location.replace('/band-profile');
         console.log('User registered successfully');
       } else {
         console.log('Registration failed');
@@ -72,6 +73,23 @@ const LoginForm = () => {
         >
           Something went wrong with your login credentials!
         </Alert>
+
+        <Form.Group className="mb-3">
+          <Form.Label htmlFor="username" className={classes.inputLabel}>
+            Username
+          </Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Your username"
+            name="username"
+            onChange={handleInputChange}
+            value={userFormData.username}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Username is required!
+          </Form.Control.Feedback>
+        </Form.Group>
 
         <Form.Group className="mb-3">
           <Form.Label htmlFor="password" className={classes.inputLabel}>
