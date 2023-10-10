@@ -17,8 +17,7 @@ import Home from "./pages/Home";
 import Stock from "./pages/Stock";
 import Register from "./pages/Register";
 import Login from "./pages/LoginForm";
-// import SignUp from "./pages/Signup";
-// import Profile from "./pages/Profile";
+import Profile from "./pages/Profile";
 // import SearchResults from "./pages/SearchResults";
 
 
@@ -52,7 +51,7 @@ function App() {
           <Route path="/valuations/:id" element={<Stock />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/profile" element={<Profile />} />
           {/* <Route path="/signup" element={<SignUp />} /> */}
           {/* <Route path="/search" element={<SearchResults />} /> */}
         </Routes>

@@ -1,5 +1,5 @@
 import classes from "./Form.module.css";
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
@@ -133,7 +133,7 @@ const Register = () => {
           disabled={
             !(
               userFormData.username &&
-              // userFormData.email &&
+              userFormData.email &&
               userFormData.password
             )
           }

@@ -11,8 +11,6 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  // const [login, { error }] = useMutation(LOGIN_USER);
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
@@ -40,13 +38,14 @@ const LoginForm = () => {
       if (response.ok) {
         const data = await response.json();
         Auth.login(data.token);
-        document.location.replace('/band-profile');
-        console.log('User registered successfully');
+        document.location.replace('/profile');
+        console.log('User logged in successfully');
       } else {
-        console.log('Registration failed');
+        console.log('Login failed');
+        setShowAlert(true);
       }
     } catch (error) {
-      console.log('Error registering user: ', error);
+      console.log('Error logging in user: ', error);
     }
 
     setUserFormData({
@@ -71,7 +70,7 @@ const LoginForm = () => {
           show={showAlert}
           variant="danger"
         >
-          Something went wrong with your login credentials!
+          Incorrect username or password
         </Alert>
 
         <Form.Group className="mb-3">
