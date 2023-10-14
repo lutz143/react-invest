@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Valuation } = require('../../models');
+const { Valuation, User } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 // GET all Stock Valuations
 router.get('/', async (req, res) => {
@@ -30,34 +31,33 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// // CREATE a traveller
-// router.post('/', async (req, res) => {
-//   try {
-//     const travellerData = await Traveller.create(req.body);
-//     res.status(200).json(travellerData);
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }
-// });
+// edit user to include the stock to their list
+router.put('/:id/add-stock', withAuth, async (req, res) => {
+  try {
+    const stockData = await User.update({
+      user_id: req.session.user_id,
+      // include: [{ model: Valuation, 
+      //   attributes: ['id', 'Ticker', 'Assessment_Date'],
+      // }]
+      // post_content: req.body.post_content
+    },
+    {
+      where: {
+        id: req.params.id,
+      }
+    }
+    );
+    if (!stockData) {
+      res.status(404).json({ message: 'No stock found with this id!' });
+      return;
+    }
+    res.status(200).json({ stockData, message: 'Stock added!' });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
-// // DELETE a traveller
-// router.delete('/:id', async (req, res) => {
-//   try {
-//     const travellerData = await Traveller.destroy({
-//       where: {
-//         id: req.params.id
-//       }
-//     });
 
-//     if (!travellerData) {
-//       res.status(404).json({ message: 'No traveller found with this id!' });
-//       return;
-//     }
 
-//     res.status(200).json(travellerData);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
 
 module.exports = router;

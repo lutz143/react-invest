@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+// import { Button } from 'react-bootstrap';
 // import * as d3 from 'd3';
 import axios from 'axios';
 
@@ -29,20 +30,27 @@ const Stock = () => {
       
   }, [id]); // include "id" in the dependency array
 
-  const svgRef = useRef();
+  // const svgRef = useRef();
+
+  // const addStock = (Ticker) => {
+  //   axios.post(`http://localhost:3001/api/valuations/${id}`)
+  // }
 
   return (
     <PageContainer title="Stock Details">
         <div>
-          <h1>Hello</h1>
-          <div>
+          {/* <div>
             <svg ref={svgRef}></svg>
-          </div>
+          </div> */}
           <div className={classes.detailHolder}>
             <h1 className={classes.stockTitle}>{stock.Ticker}</h1>
             <p>
               {stock.previousClose}
             </p>
+            <p>
+              {stock.id}
+            </p>
+            {/* <Button onClick={() => addStock(Ticker)}> Hello </Button> */}
           </div>
         </div>
     </PageContainer>

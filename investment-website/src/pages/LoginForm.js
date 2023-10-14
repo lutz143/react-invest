@@ -98,6 +98,7 @@ const LoginForm = () => {
             type="password"
             placeholder="Your password"
             name="password"
+            autoComplete="false"
             onChange={handleInputChange}
             value={userFormData.password}
             required

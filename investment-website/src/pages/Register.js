@@ -124,6 +124,7 @@ const Register = () => {
             onChange={handleInputChange}
             value={userFormData.password}
             required
+            autoComplete="false"
           />
           <Form.Control.Feedback type="invalid">
             Password is required!
