@@ -47,12 +47,11 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />          
+          <Route path="/" element={<Home />} />
           <Route path="/valuations/:id" element={<Stock />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-          {/* <Route path="/signup" element={<SignUp />} /> */}
           {/* <Route path="/search" element={<SearchResults />} /> */}
         </Routes>
         <Footer />

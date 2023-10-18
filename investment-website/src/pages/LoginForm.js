@@ -1,12 +1,14 @@
 import classes from "./Form.module.css";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Auth from "../utils/auth";
+import AuthContext from "../context/AuthProvider";
 
 const LOGIN_URL = 'http://localhost:3001/api/users/login';
 
 
 const LoginForm = () => {
+  const { setAuth } = useContext(AuthContext) //when success auth at login, set new auth state in global context
   const [userFormData, setUserFormData] = useState({ username: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -32,6 +34,7 @@ const LoginForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredential: true,
         body: JSON.stringify(userFormData)
       });
 

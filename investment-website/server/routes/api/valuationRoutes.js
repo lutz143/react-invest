@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-
 // GET a single valuation
 router.get('/:id', async (req, res) => {
   try {
@@ -35,7 +34,7 @@ router.get('/:id', async (req, res) => {
 router.put('/:id/add-stock', withAuth, async (req, res) => {
   try {
     const stockData = await User.update({
-      user_id: req.session.user_id,
+      valuation_id: req.params.id,
       // include: [{ model: Valuation, 
       //   attributes: ['id', 'Ticker', 'Assessment_Date'],
       // }]
@@ -43,7 +42,7 @@ router.put('/:id/add-stock', withAuth, async (req, res) => {
     },
     {
       where: {
-        id: req.params.id,
+        id: req.session.user_id,
       }
     }
     );
