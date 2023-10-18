@@ -98,6 +98,14 @@ Valuation.init(
         model: 'user',
         key: 'id'
       }
+    },
+    portfolio_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'portfolio',
+        key: 'id',
+        unique: false
+      }
     }
   },
   {
