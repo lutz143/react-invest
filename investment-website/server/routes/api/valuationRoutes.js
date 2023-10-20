@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Valuation, User } = require('../../models');
+const { Valuation, Portfolio } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 // GET all Stock Valuations
@@ -30,22 +30,13 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// edit user to include the stock to their list
-router.put('/:id/add-stock', withAuth, async (req, res) => {
+// add a stock to the portfolio and save associated logged in user
+router.post('/:id/add-stock', withAuth, async (req, res) => {
   try {
-    const stockData = await User.update({
+    const stockData = await Portfolio.create({
       valuation_id: req.params.id,
-      // include: [{ model: Valuation, 
-      //   attributes: ['id', 'Ticker', 'Assessment_Date'],
-      // }]
-      // post_content: req.body.post_content
-    },
-    {
-      where: {
-        id: req.session.user_id,
-      }
-    }
-    );
+      user_id: req.session.user_id
+    });
     if (!stockData) {
       res.status(404).json({ message: 'No stock found with this id!' });
       return;
@@ -55,8 +46,5 @@ router.put('/:id/add-stock', withAuth, async (req, res) => {
     res.status(500).json(err);
   }
 });
-
-
-
 
 module.exports = router;

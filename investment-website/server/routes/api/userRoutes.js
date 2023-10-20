@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Valuation } = require('../../models');
+const { User, Portfolio, Valuation } = require('../../models');
 // const withAuth = require('../../utils/auth');
 
 // GET all users
@@ -16,8 +16,8 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const userData = await User.findByPk(req.params.id, {
-      // attributes: { exclude: ['password'] },
-      // include: [{ model: Valuation }]
+      attributes: { exclude: ['password'] },
+      include: [{ model: Valuation, through: Portfolio, as: 'portfolio_stocks' }]
     });
 
     if(!userData) {
@@ -30,6 +30,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// create a new user
 router.post('/', async (req, res) => {
   try {
     const userData = await User.create(req.body);

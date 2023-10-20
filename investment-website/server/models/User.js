@@ -34,21 +34,6 @@ User.init(
       validate: {
         len: [8],
       },
-    },
-    valuation_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'valuation',
-        key: 'id'
-      }
-    },
-    portfolio_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'portfolio',
-        key: 'id',
-        unique: false
-      }
     }
   },
   {

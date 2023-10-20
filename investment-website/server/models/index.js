@@ -9,17 +9,17 @@ Valuation.belongsToMany(User, {
     unique: false
   },
   // Define an alias for when data is retrieved
-  as: 'portfolio_stocks'
+  as: 'stock_users'
 });
 
-Valuation.belongsToMany(User, {
+User.belongsToMany(Valuation, {
   // Define the third table needed to store the foreign keys
   through: {
     model: Portfolio,
     unique: false
   },
   // Define an alias for when data is retrieved
-  as: 'stock_users'
+  as: 'portfolio_stocks'
 });
 
 module.exports = { User, Valuation, Portfolio };
