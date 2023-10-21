@@ -91,21 +91,6 @@ Valuation.init(
     CONF_CAGR: {
       type: DataTypes.DECIMAL(10, 6),
       allowNull: true,
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'user',
-        key: 'id'
-      }
-    },
-    portfolio_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'portfolio',
-        key: 'id',
-        unique: false
-      }
     }
   },
   {

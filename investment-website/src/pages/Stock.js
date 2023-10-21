@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import { Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+
 // import * as d3 from 'd3';
 import axios from 'axios';
 
 import PageContainer from "../containers/PageContainer";
 import classes from "./Game.module.css";
 
-
 const Stock = () => {
+  const user = useSelector((state) => state.auth.user);
   const [stock, setValuation] = useState([]);
+  const [added, setAdded] = useState([]);
+  const [error, setError] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -32,9 +35,16 @@ const Stock = () => {
 
   // const svgRef = useRef();
 
-  // const addStock = (Ticker) => {
-  //   axios.post(`http://localhost:3001/api/valuations/${id}`)
-  // }
+  const addStock = () => {
+    axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`)
+    .then(res => {
+      setError(null)
+      if (res.data.added) {
+        
+      }
+    })
+    .catch(err => setError('Could not add stock'))
+  }
 
   return (
     <PageContainer title="Stock Details">
@@ -50,7 +60,7 @@ const Stock = () => {
             <p>
               {stock.id}
             </p>
-            {/* <Button onClick={() => addStock(Ticker)}> Hello </Button> */}
+            <Button onClick={() => addStock()}> Hello </Button>
           </div>
         </div>
     </PageContainer>

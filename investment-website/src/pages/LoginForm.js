@@ -1,62 +1,30 @@
 import classes from "./Form.module.css";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import Auth from "../utils/auth";
-import AuthContext from "../context/AuthProvider";
-
-const LOGIN_URL = 'http://localhost:3001/api/users/login';
+import { Navigate } from "react-router-dom";
+import { login } from "../store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const LoginForm = () => {
-  const { setAuth } = useContext(AuthContext) //when success auth at login, set new auth state in global context
-  const [userFormData, setUserFormData] = useState({ username: "", password: "" });
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const user = useSelector((state) => state.auth.user)
+  const error = useSelector((state) => state.auth.error)
+  const dispatch = useDispatch()
+
+  const submitHandler = e => {
+    e.preventDefault()
+    dispatch(login({ username, password }))
+    .then(() => {
+      setUsername('')
+      setPassword('')
+    })
+  }
+
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setUserFormData({ ...userFormData, [name]: value });
-  };
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    try {
-      const response = await fetch(LOGIN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredential: true,
-        body: JSON.stringify(userFormData)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        Auth.login(data.token);
-        document.location.replace('/profile');
-        console.log('User logged in successfully');
-      } else {
-        console.log('Login failed');
-        setShowAlert(true);
-      }
-    } catch (error) {
-      console.log('Error logging in user: ', error);
-    }
-
-    setUserFormData({
-      username: "",
-      password: "",
-    });
-  };
-
 
   return (
     <>
@@ -64,7 +32,7 @@ const LoginForm = () => {
       <Form
         noValidate
         validated={validated}
-        onSubmit={handleFormSubmit}
+        onSubmit={submitHandler}
         className={classes.formHolder}
       >
         <Alert
@@ -84,8 +52,8 @@ const LoginForm = () => {
             type="text"
             placeholder="Your username"
             name="username"
-            onChange={handleInputChange}
-            value={userFormData.username}
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -102,8 +70,8 @@ const LoginForm = () => {
             placeholder="Your password"
             name="password"
             autoComplete="false"
-            onChange={handleInputChange}
-            value={userFormData.password}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -111,13 +79,15 @@ const LoginForm = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button
-          disabled={!(userFormData.username && userFormData.password)}
+          disabled={!(username && password)}
           type="submit"
           variant="success"
           className={classes.formSubmit}
         >
           Submit
         </Button>
+        {error ? <p>{error}</p>: null}
+        {user ? <Navigate to='/profile' replace={true} /> : null}
       </Form>
     </>
   );
