@@ -1,5 +1,5 @@
 import classes from "./Form.module.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
 import { login } from "../store/authSlice";
@@ -14,6 +14,11 @@ const LoginForm = () => {
   const error = useSelector((state) => state.auth.error)
   const dispatch = useDispatch()
 
+  // set state for form validation
+  const [validated] = useState(false);
+  // set state for alert
+  const [showAlert, setShowAlert] = useState(false);
+
   const submitHandler = e => {
     e.preventDefault()
     dispatch(login({ username, password }))
@@ -22,9 +27,6 @@ const LoginForm = () => {
       setPassword('')
     })
   }
-
-  const [validated] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
 
   return (
     <>
@@ -87,6 +89,7 @@ const LoginForm = () => {
           Submit
         </Button>
         {error ? <p>{error}</p>: null}
+        {/* {user ? <div>{user}</div> : null} */}
         {user ? <Navigate to='/profile' replace={true} /> : null}
       </Form>
     </>

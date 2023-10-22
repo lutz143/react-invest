@@ -11,12 +11,11 @@ export const signup = createAsyncThunk('auth/api/users', async({username, passwo
   }
 }) 
 
-export const login = createAsyncThunk('auth/api/login', async({username, password}, thunkAPI) => {
+export const login = createAsyncThunk('auth/api/users/login', async({username, password}, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:3001/api/login', {username, password})
+    const res = await axios.post('http://localhost:3001/api/users/login', {username, password})
     return res.data
   } catch (err) {
-    console.log(err)
     return thunkAPI.rejectWithValue(err.response.data)
   }
 }) 

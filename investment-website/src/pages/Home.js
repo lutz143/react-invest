@@ -3,12 +3,15 @@ import PageContainer from "../containers/PageContainer";
 import { Link } from 'react-router-dom';
 import classes from "./Home.module.css";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 
 import axios from 'axios';
 
 function Home() {
+  const user = useSelector((state) => state.auth.user)
+  const error = useSelector((state) => state.auth.error)
 
   const [data, setData] = useState([]);
 

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { useSelector } from "react-redux";
+import axios from 'axios';
 
 // import * as d3 from 'd3';
-import axios from 'axios';
+// import axios from 'axios';
 
 import PageContainer from "../containers/PageContainer";
 import classes from "./Game.module.css";
@@ -34,13 +36,14 @@ const Stock = () => {
   }, [id]); // include "id" in the dependency array
 
   // const svgRef = useRef();
+  
 
-  const addStock = () => {
-    axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`)
+  const addStock = (Ticker, id) => {
+    axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`, {Ticker})
     .then(res => {
       setError(null)
       if (res.data.added) {
-        
+        setAdded([...added, id])
       }
     })
     .catch(err => setError('Could not add stock'))
@@ -54,13 +57,18 @@ const Stock = () => {
           </div> */}
           <div className={classes.detailHolder}>
             <h1 className={classes.stockTitle}>{stock.Ticker}</h1>
-            <p>
-              {stock.previousClose}
-            </p>
-            <p>
-              {stock.id}
-            </p>
-            <Button onClick={() => addStock()}> Hello </Button>
+            <p>{user}</p>
+            <p>{stock.previousClose}</p>
+            <p>{stock.id}</p>
+            <div>
+              {added.includes(id) ? <div>Added!</div> : <Button onClick={() => addStock(stock.Ticker, id)}> Hello </Button>}
+              
+              
+                {/* {if (added.includes(id)) {
+                  <div>Added!</div>
+                } else {
+                }} */}
+            </div>
           </div>
         </div>
     </PageContainer>
