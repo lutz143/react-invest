@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const signup = createAsyncThunk('auth/api/users', async({username, password}, thunkAPI) => {
+export const signup = createAsyncThunk('auth/api/users', async({id, username, password}, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:3001/api/users', {username, password})
+    const res = await axios.post('http://localhost:3001/api/users', {id, username, password})
     return res.data
   } catch (err) {
     console.log(err)
@@ -11,9 +11,9 @@ export const signup = createAsyncThunk('auth/api/users', async({username, passwo
   }
 }) 
 
-export const login = createAsyncThunk('auth/api/users/login', async({username, password}, thunkAPI) => {
+export const login = createAsyncThunk('auth/api/users/login', async({user_id, username, password}, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:3001/api/users/login', {username, password})
+    const res = await axios.post('http://localhost:3001/api/users/login', {user_id, username, password})
     return res.data
   } catch (err) {
     return thunkAPI.rejectWithValue(err.response.data)
@@ -42,6 +42,7 @@ export const authSlice = createSlice({
     builder
       .addCase(signup.fulfilled, (state, action) => {
         state.user = action.payload.username
+        state.user_id = action.payload.id
         state.isLoggedIn = true
         state.loading = false
         state.error = null
@@ -56,6 +57,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload.username
+        state.user_id = action.payload.user_id
         state.isLoggedIn = true
         state.loading = false
         state.error = null

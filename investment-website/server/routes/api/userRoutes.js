@@ -68,7 +68,9 @@ router.post('/login', async (req, res) => {
       return;
     }
 
-    res.send({username})
+    const user_id = userData.id;
+
+    res.send({username, user_id})
 
     // req.session.save(() => {
     //   req.session.user_id = userData.id;

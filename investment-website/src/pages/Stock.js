@@ -12,6 +12,7 @@ import classes from "./Game.module.css";
 
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
+  const user_id = useSelector((state) => state.auth.user_id);
   const [stock, setValuation] = useState([]);
   const [added, setAdded] = useState([]);
   const [error, setError] = useState(null);
@@ -36,18 +37,44 @@ const Stock = () => {
   }, [id]); // include "id" in the dependency array
 
   // const svgRef = useRef();
+
+  const newPortfolioStock = async (req, res) => {
+    // event.preventDefault();
+
+    if (user && id) {
+      const response = await fetch(`http://localhost:3001/api/valuations/${id}/add-stock`, {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id,
+          valuation_id: id
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        document.location.replace('/');
+      } else {
+        alert(response.statusText);
+        // alert('Failed to create post');
+      }
+    }
+  }
+
   
 
-  const addStock = (Ticker, id) => {
-    axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`, {Ticker})
-    .then(res => {
-      setError(null)
-      if (res.data.added) {
-        setAdded([...added, id])
-      }
-    })
-    .catch(err => setError('Could not add stock'))
-  }
+  // const addStock = (Ticker) => {
+  //   console.log('button pushed!')
+  //   axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`, {Ticker})
+  //   .then(res => {
+  //     setError(null)
+  //     if (res.data.added) {
+  //       setAdded([...added])
+  //     }
+  //   })
+  //   .catch(err => setError('Could not add stock'))
+  // }
 
   return (
     <PageContainer title="Stock Details">
@@ -57,11 +84,11 @@ const Stock = () => {
           </div> */}
           <div className={classes.detailHolder}>
             <h1 className={classes.stockTitle}>{stock.Ticker}</h1>
-            <p>{user}</p>
+            <p>{user}, id = {user_id}</p>
             <p>{stock.previousClose}</p>
             <p>{stock.id}</p>
             <div>
-              {added.includes(id) ? <div>Added!</div> : <Button onClick={() => addStock(stock.Ticker, id)}> Hello </Button>}
+              {added.includes() ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}> Hello </Button>}
               
               
                 {/* {if (added.includes(id)) {
