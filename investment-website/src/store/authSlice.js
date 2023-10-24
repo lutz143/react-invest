@@ -11,17 +11,19 @@ export const signup = createAsyncThunk('auth/api/users', async({id, username, pa
   }
 }) 
 
-export const login = createAsyncThunk('auth/api/users/login', async({user_id, username, password}, thunkAPI) => {
+export const login = createAsyncThunk('auth/api/users/login', async({username, password}, thunkAPI) => {
   try {
-    const res = await axios.post('http://localhost:3001/api/users/login', {user_id, username, password})
+    const res = await axios.post('http://localhost:3001/api/users/login', {username, password})
     return res.data
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.response.data)
+    return thunkAPI.rejectWithValue(err.message)
   }
 }) 
 
 const initialState = {
   user: '',
+  user_id: null,
+  portfolioIds: [],
   isLoggedIn: false,
   loading: false,
   error: null
@@ -58,6 +60,7 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload.username
         state.user_id = action.payload.user_id
+        state.portfolioIds = action.payload.portfolioIds
         state.isLoggedIn = true
         state.loading = false
         state.error = null

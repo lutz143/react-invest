@@ -46,11 +46,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-
+// login a user
 router.post('/login', async (req, res) => {
   const username =  req.body.username
   try {
-    const userData = await User.findOne({ where: { username } });
+    const userData = await User.findOne({ where: { username },
+      include: [{ model: Valuation, through: Portfolio, as: 'portfolio_stocks' }]
+    });
 
     if (!userData) {
       res
@@ -68,9 +70,18 @@ router.post('/login', async (req, res) => {
       return;
     }
 
+    let portfolioIds = [];
+
     const user_id = userData.id;
 
-    res.send({username, user_id})
+    userData.portfolio_stocks.forEach(stock => {
+      portfolioIds.push(stock.id);
+    })
+
+    // const portfolioId = userData.portfolio_stocks.map(item => item.portfolio.valuation_id);
+    // const portfolio = userData.portfolio_stocks;
+
+    res.send({user_id, username, portfolioIds})
 
     // req.session.save(() => {
     //   req.session.user_id = userData.id;

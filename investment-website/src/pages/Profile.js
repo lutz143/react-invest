@@ -4,13 +4,31 @@ import { useSelector } from "react-redux";
 // import classes from "./Profile.module.css";
 
 const Profile= () => {
-  const user = useSelector((state) => state.auth.user)
-  const user_id = useSelector((state) => state.auth.user_id)
+  const user = useSelector(state => state.auth.user)
+  const user_id = useSelector(state => state.auth.user_id)
+  const portfolioIds = useSelector(state => state.auth.portfolioIds)
+
+  console.log('at profile page.');
+  console.log(portfolioIds);
+  
   return (
     <PageContainer>
-      <div>Profile Page</div>
-      {user ? <h4>Welcome, {user}</h4> : null}
-      {user_id ? <h4>UserId = {user_id}</h4> : null}
+    <div>
+      <h1>User Profile</h1>
+      {user && (
+        <div>
+          <p>User ID: {user_id}</p>
+          <p>Username: {user}</p>
+          
+          <p>Portfolio IDs:</p>
+          <ul>
+            {portfolioIds.map(id => (
+              <li key={id}>{id}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
     </PageContainer>
   );
 }

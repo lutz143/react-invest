@@ -13,9 +13,10 @@ import classes from "./Game.module.css";
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
   const user_id = useSelector((state) => state.auth.user_id);
+  const portfolioIds = useSelector((state) => state.auth.portfolioIds);
   const [stock, setValuation] = useState([]);
   const [added, setAdded] = useState([]);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -39,7 +40,6 @@ const Stock = () => {
   // const svgRef = useRef();
 
   const newPortfolioStock = async (req, res) => {
-    // event.preventDefault();
 
     if (user && id) {
       const response = await fetch(`http://localhost:3001/api/valuations/${id}/add-stock`, {
@@ -54,7 +54,9 @@ const Stock = () => {
       });
 
       if (response.ok) {
-        document.location.replace('/');
+        added.push(id)
+        console.log(added)
+
       } else {
         alert(response.statusText);
         // alert('Failed to create post');
@@ -64,13 +66,13 @@ const Stock = () => {
 
   
 
-  // const addStock = (Ticker) => {
+  // const addStock = (Ticker, id) => {
   //   console.log('button pushed!')
   //   axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`, {Ticker})
   //   .then(res => {
   //     setError(null)
   //     if (res.data.added) {
-  //       setAdded([...added])
+  //       setAdded([...added, id])
   //     }
   //   })
   //   .catch(err => setError('Could not add stock'))
@@ -87,15 +89,7 @@ const Stock = () => {
             <p>{user}, id = {user_id}</p>
             <p>{stock.previousClose}</p>
             <p>{stock.id}</p>
-            <div>
-              {added.includes() ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}> Hello </Button>}
-              
-              
-                {/* {if (added.includes(id)) {
-                  <div>Added!</div>
-                } else {
-                }} */}
-            </div>
+
           </div>
         </div>
     </PageContainer>

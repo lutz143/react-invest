@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [portfolioIds, setPortfolioIds] = useState('')
 
   const user = useSelector((state) => state.auth.user)
   const error = useSelector((state) => state.auth.error)
@@ -21,10 +22,11 @@ const LoginForm = () => {
 
   const submitHandler = e => {
     e.preventDefault()
-    dispatch(login({ username, password }))
+    dispatch(login({ username, password, portfolioIds }))
     .then(() => {
       setUsername('')
       setPassword('')
+      setPortfolioIds('')
     })
   }
 
@@ -89,7 +91,6 @@ const LoginForm = () => {
           Submit
         </Button>
         {error ? <p>{error}</p>: null}
-        {/* {user ? <div>{user}</div> : null} */}
         {user ? <Navigate to='/profile' replace={true} /> : null}
       </Form>
     </>
