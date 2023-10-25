@@ -16,7 +16,7 @@ const Stock = () => {
   const portfolioIds = useSelector((state) => state.auth.portfolioIds);
   const [stock, setValuation] = useState([]);
   const [added, setAdded] = useState([]);
-  // const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const Stock = () => {
 
   // const svgRef = useRef();
 
-  const newPortfolioStock = async (req, res) => {
+  const newPortfolioStock = async (event) => {
 
     if (user && id) {
       const response = await fetch(`http://localhost:3001/api/valuations/${id}/add-stock`, {
@@ -54,8 +54,10 @@ const Stock = () => {
       });
 
       if (response.ok) {
-        added.push(id)
-        console.log(added)
+        console.log('button pushed, stock id sent!')
+        setAdded(id)
+        // added.push(id)
+        // console.log(added)
 
       } else {
         alert(response.statusText);
@@ -63,6 +65,8 @@ const Stock = () => {
       }
     }
   }
+
+
 
   
 
@@ -87,8 +91,15 @@ const Stock = () => {
           <div className={classes.detailHolder}>
             <h1 className={classes.stockTitle}>{stock.Ticker}</h1>
             <p>{user}, id = {user_id}</p>
+            <ul>
+              {portfolioIds.map(id => (
+                <li key={id}>{id}</li>
+              ))}
+            </ul>
             <p>{stock.previousClose}</p>
             <p>{stock.id}</p>
+            {/* {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => addStock(stock.Ticker, stock.id)}>Add Stock</Button>} */}
+            {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
 
           </div>
         </div>
