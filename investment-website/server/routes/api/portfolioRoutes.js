@@ -16,7 +16,10 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const portfolioData = await Portfolio.destroy({
-      where: { id: req.params.id }
+      where: { 
+        user_id: req.body.id,
+        valuation_id: req.params.id
+      }
     });
     if (!portfolioData) {
       res.status(404).json({ message: 'No trip with this id!' });

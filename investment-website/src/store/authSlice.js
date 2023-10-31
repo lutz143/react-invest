@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// async thunk action to signup a new user
 export const signup = createAsyncThunk('auth/api/users', async({id, username, password}, thunkAPI) => {
   try {
     const res = await axios.post('http://localhost:3001/api/users', {id, username, password})
@@ -11,14 +12,25 @@ export const signup = createAsyncThunk('auth/api/users', async({id, username, pa
   }
 }) 
 
+// async thunk action to login a new user
 export const login = createAsyncThunk('auth/api/users/login', async({username, password}, thunkAPI) => {
   try {
     const res = await axios.post('http://localhost:3001/api/users/login', {username, password})
     return res.data
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.message)
+    return thunkAPI.rejectWithValue('Incorrect username or password')
   }
-}) 
+})
+
+// async thunk action to delete a stock from the portfolio
+export const deleteStockFromPortfolio = createAsyncThunk('auth/api/portfolio/delete', async (stockId, user_id, thunkAPI) => {
+  try {
+    const response = await axios.delete(`http://localhost:3001/api/portfolio/${stockId}`, user_id);
+    return response.data;
+  } catch (err) {
+    return thunkAPI.rejectWithValue('uh oh' + err.message);
+  }
+});
 
 const initialState = {
   user: '',
@@ -72,6 +84,11 @@ export const authSlice = createSlice({
         state.loading = false
         state.isLoggedIn = false
         state.error = action.payload
+      })
+      .addCase(deleteStockFromPortfolio.fulfilled, (state, action) => {
+        state.user_id = action.payload.user_id
+        const stockIdToDelete = action.payload
+        state.portfolioIds = state.portfolioIds.filter((id) => id !== stockIdToDelete)
       })
   }
 })

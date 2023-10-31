@@ -1,5 +1,6 @@
 import PageContainer from "../containers/PageContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteStockFromPortfolio } from "../store/authSlice";
 
 // import classes from "./Profile.module.css";
 
@@ -7,9 +8,14 @@ const Profile= () => {
   const user = useSelector(state => state.auth.user)
   const user_id = useSelector(state => state.auth.user_id)
   const portfolioIds = useSelector(state => state.auth.portfolioIds)
+  const dispatch = useDispatch();
 
-  console.log('at profile page.');
-  console.log(portfolioIds);
+  const handleDeleteStock = (stockId) => {
+    dispatch(deleteStockFromPortfolio(stockId));
+  };
+
+  // console.log('at profile page.');
+  // console.log(portfolioIds);
   
   return (
     <PageContainer>
@@ -23,7 +29,9 @@ const Profile= () => {
           <p>Portfolio IDs:</p>
           <ul>
             {portfolioIds.map(id => (
-              <li key={id}>{id}</li>
+              <li key={id}>
+                {id} <button onClick={() => handleDeleteStock(id)}>Delete</button>
+              </li>
             ))}
           </ul>
         </div>
