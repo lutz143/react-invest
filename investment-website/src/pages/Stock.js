@@ -66,22 +66,6 @@ const Stock = () => {
     }
   }
 
-
-
-  
-
-  // const addStock = (Ticker, id) => {
-  //   console.log('button pushed!')
-  //   axios.post(`http://localhost:3001/api/valuations/${id}/add-stock`, {Ticker})
-  //   .then(res => {
-  //     setError(null)
-  //     if (res.data.added) {
-  //       setAdded([...added, id])
-  //     }
-  //   })
-  //   .catch(err => setError('Could not add stock'))
-  // }
-
   return (
     <PageContainer title="Stock Details">
         <div>
@@ -98,7 +82,6 @@ const Stock = () => {
             </ul>
             <p>{stock.previousClose}</p>
             <p>{stock.id}</p>
-            {/* {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => addStock(stock.Ticker, stock.id)}>Add Stock</Button>} */}
             {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
 
           </div>

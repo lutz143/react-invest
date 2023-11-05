@@ -23,9 +23,9 @@ export const login = createAsyncThunk('auth/api/users/login', async({username, p
 })
 
 // async thunk action to delete a stock from the portfolio
-export const deleteStockFromPortfolio = createAsyncThunk('auth/api/portfolio/delete', async (stockId, user_id, thunkAPI) => {
+export const deleteStock = createAsyncThunk('auth/api/portfolio/', async (stockId, user_id, thunkAPI) => {
   try {
-    const response = await axios.delete(`http://localhost:3001/api/portfolio/${stockId}`, user_id);
+    const response = await axios.delete(`http://localhost:3001/api/portfolio/${stockId}`, {data: {user_id}});
     return response.data;
   } catch (err) {
     return thunkAPI.rejectWithValue('uh oh' + err.message);
@@ -43,13 +43,19 @@ const initialState = {
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: {
+    portfolioIds: [], // initial state for portfolio IDs
+  },
   reducers: {
     logout: (state, action) => {
       state.user = ''
       state.isLoggedIn = false
       state.loading = false
       state.error = null
+    },
+    deleteStockFromPortfolio: (state, action) => {
+      const stockIdToDelete = action.payload;
+      state.portfolioIds = state.portfolioIds.filter((id) => id !== stockIdToDelete);
     }
   },
   extraReducers: (builder) => {
@@ -85,8 +91,10 @@ export const authSlice = createSlice({
         state.isLoggedIn = false
         state.error = action.payload
       })
-      .addCase(deleteStockFromPortfolio.fulfilled, (state, action) => {
-        state.user_id = action.payload.user_id
+      .addCase(deleteStock.fulfilled, (state, action) => {
+        // state.user_id = action.payload.user_id
+        // state.portfolioIds = action.payload.portfolioIds
+        // console.log(state.user_id)
         const stockIdToDelete = action.payload
         state.portfolioIds = state.portfolioIds.filter((id) => id !== stockIdToDelete)
       })
@@ -94,5 +102,6 @@ export const authSlice = createSlice({
 })
 
 export const { logout } = authSlice.actions
+export const { deleteStockFromPortfolio } = authSlice.actions
 
-export default authSlice.reducer
+export default authSlice.reducer;

@@ -17,7 +17,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const portfolioData = await Portfolio.destroy({
       where: { 
-        user_id: req.body.id,
+        user_id: req.body.user_id,
         valuation_id: req.params.id
       }
     });

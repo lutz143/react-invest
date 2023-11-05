@@ -1,8 +1,10 @@
 import PageContainer from "../containers/PageContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteStockFromPortfolio } from "../store/authSlice";
+import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
+import axios from "axios";
 
 // import classes from "./Profile.module.css";
+
 
 const Profile= () => {
   const user = useSelector(state => state.auth.user)
@@ -10,12 +12,29 @@ const Profile= () => {
   const portfolioIds = useSelector(state => state.auth.portfolioIds)
   const dispatch = useDispatch();
 
-  const handleDeleteStock = (stockId) => {
+  const handleDeleteStock = async(stockId) => {
     dispatch(deleteStockFromPortfolio(stockId));
-  };
+    dispatch(deleteStock(stockId));
 
-  // console.log('at profile page.');
-  // console.log(portfolioIds);
+    if (user && stockId) {
+      const response = await fetch(`http://localhost:3001/api/portfolio/${stockId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          user_id
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log('button pushed, stock id to be deleted!')
+
+      } else {
+        alert(response.statusText);
+      }
+    }
+  };
   
   return (
     <PageContainer>
@@ -28,9 +47,9 @@ const Profile= () => {
           
           <p>Portfolio IDs:</p>
           <ul>
-            {portfolioIds.map(id => (
-              <li key={id}>
-                {id} <button onClick={() => handleDeleteStock(id)}>Delete</button>
+            {portfolioIds.map(stockId => (
+              <li key={stockId}>
+                {stockId} <button onClick={() => handleDeleteStock(stockId)}>Delete</button>
               </li>
             ))}
           </ul>
