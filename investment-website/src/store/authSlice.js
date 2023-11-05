@@ -92,9 +92,9 @@ export const authSlice = createSlice({
         state.error = action.payload
       })
       .addCase(deleteStock.fulfilled, (state, action) => {
-        // state.user_id = action.payload.user_id
-        // state.portfolioIds = action.payload.portfolioIds
-        // console.log(state.user_id)
+        state.user_id = action.payload.user_id
+        state.portfolioIds = action.payload.portfolioIds
+        console.log(state.user_id)
         const stockIdToDelete = action.payload
         state.portfolioIds = state.portfolioIds.filter((id) => id !== stockIdToDelete)
       })

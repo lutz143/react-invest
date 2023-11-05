@@ -1,16 +1,34 @@
 import PageContainer from "../containers/PageContainer";
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
-import axios from "axios";
+import axios from 'axios';
 
 // import classes from "./Profile.module.css";
 
 
 const Profile= () => {
+  const [portfolio, setPortfolio] = useState([]);
+  const [data, setData] = useState([]);
   const user = useSelector(state => state.auth.user)
   const user_id = useSelector(state => state.auth.user_id)
   const portfolioIds = useSelector(state => state.auth.portfolioIds)
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Make a GET request to API endpoint by stock ID
+    axios.get(`http://localhost:3001/api/users/${user_id}`)
+      .then(response => {
+        const portfolioData = response.data.portfolio_stocks.map((stock) => ({
+          ...stock,
+        }));
+        setData(portfolioData);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+      
+  }, [user_id, portfolio]); // include "id" in the dependency array
 
   const handleDeleteStock = async(stockId) => {
     dispatch(deleteStockFromPortfolio(stockId));
@@ -29,6 +47,7 @@ const Profile= () => {
 
       if (response.ok) {
         console.log('button pushed, stock id to be deleted!')
+        setPortfolio(response)
 
       } else {
         alert(response.statusText);
@@ -47,9 +66,9 @@ const Profile= () => {
           
           <p>Portfolio IDs:</p>
           <ul>
-            {portfolioIds.map(stockId => (
-              <li key={stockId}>
-                {stockId} <button onClick={() => handleDeleteStock(stockId)}>Delete</button>
+            {data.map((stock, index) => (
+              <li key={stock.id}>
+                {stock.id} <button onClick={() => handleDeleteStock(stock.id)}>Delete</button>
               </li>
             ))}
           </ul>

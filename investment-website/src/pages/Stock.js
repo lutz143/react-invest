@@ -20,7 +20,7 @@ const Stock = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    // Make a GET request to API endpoint by ID
+    // Make a GET request to API endpoint by stock ID
     axios.get(`http://localhost:3001/api/valuations/${id}`)
       .then(response => {
         setValuation(response.data);
@@ -56,8 +56,6 @@ const Stock = () => {
       if (response.ok) {
         console.log('button pushed, stock id sent!')
         setAdded(id)
-        // added.push(id)
-        // console.log(added)
 
       } else {
         alert(response.statusText);
