@@ -2,7 +2,11 @@ import PageContainer from "../containers/PageContainer";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
+import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import classes from "./Profile.module.css";
 import axios from 'axios';
+import moment from 'moment';
 
 // import classes from "./Profile.module.css";
 
@@ -21,6 +25,11 @@ const Profile= () => {
       .then(response => {
         const portfolioData = response.data.portfolio_stocks.map((stock) => ({
           ...stock,
+          Assessment_Date: moment(stock.Assessment_Date).format('M/DD/YYYY'),
+          previousClose: parseFloat(stock.previousClose).toFixed(2),
+          CAGR_CPS: parseFloat(stock.CAGR_CPS).toFixed(2),
+          NOM_CPS: parseFloat(stock.NOM_CPS).toFixed(2),
+          CON_CPS: parseFloat(stock.CON_CPS).toFixed(2)
         }));
         setData(portfolioData);
       })
@@ -58,20 +67,53 @@ const Profile= () => {
   return (
     <PageContainer>
     <div>
-      <h1>User Profile</h1>
+      <h1>{user} Profile</h1>
       {user && (
         <div>
           <p>User ID: {user_id}</p>
-          <p>Username: {user}</p>
-          
           <p>Portfolio IDs:</p>
-          <ul>
+          {/* <ul>
             {data.map((stock, index) => (
               <li key={stock.id}>
                 {stock.id} <button onClick={() => handleDeleteStock(stock.id)}>Delete</button>
               </li>
             ))}
-          </ul>
+          </ul> */}
+
+        <Container>
+          <Row lg={4}>
+            {data.map((stock, index) =>
+              <div>
+                <Col>
+                  <Card className='mb-3'>
+                    <Card.Body>
+                      <Card.Header className={classes.cardHeader}>
+                        <div>
+                          <h3 style={{marginBottom: '0'}}>{stock.id}: {stock.Ticker}</h3>
+                        </div>
+                      </Card.Header>
+                      <Card.Text className={classes.cardBody}>
+                        <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
+                        <div>Previous Close: {stock.previousClose}</div>
+                        <div>CAGR CPS: {stock.CAGR_CPS}</div>
+                        <div>NOM CPS: {stock.NOM_CPS}</div>
+                        <div>CON CPS: {stock.CON_CPS}</div>
+                      </Card.Text>
+                      <Card.Footer className={classes.cardFooter}>
+                        <Button className={classes.cardButton}>
+                          <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
+                        </Button>
+                        <Button className={classes.cardDeleteButton}
+                        variant="danger" onClick={() => handleDeleteStock(stock.id)}>
+                          Delete Stock
+                        </Button>
+                      </Card.Footer>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </div>)}
+            </Row>
+        </Container>
         </div>
       )}
     </div>

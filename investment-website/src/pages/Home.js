@@ -66,7 +66,7 @@ function Home() {
                 </Col>
               </div>)}
             </Row>
-          </Container>
+        </Container>
       </section>
     </PageContainer>
   );
