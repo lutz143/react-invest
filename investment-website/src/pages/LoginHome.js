@@ -11,6 +11,7 @@ function LandingPage() {
   const user = useSelector((state) => state.auth.user)
   const error = useSelector((state) => state.auth.error)
 
+  
 
   return (
     <PageContainer>
