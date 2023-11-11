@@ -1,5 +1,5 @@
 .pageBody {
-  overflow-y: auto;
+  /* overflow-y: auto; */
   min-height: 700px;
   height: calc(100vh);
   padding: 70px 0 0;
@@ -10,7 +10,7 @@
 @media screen and (max-width: 1366px) {
   .pageBody {
     height: unset;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     padding: 5.5rem 2rem 5rem;
   }
 }

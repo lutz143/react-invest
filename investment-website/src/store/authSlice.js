@@ -52,6 +52,7 @@ export const authSlice = createSlice({
       state.isLoggedIn = false
       state.loading = false
       state.error = null
+      state.portfolioIds = []
     },
     deleteStockFromPortfolio: (state, action) => {
       const stockIdToDelete = action.payload;

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from '../store/authSlice';
 import { Form, Button, Alert } from "react-bootstrap";
-import { NavLink, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function Register() {
   const [username, setUsername] = useState('')

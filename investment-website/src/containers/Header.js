@@ -4,9 +4,9 @@ import profilePic from "../images/profilePic2.png"
 
 import classes from "./Header.module.css";
 
-const handleClick = () => {
-  // Code to handle button click
-};
+// const handleClick = () => {
+//   // Code to handle button click
+// };
 
 
 function Header() {

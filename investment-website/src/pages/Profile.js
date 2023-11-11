@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { logout } from "../store/authSlice";
 import classes from "./Profile.module.css";
 import axios from 'axios';
 import moment from 'moment';
@@ -17,7 +18,6 @@ const Profile= () => {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.auth.user)
   const user_id = useSelector(state => state.auth.user_id)
-  const portfolioIds = useSelector(state => state.auth.portfolioIds)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -71,15 +71,12 @@ const Profile= () => {
       <h1>{user} Profile</h1>
       {user && (
         <div>
-          <p>User ID: {user_id}</p>
+          <p>User ID: {user_id}
+            <Button onClick={() => dispatch(logout())}>
+              <Nav.Link as={Link} to={`/`}>Logout</Nav.Link>
+            </Button>
+          </p>
           <p>Portfolio IDs:</p>
-          {/* <ul>
-            {data.map((stock, index) => (
-              <li key={stock.id}>
-                {stock.id} <button onClick={() => handleDeleteStock(stock.id)}>Delete</button>
-              </li>
-            ))}
-          </ul> */}
 
         <Container>
           <Row lg={4}>

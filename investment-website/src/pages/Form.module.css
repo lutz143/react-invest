@@ -12,3 +12,27 @@
   width: auto;
   margin: auto;
 }
+
+
+
+.loginHome {
+  text-align: center;
+}
+
+.loginHome h1 {
+  padding-bottom: 25px;
+}
+
+.options {
+  display: flex;
+  padding: 0 50px 0 50px;
+  justify-content: space-between;
+}
+
+.options .cardButton {
+  width: 150px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  margin: auto;
+}
