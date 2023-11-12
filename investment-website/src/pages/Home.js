@@ -24,8 +24,10 @@ function Home() {
           ...stock,
           Assessment_Date: moment(stock.Assessment_Date).format('M/DD/YYYY'),
           previousClose: parseFloat(stock.previousClose).toFixed(2),
+          previousCloseFloat: stock.previousClose,
           CAGR_CPS: parseFloat(stock.CAGR_CPS).toFixed(2),
           NOM_CPS: parseFloat(stock.NOM_CPS).toFixed(2),
+          NOM_CPS_Float:stock.NOM_CPS,
           CON_CPS: parseFloat(stock.CON_CPS).toFixed(2)
         }));
         setData(formattedData);
@@ -45,7 +47,7 @@ function Home() {
                 <Col>
                   <Card className='mb-3'>
                     <Card.Body>
-                      <Card.Header className={classes.cardHeader}>
+                      <Card.Header className={stock.NOM_CPS_Float>stock.previousCloseFloat ? classes.cardHeaderGood : classes.cardHeader}>
                         <div>
                           <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
                         </div>

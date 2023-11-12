@@ -2,16 +2,17 @@
 /* ===================================================================================================================================== */
 /* define variable colors */
 :root {
-  --yellow: rgba(255, 218, 113, 1);
-  --white: rgb(255, 255, 255);
-  --white-transparent: rgba(255, 255, 255, 0.7);
-  --light-gray:rgba(238, 238, 247, 0.4);
-  --gray:rgba(200, 200, 201, 0.518);
+  --black: rgba(28, 29, 33, 1);
   --blue-gray: rgba(68, 88, 119, 1);
   --dark-gray: rgba(49, 52, 61, 1);
-  --black: rgba(28, 29, 33, 1);
+  --dark-green: rgba(0, 104, 72);
+  --gray:rgba(200, 200, 201, 0.518);
+  --light-gray:rgba(238, 238, 247, 0.4);
+  --white: rgb(255, 255, 255);
+  --white-transparent: rgba(255, 255, 255, 0.7);
+  --yellow: rgba(255, 218, 113, 1);
   --hover-opacity: 0.9;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .App {

@@ -80,7 +80,11 @@ const Stock = () => {
             </ul>
             <p>{stock.previousClose}</p>
             <p>{stock.id}</p>
-            {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
+
+            {error ? <p>{error}</p>: null}
+            {user ? <div>
+              {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
+              </div> : null}
 
           </div>
         </div>

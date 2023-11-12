@@ -21,7 +21,7 @@ Valuation.init(
       allowNull: false,
     },
     previousClose: {
-      type: DataTypes.DECIMAL(10, 6),
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
     marketCap: {
@@ -69,7 +69,7 @@ Valuation.init(
       allowNull: true,
     },
     NOM_CPS: {
-      type: DataTypes.DECIMAL(10, 6),
+      type: DataTypes.DOUBLE,
       allowNull: true,
     },
     CON_CPS: {
