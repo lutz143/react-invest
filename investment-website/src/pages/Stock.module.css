@@ -1,0 +1,11 @@
+@import '../App.css';
+
+.cardDivider {
+  height: 2px;
+  margin-bottom: 7px;
+  background-color: var(--gray);
+}
+
+.cardSubSection {
+  font-size: 12px;
+}
