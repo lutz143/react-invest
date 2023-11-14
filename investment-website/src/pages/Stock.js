@@ -112,8 +112,23 @@ const Stock = () => {
           <Row lg={1}>
             <Card className='mb-3'>
               <Card.Header>
-                <Row>
-                  <h1 className='d-flex justify-content-between'>{stock.Ticker}<Button onClick={downloadCsv}>&#11123;</Button></h1>                    
+                <Row className='align-items-center'>
+                  <h1 className='d-flex bd-highlight'>
+                    <div className='p-2 flex-grow-1 bd-highlight'>
+                      {stock.Ticker}
+                    </div>
+                    <div className='p-2 bd-highlight align-items-center'>
+                      {user ? <div>
+                        {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div className='p-3 bd-highlight align-items-center' style={{fontSize: '14px'}}>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
+                      </div> : null}
+                    </div>
+                    <div className='p-2 bd-highlight'>
+                      <Button onClick={downloadCsv} style={{fontSize: '14px'}}>
+                        &#11123;
+                      </Button>
+                    </div>
+                    
+                  </h1>                    
                 </Row>
               </Card.Header>
               <Card.Body>
@@ -176,9 +191,7 @@ const Stock = () => {
           </div> */}
             
             {error ? <p>{error}</p>: null}
-            {user ? <div>
-              {added.includes(stock.id) || portfolioIds.includes(stock.id) ? <div>Added!</div> : <Button onClick={() => newPortfolioStock()}>Add Stock</Button>}
-              </div> : null}
+
 
         </Container>
 
