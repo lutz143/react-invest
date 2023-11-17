@@ -26,71 +26,78 @@ Valuation.init(
     },
     marketCap: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     sharesOutstanding: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     Terminal_Rate: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     WACC: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     TerminalValue_CAGR: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     NPV_Total_CAGR: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     TerminalValue_NOM: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     NPV_Total_NOM: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     TerminalValue_CON: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     NPV_Total_CON: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     CAGR_CPS: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     NOM_CPS: {
       type: DataTypes.DOUBLE,
-      allowNull: true,
+      allowNull: false,
     },
     CON_CPS: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     Swing_NOM: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     Swing_CAGR: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     CONF_NOM: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
     },
     CONF_CAGR: {
       type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
+      allowNull: false,
+    },
+    metadata_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'metadata',
+        key: 'id'
+      }
     }
   },
   {

@@ -9,3 +9,13 @@
 .cardSubSection {
   font-size: 12px;
 }
+
+.stockHeader {
+  text-decoration: none;
+  color: var(--dark-gray);
+  transition: all 0.3s ease-in;
+}
+
+.stockHeader:hover {
+  text-shadow: 0 0 1.9px var(--yellow), 0 0 1.9px var(--yellow), 0 0 1.9px var(--yellow);
+}
