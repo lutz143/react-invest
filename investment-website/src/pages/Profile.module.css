@@ -22,3 +22,9 @@
 .cardFooter {
   composes: cardFooter from "./Home.module.css";
 }
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}

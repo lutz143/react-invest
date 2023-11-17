@@ -68,16 +68,17 @@ const Profile= () => {
   return (
     <PageContainer>
     <div>
+      <div className={classes.profileHeader}>
       <h1>{user} Profile</h1>
       {user && (
         <div>
-          <p>User ID: {user_id}
-            <Button onClick={() => dispatch(logout())}>
-              <Nav.Link as={Link} to={`/`}>Logout</Nav.Link>
-            </Button>
-          </p>
-          <p>Portfolio IDs:</p>
-
+          <Button onClick={() => dispatch(logout())}>
+            <Nav.Link as={Link} to={`/`}>Logout</Nav.Link>
+          </Button>
+        </div>
+      )}
+      </div>
+      <div>
         <Container>
           <Row lg={4}>
             {data.map((stock, index) =>
@@ -114,8 +115,7 @@ const Profile= () => {
               </div>)}
             </Row>
         </Container>
-        </div>
-      )}
+      </div>      
     </div>
     </PageContainer>
   );

@@ -17,12 +17,16 @@ function LandingPage() {
         <div className={classes.loginHome}>
           <h1>Welcome to My Website</h1>
           <div className={classes.options}>
-            <Button className={classes.cardButton}>
-              <Nav.Link as={Link} to={`/register`}>Sign Up</Nav.Link>
-            </Button>
-            <Button variant="success" className={classes.cardButton}>
-              <Nav.Link as={Link} to={`/login`}>Login</Nav.Link>
-            </Button>          
+            <Nav.Link as={Link} to={`/register`} className={classes.cardButton}>
+              <Button className={classes.cardButton}>
+                Sign Up
+              </Button>
+            </Nav.Link>
+            <Nav.Link as={Link} to={`/login`} className={classes.cardButton}>
+              <Button variant="success" className={classes.cardButton}>
+                Login
+              </Button>
+            </Nav.Link>
           </div>
         </div>
       </div>
