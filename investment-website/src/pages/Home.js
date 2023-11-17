@@ -60,9 +60,11 @@ function Home() {
                         <div>CON CPS: {stock.CON_CPS}</div>
                       </Card.Text>
                       <Card.Footer className={classes.cardFooter}>
-                        <Button className={classes.cardButton}>
-                          <Nav.Link as={Link} to={`/valuations/${stock.id}`}>{stock.Ticker}</Nav.Link>
-                        </Button>
+                        <Nav.Link as={Link} to={`/valuations/${stock.id}`}>
+                          <Button className={classes.cardButton}>
+                            {stock.Ticker}
+                          </Button>
+                        </Nav.Link>
                       </Card.Footer>
                     </Card.Body>
                   </Card>

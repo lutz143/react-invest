@@ -1,10 +1,12 @@
 const router = require('express').Router();
-const { Valuation, Portfolio } = require('../../models');
+const { Valuation, Portfolio, MetaData } = require('../../models');
 
 // GET all Stock Valuations
 router.get('/', async (req, res) => {
   try {
-    const valuationData = await Valuation.findAll();
+    const valuationData = await Valuation.findAll({
+      include: [{ model: MetaData }],
+    });
     res.status(200).json(valuationData);
   } catch (err) {
     res.status(500).json(err);
@@ -16,7 +18,7 @@ router.get('/:id', async (req, res) => {
   try {
     const valuationData = await Valuation.findByPk(req.params.id, {
       // JOIN with locations, using the Trip through table
-      // include: [{ model: Valuation, through: Trip, as: 'planned_trips' }]
+      include: [{ model: MetaData }],
     });
 
     if (!valuationData) {

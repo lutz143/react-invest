@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
@@ -24,24 +24,30 @@ const Stock = () => {
 
   useEffect(() => {
     // Make a GET request to API endpoint by stock ID
-    axios.get(`http://localhost:3001/api/valuations/${id}`)
+    axios.get(`http://localhost:3001/api/metaData/${id}`)
       .then(response => {
         const stock = response.data
+        console.log(stock);
         const formattedData = {
           ...stock,
           Assessment_Date: moment(stock.Assessment_Date).format('M/DD/YYYY'),
+          exDividendDate: moment(stock.exDividendDate).format('M/DD/YYYY'),
           previousClose: parseFloat(stock.previousClose).toFixed(2),
           previousCloseFloat: stock.previousClose,
+          dividendRate: parseFloat(stock.dividendRate).toFixed(2),
+          beta: parseFloat(stock.beta).toFixed(2),
           CAGR_CPS: parseFloat(stock.CAGR_CPS).toFixed(2),
           NOM_CPS: parseFloat(stock.NOM_CPS).toFixed(2),
           CON_CPS: parseFloat(stock.CON_CPS).toFixed(2),
           CONF_NOM: parseFloat(stock.CONF_NOM).toFixed(0),
+          debtToEquity: parseFloat(stock.debtToEquity).toFixed(1) + '%',
           toolTip_CONF_CAGR: "CAGR Confidence: " + parseFloat(stock.CONF_CAGR).toFixed(0),
           marketCap: (stock.marketCap).toLocaleString('en-US'),
           sharesOutstanding: (stock.sharesOutstanding).toLocaleString('en-US'),
           Terminal_Rate: (stock.Terminal_Rate * 100).toFixed(1) + "%",
           WACC: (stock.WACC * 100).toFixed(1) + "%",
           toolTip_Swing_NOM: "NOM-CON Swing: " + (stock.Swing_NOM * 100).toFixed(1) + "%",
+          dividendYield: (stock.dividendYield * 100).toFixed(1) + "%",
           toolTip_TerminalValue_NOM: "NOM Terminal Value: " + (stock.TerminalValue_NOM).toLocaleString('en-US'),
           toolTip_NPV_Total_NOM: "NOM NPV: " + (stock.NPV_Total_NOM).toLocaleString('en-US'),
         }
@@ -114,8 +120,11 @@ const Stock = () => {
               <Card.Header>
                 <Row className='align-items-center'>
                   <h1 className='d-flex bd-highlight'>
-                    <div className='p-2 flex-grow-1 bd-highlight'>
-                      {stock.Ticker}
+                      
+                    <div className='p-2 flex-grow-1 bd-highlight' href={stock.website} style={{textDecoration: 'none !important'}}>
+                      <Link to={stock.website} className={classes.stockHeader} target="_blank">
+                        {stock.Ticker}
+                      </Link>
                     </div>
                     <div className='p-2 bd-highlight align-items-center'>
                       {user ? <div>
@@ -159,6 +168,15 @@ const Stock = () => {
                         Confidence: {stock.CONF_NOM}
                       </span>
                     </Col>
+                    {Number(stock.dividendRate) ? 
+                      <Col>
+                        <span data-tooltip-id="ex-dividend-tooltip">
+                          Dividend: {stock.dividendRate + ' '}
+                        </span>
+                        <span style={{fontSize: '10px'}}>
+                          ({ stock.dividendYield})
+                        </span>
+                      </Col> : null}
                   </Row>
                 </Container>
                 <Row className={classes.cardDivider}></Row>
@@ -168,7 +186,7 @@ const Stock = () => {
                     <Col>Market Cap: {stock.marketCap}</Col>
                     <Col>Shares Outstanding: {stock.sharesOutstanding}</Col>
                   </Row>
-                  <Row className='mb-2'>
+                  <Row>
                     <Col>
                       <span data-tooltip-id="terminal-value-tooltip">
                         Terminal Rate: {stock.Terminal_Rate}
@@ -177,6 +195,18 @@ const Stock = () => {
                     <Col>
                       <span data-tooltip-id="nom-npv-tooltip">
                         WACC: {stock.WACC}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Col>
+                      <span>
+                        Beta: {stock.beta}
+                      </span>
+                    </Col>
+                    <Col>
+                      <span>
+                        Debt:Equity: {stock.debtToEquity}
                       </span>
                     </Col>
                   </Row>
@@ -214,6 +244,11 @@ const Stock = () => {
             id="cagr-conf-tooltip"
             place="bottom"
             content= {stock.toolTip_CONF_CAGR}
+          />
+          <ReactTooltip
+            id="ex-dividend-tooltip"
+            place="bottom"
+            content= {stock.exDividendDate}
           />
       </section>
     </PageContainer>
