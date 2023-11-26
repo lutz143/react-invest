@@ -1,11 +1,17 @@
 const router = require('express').Router();
-const { Valuation, Portfolio, MetaData } = require('../../models');
+const { Valuation, Portfolio, User, Comment } = require('../../models');
 
 // GET all Stock Valuations
 router.get('/', async (req, res) => {
   try {
     const valuationData = await Valuation.findAll({
-      include: [{ model: MetaData }],
+      include: [{ model: Comment,
+          attributes: ['id', 'comment', 'comment_date'],
+          include: {
+            model: User,
+            attributes: ['username']
+          }
+      }],
     });
     res.status(200).json(valuationData);
   } catch (err) {
@@ -18,7 +24,9 @@ router.get('/:id', async (req, res) => {
   try {
     const valuationData = await Valuation.findByPk(req.params.id, {
       // JOIN with locations, using the Trip through table
-      include: [{ model: MetaData }],
+      include: [{ model: Comment,
+          attributes: ['id', 'comment', 'comment_date'],
+      }],
     });
 
     if (!valuationData) {

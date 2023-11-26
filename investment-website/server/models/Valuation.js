@@ -91,13 +91,6 @@ Valuation.init(
     CONF_CAGR: {
       type: DataTypes.DECIMAL(10, 6),
       allowNull: false,
-    },
-    metadata_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'metadata',
-        key: 'id'
-      }
     }
   },
   {
