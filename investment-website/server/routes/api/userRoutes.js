@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Portfolio, Valuation } = require('../../models');
+const { User, Portfolio, Valuation, Comment } = require('../../models');
 // const withAuth = require('../../utils/auth');
 
 // GET all users
@@ -17,7 +17,14 @@ router.get('/:id', async (req, res) => {
   try {
     const userData = await User.findByPk(req.params.id, {
       attributes: { exclude: ['password'] },
-      include: [{ model: Valuation, through: Portfolio, as: 'portfolio_stocks' }]
+      include: [{ model: Valuation,
+        through: Portfolio, as: 'portfolio_stocks',
+        include: [
+          { 
+            model: Comment,
+            attributes: ['id', 'comment', 'comment_date']
+          }]
+      }]
     });
 
     if(!userData) {

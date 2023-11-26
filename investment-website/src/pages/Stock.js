@@ -211,6 +211,14 @@ const Stock = () => {
                     </Col>
                   </Row>
                 </Container>
+                {/* <Container>
+                  {stock.comments.map(comment => (
+                    <div key={comment.id}>
+                      <p>{comment.user.username}: {comment.comment}</p>
+                      <p>Comment Date: {comment.comment_date}</p>
+                    </div>
+                  ))}
+                </Container> */}
 
               </Card.Body>
             </Card>
