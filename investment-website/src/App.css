@@ -11,6 +11,7 @@
   --white: rgb(255, 255, 255);
   --white-transparent: rgba(255, 255, 255, 0.7);
   --yellow: rgba(255, 218, 113, 1);
+  --light-yellow: rgb(255, 239, 194);
   --hover-opacity: 0.9;
   font-size: 12px;
 }

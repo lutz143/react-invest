@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Comment } = require('../../models');
+const { Comment, Valuation, User } = require('../../models');
 
 router.post('/', async (req, res) => {
   try {
@@ -12,6 +12,30 @@ router.post('/', async (req, res) => {
     res.status(200).json(newComment);
   } catch (err) {
     res.status(400).json(err);
+  }
+});
+
+// GET a single comment
+router.get('/:id', async (req, res) => {
+  try {
+    const commentData = await Valuation.findByPk(req.params.id, {
+      // JOIN with locations, using the Trip through table
+      include: [{ model: Comment,
+        attributes: ['id', 'comment', 'comment_date'],
+        include: {
+          model: User,
+          attributes: ['username']
+        }
+      }],
+    });
+
+    if (!commentData) {
+      res.status(404).json({ message: 'No stock found with this id!' });
+      return;
+    }
+    res.status(200).json(commentData.comments);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 

@@ -18,6 +18,7 @@ const Stock = () => {
   const user_id = useSelector((state) => state.auth.user_id);
   const portfolioIds = useSelector((state) => state.auth.portfolioIds);
   const [stock, setValuation] = useState([]);
+  const [comment, setComment] = useState([]);
   const [added, setAdded] = useState([]);
   const [error, setError] = useState(null);
   const { id } = useParams();
@@ -63,6 +64,22 @@ const Stock = () => {
       // set up the data for svg
       
   }, [id]); // include "id" in the dependency array
+
+  useEffect(() => {
+    // Make a GET request to API endpoint by stock ID
+    axios.get(`http://localhost:3001/api/comments/${id}`)
+      .then(response => {
+        const formattedData = response.data.map((comment) => ({
+          ...comment,
+        }));
+        setComment(formattedData);
+        console.log(comment);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+      
+  }, []); // include "id" in the dependency array
 
   // const svgRef = useRef();
 
@@ -211,14 +228,24 @@ const Stock = () => {
                     </Col>
                   </Row>
                 </Container>
-                {/* <Container>
-                  {stock.comments.map(comment => (
-                    <div key={comment.id}>
-                      <p>{comment.user.username}: {comment.comment}</p>
-                      <p>Comment Date: {comment.comment_date}</p>
+                <Row className={classes.cardDivider}></Row>
+
+                <Container className={classes.cardSubSection}>
+                  <Card.Header className={classes.commentHeader}>Comments</Card.Header>
+                  <Card.Body>
+                    {comment.map((comment, index) =>
+                    <div>
+                      <Card.Header>
+                        {comment.user.username}
+                      </Card.Header>
+                      <Card.Body>
+                        {comment.comment}
+                      </Card.Body>
                     </div>
-                  ))}
-                </Container> */}
+                    )}
+
+                  </Card.Body>
+                </Container>
 
               </Card.Body>
             </Card>
@@ -232,7 +259,6 @@ const Stock = () => {
 
 
         </Container>
-
           <ReactTooltip
             id="nom-con-tooltip"
             place="bottom"
