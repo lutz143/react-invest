@@ -59,14 +59,6 @@ function Home() {
                         <div>NOM CPS: {stock.NOM_CPS}</div>
                         <div>CON CPS: {stock.CON_CPS}</div>
                       </Card.Text>
-                      <Card.Text>
-                        {stock.comments.map(comment => (
-                          <div key={comment.id}>
-                            <p>{comment.user.username}: {comment.comment}</p>
-                            <p>Comment Date: {comment.comment_date}</p>
-                          </div>
-                        ))}
-                      </Card.Text>
                       <Card.Footer className={classes.cardFooter}>
                         <Nav.Link as={Link} to={`/valuations/${stock.id}`}>
                           <Button className={classes.cardButton}>

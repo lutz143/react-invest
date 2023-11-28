@@ -24,3 +24,8 @@
   background-color: var(--light-yellow);
   font-weight: 600;
 }
+
+.commentBody:hover {
+  background-color: var(--light-gray);
+  font-weight: 500;
+}

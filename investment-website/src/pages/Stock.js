@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button, Card, Container, Row, Col } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col, Form, InputGroup } from 'react-bootstrap';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 import axios from 'axios';
@@ -238,13 +238,22 @@ const Stock = () => {
                       <Card.Header>
                         {comment.user.username}
                       </Card.Header>
-                      <Card.Body>
+                      <Card.Body className={classes.commentBody}>
                         {comment.comment}
                       </Card.Body>
                     </div>
                     )}
-
                   </Card.Body>
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      placeholder="Enter your comment!"
+                      aria-label="Recipient's username"
+                      aria-describedby="basic-addon2"
+                    />
+                    <Button variant="outline-secondary" id="button-addon2">
+                      Button
+                    </Button>
+                  </InputGroup>
                 </Container>
 
               </Card.Body>
