@@ -65,23 +65,78 @@ const Stock = () => {
       
   }, [id]); // include "id" in the dependency array
 
-  useEffect(() => {
-    // Make a GET request to API endpoint by stock ID
-    axios.get(`http://localhost:3001/api/comments/${id}`)
-      .then(response => {
-        const formattedData = response.data.map((comment) => ({
-          ...comment,
-        }));
-        setComment(formattedData);
-        console.log(comment);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+  const newPortfolioStock = async (event) => {
+    if (user && id) {
+      const response = await fetch(`http://localhost:3001/api/valuations/${id}/add-stock`, {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id,
+          valuation_id: id
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-      
-  }, []); // include "id" in the dependency array
+
+      if (response.ok) {
+        console.log('button pushed, stock id sent!')
+        setAdded(id)
+
+      } else {
+        alert(response.statusText);
+      }
+    }
+  }
 
   // const svgRef = useRef();
+
+  // useEffect to fetch comments initially and whenever the component mounts or comments are posted
+  useEffect(() => {
+    fetchComments();
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
+
+  const fetchComments = async () => {
+    // Make a GET request to API endpoint by stock ID
+    axios.get(`http://localhost:3001/api/comments/${id}`)
+    .then(response => {
+      const commentData = response.data.map((comment) => ({
+        ...comment,
+      }));
+      setComment(commentData);
+      console.log(commentData);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });    
+  }
+
+  const newComment = async (event) => {
+    const commentText = document.getElementById("commentText").value.trim();
+    console.log(commentText);
+    if (user && id && commentText) {
+      const response = await fetch(`http://localhost:3001/api/comments`, {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id,
+          valuation_id: id,
+          comment: commentText
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        console.log('button pushed, comment sent!')        
+        fetchComments();
+      } else {
+        console.log('uh oh, comment did not log :(')
+        alert(response.statusText);
+      }
+    } else {
+      console.log('did not meet criteria :(')
+    }
+  }
 
   const downloadCsv = () => {
     // convert stock data to CSV format
@@ -102,31 +157,6 @@ const Stock = () => {
     a.click();
     document.body.removeChild(a);
   };
-
-  const newPortfolioStock = async (event) => {
-
-    if (user && id) {
-      const response = await fetch(`http://localhost:3001/api/valuations/${id}/add-stock`, {
-        method: 'POST',
-        body: JSON.stringify({
-          user_id,
-          valuation_id: id
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        console.log('button pushed, stock id sent!')
-        setAdded(id)
-
-      } else {
-        alert(response.statusText);
-        // alert('Failed to create post');
-      }
-    }
-  }
 
   return (
     <PageContainer title="Stock Details">
@@ -154,7 +184,7 @@ const Stock = () => {
                       </Button>
                     </div>
                     
-                  </h1>                    
+                  </h1>
                 </Row>
               </Card.Header>
               <Card.Body>
@@ -232,16 +262,16 @@ const Stock = () => {
 
                 <Container className={classes.cardSubSection}>
                   <Card.Header className={classes.commentHeader}>Comments</Card.Header>
-                  <Card.Body>
+                  <Card.Body>                    
                     {comment.map((comment, index) =>
-                    <div>
-                      <Card.Header>
-                        {comment.user.username}
-                      </Card.Header>
-                      <Card.Body className={classes.commentBody}>
-                        {comment.comment}
-                      </Card.Body>
-                    </div>
+                      <div>
+                        <Card.Header>
+                          {comment.user.username}
+                        </Card.Header>
+                        <Card.Body className={classes.commentBody}>
+                          {comment.comment}
+                        </Card.Body>
+                      </div>
                     )}
                   </Card.Body>
                   <InputGroup className="mb-3">
@@ -249,8 +279,9 @@ const Stock = () => {
                       placeholder="Enter your comment!"
                       aria-label="Recipient's username"
                       aria-describedby="basic-addon2"
+                      id="commentText"
                     />
-                    <Button variant="outline-secondary" id="button-addon2">
+                    <Button variant="outline-secondary" id="button-addon2" onClick={() => newComment()}>
                       Button
                     </Button>
                   </InputGroup>
