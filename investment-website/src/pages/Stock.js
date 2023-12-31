@@ -136,6 +136,31 @@ const Stock = () => {
     }
   }
 
+  const deleteComment = async (commentId) => {
+
+    if (user && id) {
+      const response = await fetch(`http://localhost:3001/api/comments/${commentId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          user_id,
+          valuation_id: id,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        console.log('button pushed, comment to be deleted!')        
+        fetchComments();
+      } else {
+        console.log('uh oh, comment did not delete :(')
+        alert(response.statusText);
+      }
+    } else {
+      console.log('did not meet criteria :(')
+    }
+  }
+
   const downloadCsv = () => {
     // convert stock data to CSV format
     const stockArray = [stock];
@@ -264,9 +289,21 @@ const Stock = () => {
                     <Card.Header className={classes.commentHeader}>Comments</Card.Header>
                     <Card.Body>                    
                       {comment.map((comment, index) =>
-                        <div>
+                        <div key={comment.id} className='align-items-center'>
                           <Card.Header>
-                            {comment.user.username}
+                            <Row className='align-items-center'>
+                              <div className='d-flex bd-highlight'>
+                                <div className='flex-grow-1 bd-highlight'>
+                                  {comment.user.username}
+                                </div>
+                                {user ? 
+                                  <div className='bd-highlight'>
+                                    <Button variant='outline-danger' id='button-addon3' onClick={() => deleteComment(comment.id)}>Delete</Button>
+                                  </div>
+                                  : null
+                                }
+                              </div>
+                            </Row>
                           </Card.Header>
                           <Card.Body className={classes.commentBody}>
                             {comment.comment}
