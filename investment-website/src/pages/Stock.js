@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button, Card, Container, Row, Col, Form, InputGroup } from 'react-bootstrap';
+import { Button, Card, Container, Row, Col, Form, InputGroup, Tabs, Tab } from 'react-bootstrap';
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 import axios from 'axios';
@@ -77,11 +77,9 @@ const Stock = () => {
           'Content-Type': 'application/json',
         },
       });
-
       if (response.ok) {
         console.log('button pushed, stock id sent!')
         setAdded(id)
-
       } else {
         alert(response.statusText);
       }
@@ -187,107 +185,120 @@ const Stock = () => {
                   </h1>
                 </Row>
               </Card.Header>
-              <Card.Body>
-                <Container>
-                  <Row>
-                    <Col>Previous Close: {stock.previousClose}</Col>
-                    <Col>
-                      <span data-tooltip-id="cagr-conf-tooltip">                        
-                        CAGR Estimate: {stock.CAGR_CPS}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <span data-tooltip-id="nom-con-tooltip">
-                        Nominal Estimate: {stock.NOM_CPS}
-                      </span>
-                    </Col>
-                    <Col>
-                      <span data-tooltip-id="nom-con-tooltip">
-                        Conservative Estimate: {stock.CON_CPS}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className='mb-2'>
-                    <Col>
-                      <span>
-                        Confidence: {stock.CONF_NOM}
-                      </span>
-                    </Col>
-                    {Number(stock.dividendRate) ? 
+              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example" className="mb-3">
+                <Tab eventKey="home" title="Home">
+                  <Card.Body>
+                  <Container>
+                    <Row>
+                      <Col>Previous Close: {stock.previousClose}</Col>
                       <Col>
-                        <span data-tooltip-id="ex-dividend-tooltip">
-                          Dividend: {stock.dividendRate + ' '}
+                        <span data-tooltip-id="cagr-conf-tooltip">                        
+                          CAGR Estimate: {stock.CAGR_CPS}
                         </span>
-                        <span style={{fontSize: '10px'}}>
-                          ({ stock.dividendYield})
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <span data-tooltip-id="nom-con-tooltip">
+                          Nominal Estimate: {stock.NOM_CPS}
                         </span>
-                      </Col> : null}
-                  </Row>
-                </Container>
-                <Row className={classes.cardDivider}></Row>
+                      </Col>
+                      <Col>
+                        <span data-tooltip-id="nom-con-tooltip">
+                          Conservative Estimate: {stock.CON_CPS}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className='mb-2'>
+                      <Col>
+                        <span>
+                          Confidence: {stock.CONF_NOM}
+                        </span>
+                      </Col>
+                      {Number(stock.dividendRate) ? 
+                        <Col>
+                          <span data-tooltip-id="ex-dividend-tooltip">
+                            Dividend: {stock.dividendRate + ' '}
+                          </span>
+                          <span style={{fontSize: '10px'}}>
+                            ({ stock.dividendYield})
+                          </span>
+                        </Col> : null}
+                    </Row>
+                  </Container>
+                  <Row className={classes.cardDivider}></Row>
 
-                <Container className={classes.cardSubSection}>
-                  <Row>
-                    <Col>Market Cap: {stock.marketCap}</Col>
-                    <Col>Shares Outstanding: {stock.sharesOutstanding}</Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <span data-tooltip-id="terminal-value-tooltip">
-                        Terminal Rate: {stock.Terminal_Rate}
-                      </span>
-                    </Col>
-                    <Col>
-                      <span data-tooltip-id="nom-npv-tooltip">
-                        WACC: {stock.WACC}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className='mb-2'>
-                    <Col>
-                      <span>
-                        Beta: {stock.beta}
-                      </span>
-                    </Col>
-                    <Col>
-                      <span>
-                        Debt:Equity: {stock.debtToEquity}
-                      </span>
-                    </Col>
-                  </Row>
-                </Container>
-                <Row className={classes.cardDivider}></Row>
+                  <Container className={classes.cardSubSection}>
+                    <Row>
+                      <Col>Market Cap: {stock.marketCap}</Col>
+                      <Col>Shares Outstanding: {stock.sharesOutstanding}</Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <span data-tooltip-id="terminal-value-tooltip">
+                          Terminal Rate: {stock.Terminal_Rate}
+                        </span>
+                      </Col>
+                      <Col>
+                        <span data-tooltip-id="nom-npv-tooltip">
+                          WACC: {stock.WACC}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className='mb-2'>
+                      <Col>
+                        <span>
+                          Beta: {stock.beta}
+                        </span>
+                      </Col>
+                      <Col>
+                        <span>
+                          Debt:Equity: {stock.debtToEquity}
+                        </span>
+                      </Col>
+                    </Row>
+                  </Container>
+                  <Row className={classes.cardDivider}></Row>
 
-                <Container className={classes.cardSubSection}>
-                  <Card.Header className={classes.commentHeader}>Comments</Card.Header>
-                  <Card.Body>                    
-                    {comment.map((comment, index) =>
-                      <div>
-                        <Card.Header>
-                          {comment.user.username}
-                        </Card.Header>
-                        <Card.Body className={classes.commentBody}>
-                          {comment.comment}
-                        </Card.Body>
-                      </div>
-                    )}
+                  <Container className={classes.cardSubSection}>
+                    <Card.Header className={classes.commentHeader}>Comments</Card.Header>
+                    <Card.Body>                    
+                      {comment.map((comment, index) =>
+                        <div>
+                          <Card.Header>
+                            {comment.user.username}
+                          </Card.Header>
+                          <Card.Body className={classes.commentBody}>
+                            {comment.comment}
+                          </Card.Body>
+                        </div>
+                      )}
+                    </Card.Body>
+                    <InputGroup className="mb-3">
+                      <Form.Control
+                        placeholder="Enter your comment!"
+                        aria-label="Recipient's username"
+                        aria-describedby="basic-addon2"
+                        id="commentText"
+                      />
+                      <Button variant="outline-secondary" id="button-addon2" onClick={() => newComment()}>
+                        Button
+                      </Button>
+                    </InputGroup>
+                  </Container>
+
                   </Card.Body>
-                  <InputGroup className="mb-3">
-                    <Form.Control
-                      placeholder="Enter your comment!"
-                      aria-label="Recipient's username"
-                      aria-describedby="basic-addon2"
-                      id="commentText"
-                    />
-                    <Button variant="outline-secondary" id="button-addon2" onClick={() => newComment()}>
-                      Button
-                    </Button>
-                  </InputGroup>
-                </Container>
-
-              </Card.Body>
+                </Tab>
+                <Tab eventKey="balanceSheet" title="Balance Sheet">
+                  Balance Sheet Content
+                </Tab>
+                <Tab eventKey="incomeStatement" title="Income Statement">
+                  Income Statement Content
+                </Tab>
+                <Tab eventKey="cashFlow" title="Cash Flow">
+                  Cash Flow Content
+                </Tab>
+              </Tabs>
             </Card>
           </Row>
 
