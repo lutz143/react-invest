@@ -3,6 +3,7 @@ const Valuation = require('./Valuation');
 const Portfolio = require('./Portfolio')
 const MetaData = require('./MetaData')
 const Comment = require('./Comment');
+const CashFlow = require('./CashFlow');
 
 Valuation.belongsToMany(User, {
   // Define the third table needed to store the foreign keys
@@ -51,4 +52,4 @@ Valuation.hasMany(Comment, {
   onDelete: 'CASCADE'
 });
 
-module.exports = { User, Valuation, Portfolio, MetaData, Comment };
+module.exports = { User, Valuation, Portfolio, MetaData, Comment, CashFlow };
