@@ -10,7 +10,7 @@ Portfolio.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
     },
     user_id: {
       type: DataTypes.INTEGER,
@@ -21,7 +21,7 @@ Portfolio.init(
       }
     },
     valuation_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(20),
       references: {
         model: 'valuation',
         key: 'id',

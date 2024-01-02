@@ -23,7 +23,7 @@ Comment.init(
         }
       },
       valuation_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(20),
         allowNull: false,
         references: {
           model: 'valuation',

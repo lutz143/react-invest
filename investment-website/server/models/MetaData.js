@@ -7,10 +7,10 @@ class MetaData extends Model {}
 MetaData.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(20),
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      // autoIncrement: true
     },
     Ticker: {
       type: DataTypes.STRING(10),
@@ -57,7 +57,7 @@ MetaData.init(
       allowNull: true,
     },
     valuation_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(20),
       references: {
         model: 'valuation',
         key: 'id'
