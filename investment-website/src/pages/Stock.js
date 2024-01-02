@@ -296,7 +296,7 @@ const Stock = () => {
                                 <div className='flex-grow-1 bd-highlight'>
                                   {comment.user.username}
                                 </div>
-                                {user ? 
+                                {user && user_id === comment.user.id ?
                                   <div className='bd-highlight'>
                                     <Button variant='outline-danger' id='button-addon3' onClick={() => deleteComment(comment.id)}>Delete</Button>
                                   </div>
@@ -311,17 +311,22 @@ const Stock = () => {
                         </div>
                       )}
                     </Card.Body>
-                    <InputGroup className="mb-3">
-                      <Form.Control
-                        placeholder="Enter your comment!"
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                        id="commentText"
-                      />
-                      <Button variant="outline-secondary" id="button-addon2" onClick={() => newComment()}>
-                        Button
-                      </Button>
-                    </InputGroup>
+                    {user ? 
+                      <div>
+                        <InputGroup className="mb-3">
+                          <Form.Control
+                            placeholder="Enter your comment!"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            id="commentText"
+                          />                      
+                          <Button variant="outline-secondary" id="button-addon2" onClick={() => newComment()}>
+                            Submit
+                          </Button>
+                        </InputGroup>
+                      </div>
+                        : null
+                      }
                   </Container>
 
                   </Card.Body>
