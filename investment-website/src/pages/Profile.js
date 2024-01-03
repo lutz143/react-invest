@@ -88,7 +88,7 @@ const Profile= () => {
                     <Card.Body>
                       <Card.Header className={classes.cardHeader}>
                         <div>
-                          <h3 style={{marginBottom: '0'}}>{stock.id}: {stock.Ticker}</h3>
+                          <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
                         </div>
                       </Card.Header>
                       <Card.Text className={classes.cardBody}>

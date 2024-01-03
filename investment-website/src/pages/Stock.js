@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  Container,
-  Row,
-  Col,
-  Form,
-  InputGroup,
-  Tabs,
-  Tab,
-} from "react-bootstrap";
+import {Button, Card, Container, Row, Col, Form, InputGroup, Tabs, Tab,} from "react-bootstrap";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -22,6 +12,7 @@ import moment from "moment";
 import classes from "./Stock.module.css";
 
 import PageContainer from "../containers/PageContainer";
+import CashFlow from "../components/CashFlow";
 
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
@@ -415,7 +406,7 @@ const Stock = () => {
                               className={
                                 isEditing === index
                                   ? "commentBodyEditing"
-                                  : "commentBody"
+                                  : classes.commentBody
                               }
                             >
                               {isEditing === index ? (
@@ -459,7 +450,7 @@ const Stock = () => {
                   Income Statement Content
                 </Tab>
                 <Tab eventKey="cashFlow" title="Cash Flow">
-                  Cash Flow Content
+                  <CashFlow />
                 </Tab>
               </Tabs>
             </Card>

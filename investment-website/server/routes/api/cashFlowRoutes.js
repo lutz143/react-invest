@@ -1,8 +1,8 @@
 const router = require('express').Router();
-// const { CashFlow, Valuation } = require('../../models');
+const stocksController = require('../../controllers/stocksController.js');
 const { CashFlow } = require('../../models');
 
-// GET all Stock Valuations
+// GET all cashFlow data
 router.get('/', async (req, res) => {
   try {
     const cashFlowData = await CashFlow.findAll();
@@ -12,16 +12,30 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single valuation
+// GET a single cashFLow record
+// router.get('/:id', async (req, res) => {
+//   try {
+//     const cashFlowData = await CashFlow.findByPk(req.params.id);
+
+//     if (!cashFlowData) {
+//       res.status(404).json({ message: 'No stock found with this id!' });
+//       return;
+//     }
+//     res.status(200).json(cashFlowData);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
+// GET a single cashFlow data with the most recent date (more than likely TTM)
 router.get('/:id', async (req, res) => {
   try {
-    const cashFlowData = await CashFlow.findByPk(req.params.id);
-
-    if (!cashFlowData) {
+    const singleCashFlowData = await stocksController.getSingleCashFlowData(req, res);
+    if (!singleCashFlowData) {
       res.status(404).json({ message: 'No stock found with this id!' });
       return;
     }
-    res.status(200).json(cashFlowData);
+    res.status(200).json(singleCashFlowData);
   } catch (err) {
     res.status(500).json(err);
   }
