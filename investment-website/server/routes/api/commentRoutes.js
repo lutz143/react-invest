@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
         attributes: ['id', 'comment', 'comment_date'],
         include: {
           model: User,
-          attributes: ['username']
+          attributes: ['username', 'id']
         }
       }],
     });
@@ -39,6 +39,22 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    const updateComment = await Comment.update(req.body, {
+      where: {
+        id: req.params.id,
+        user_id: req.body.user_id,
+        valuation_id: req.body.valuation_id
+      }
+        // comment: req.body
+    });
+    
+    res.status(200).json(updateComment);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
 
 router.delete('/:id', async (req, res) => {
   try {

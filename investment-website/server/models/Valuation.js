@@ -7,10 +7,10 @@ class Valuation extends Model {}
 Valuation.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(20),
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      // autoIncrement: true
     },
     Ticker: {
       type: DataTypes.STRING(10),

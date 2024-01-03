@@ -14,7 +14,7 @@ const getMostRecentStock = async () => {
 
 const getMetaData = async () => {
   try {
-    const query = `SELECT * FROM MetaData JOIN valuation ON MetaData.Ticker = valuation.Ticker;`;
+    const query = `SELECT * FROM MetaData JOIN valuation ON MetaData.id = valuation.id;`;
 
     const [rows] = await db.query(query);
     console.log(rows)
@@ -26,7 +26,7 @@ const getMetaData = async () => {
 
 const getSingleMetaData = async (req, res) => {
   try {
-    const query = `SELECT * FROM MetaData JOIN valuation ON MetaData.Ticker = valuation.Ticker WHERE MetaData.id = ${req.params.id};`;
+    const query = `SELECT * FROM MetaData JOIN valuation ON MetaData.id = valuation.id WHERE MetaData.id = '${req.params.id}';`;
 
     const [[rows]] = await db.query(query);
     console.log(rows)
