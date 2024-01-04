@@ -13,6 +13,7 @@ import classes from "./Stock.module.css";
 
 import PageContainer from "../containers/PageContainer";
 import CashFlow from "../components/CashFlow";
+import BalanceSheetComponent from "../components/BalanceSheetComponent";
 
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
@@ -444,7 +445,7 @@ const Stock = () => {
                   </Card.Body>
                 </Tab>
                 <Tab eventKey="balanceSheet" title="Balance Sheet">
-                  Balance Sheet Content
+                  <BalanceSheetComponent />
                 </Tab>
                 <Tab eventKey="incomeStatement" title="Income Statement">
                   Income Statement Content
