@@ -48,6 +48,18 @@ const getSingleCashFlowData = async (req, res) => {
   }
 };
 
+const getSingleBalanceSheetData = async (req, res) => {
+  try {
+    const query = `SELECT * FROM balanceSheet WHERE id = '${req.params.id}' ORDER BY asOfDate DESC LIMIT 1;`;
+
+    const [[rows]] = await db.query(query);
+    console.log(rows)
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
-  getMostRecentStock, getMetaData, getSingleMetaData, getSingleCashFlowData
+  getMostRecentStock, getMetaData, getSingleMetaData, getSingleCashFlowData, getSingleBalanceSheetData
 };
