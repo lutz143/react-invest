@@ -7,6 +7,7 @@ const portfolioRoutes = require('./portfolioRoutes');
 const commentRoutes = require('./commentRoutes');
 const cashFlowRoutes = require('./cashFlowRoutes');
 const balanceSheetRoutes = require('./balanceSheetRoutes');
+const incomeStatementRoutes = require('./incomeStatementRoutes');
 
 router.use('/users', userRoutes);
 router.use('/valuations', valuationRoutes);
@@ -16,5 +17,6 @@ router.use('/metaData', metaDataRoutes);
 router.use('/comments', commentRoutes);
 router.use('/cashflow', cashFlowRoutes);
 router.use('/balanceSheet', balanceSheetRoutes);
+router.use('/incomeStatement', incomeStatementRoutes);
 
 module.exports = router;

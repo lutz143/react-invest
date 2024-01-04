@@ -5,7 +5,6 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 
 import classes from "../pages/Stock.module.css";
 
-
 const BalanceSheetComponent = () => {
   const [jsonData, setJsonData] = useState([]);
   const { id } = useParams();
@@ -159,7 +158,6 @@ const BalanceSheetComponent = () => {
                   </Col>
                 </Row>
               </Container>
-
 
               <Row className={classes.cardDivider}></Row>
               <Container className={classes.cardSubSection}>
