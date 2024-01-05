@@ -14,6 +14,7 @@ import classes from "./Stock.module.css";
 import PageContainer from "../containers/PageContainer";
 import CashFlow from "../components/CashFlow";
 import BalanceSheetComponent from "../components/BalanceSheetComponent";
+import IncomeStatementComponent from "../components/IncomeStatementComponent";
 
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
@@ -448,7 +449,7 @@ const Stock = () => {
                   <BalanceSheetComponent />
                 </Tab>
                 <Tab eventKey="incomeStatement" title="Income Statement">
-                  Income Statement Content
+                  <IncomeStatementComponent />
                 </Tab>
                 <Tab eventKey="cashFlow" title="Cash Flow">
                   <CashFlow />
@@ -486,7 +487,7 @@ const Stock = () => {
         <ReactTooltip
           id="ex-dividend-tooltip"
           place="bottom"
-          content={stock.exDividendDate}
+          content={`Ex-Div Date: ${stock.exDividendDate}`}
         />
       </section>
     </PageContainer>

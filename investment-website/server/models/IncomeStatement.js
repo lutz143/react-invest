@@ -20,9 +20,12 @@ IncomeStatement.init(
       type: DataTypes.STRING(10),
       allowNull: false,
     },
-
     BasicAverageShares: {
-      type: DataTypes.DECIMAL(10, 6),
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    DilutedAverageShares: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     BasicEPS: {
@@ -86,10 +89,6 @@ IncomeStatement.init(
       allowNull: true,
     },
     TotalExpenses: {
-      type: DataTypes.DECIMAL(10, 6),
-      allowNull: true,
-    },
-    TotalOperatingIncomeAsReported: {
       type: DataTypes.DECIMAL(10, 6),
       allowNull: true,
     },
