@@ -5,16 +5,16 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 
 import classes from "../pages/Stock.module.css";
 
-const BalanceSheetComponent = () => {
+const IncomeStatementComponent = () => {
   const [jsonData, setJsonData] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/balanceSheet/${id}`)
+    axios.get(`http://localhost:3001/api/incomeStatement/${id}`)
       .then((response) => {
-        const balanceSheetData = response.data;
-        console.log(balanceSheetData);
-        setJsonData(balanceSheetData);
+        const incomeStatementData = response.data;
+        console.log(incomeStatementData);
+        setJsonData(incomeStatementData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -26,7 +26,6 @@ const BalanceSheetComponent = () => {
   }
 
   return (
-
       <section>
         <Container>
           <Card.Body>
@@ -34,74 +33,101 @@ const BalanceSheetComponent = () => {
               <Row className="align-items-center">
                 <Col>
                   <span>
-                    Total Assets: {jsonData.TotalAssets}
+                  Basic Average Shares: {jsonData.BasicAverageShares}
                   </span>
                 </Col>
                 <Col>
                   <span>
-                    Total Debt: {jsonData.TotalDebt}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="align-items-center">
-                <Col>
-                  <span>
-                    Total Capitalization: {jsonData.TotalCapitalization}
-                  </span>
-                </Col>
-                <Col>
-                  <span>
-                  Retained Earnings: {jsonData.RetainedEarnings}
+                  Basic EPS: {jsonData.BasicEPS}
                   </span>
                 </Col>
               </Row>
               <Row className="align-items-center mb-2">
                 <Col>
                   <span>
-                    Current Assets: {jsonData.CurrentAssets}
+                  Diluted Average Shares: {jsonData.DilutedAverageShares}
                   </span>
                 </Col>
                 <Col>
                   <span>
-                  Current Liabilities: {jsonData.CurrentLiabilities}
+                  Diluted EPS: {jsonData.DilutedEPS}
                   </span>
                 </Col>
               </Row>
               <Row className={classes.cardDivider}></Row>
+              <Row className="align-items-center">
+                <Col>
+                  <span>
+                  Gross Profit: {jsonData.GrossProfit}
+                  </span>
+                </Col>
+                <Col>
+                  <span>
+                  Net Income: {jsonData.NetIncome}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="align-items-center">
+                <Col>
+                  <span>
+                  EBIT: {jsonData.EBIT}
+                  </span>
+                </Col>
+                <Col>
+                  <span>
+                  EBITDA: {jsonData.EBITDA}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="align-items-center mb-2">
+                <Col>
+                  <span>
+                  Net Income Continuous Operations: {jsonData.NetIncomeContinuousOperations}
+                  </span>
+                </Col>
+                <Col>
+                  <span>
+                  Operating Income: {jsonData.OperatingIncome}
+                  </span>
+                </Col>
+              </Row>
+              <Row className={classes.cardDivider}></Row>
+
               <Container className={classes.cardSubSection}>
                 <Row className="align-items-center">
                   <Col>
                     <span>
-                    Accounts Receivable: {jsonData.AccountsReceivable}
+                    Total Revenue: {jsonData.TotalRevenue}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Accounts Payable: {jsonData.AccountsPayable}
+                    Operating Revenue: {jsonData.OperatingRevenue}
                     </span>
                   </Col>
                 </Row>
+
                 <Row className="align-items-center">
                   <Col>
                     <span>
-                    Inventory: {jsonData.Inventory}
+                    Cost Of Revenue: {jsonData.CostOfRevenue}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Raw Materials: {jsonData.RawMaterials}
+                    Operating Expense: {jsonData.OperatingExpense}
                     </span>
                   </Col>
                 </Row>
                 <Row className="align-items-center mb-2">
                   <Col>
                     <span>
-                    Work In Process: {jsonData.WorkInProcess}
+                    Total Expenses: {jsonData.TotalExpenses}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Working Capital: {jsonData.WorkingCapital}
+                    Tax Rate for Calcs: {jsonData.TaxRateForCalcs}
                     </span>
                   </Col>
                 </Row>
@@ -112,111 +138,58 @@ const BalanceSheetComponent = () => {
                 <Row className="align-items-center">
                   <Col>
                     <span>
-                    Receivables: {jsonData.Receivables}
+                    General & Administrative Expense: {jsonData.GeneralAndAdministrativeExpense}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Cash And Cash Equivalents: {jsonData.CashAndCashEquivalents}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                    Additional Paid In Capital: {jsonData.AdditionalPaidInCapital}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                    Invested Capital: {jsonData.InvestedCapital}
+                    Research & Development: {jsonData.ResearchAndDevelopment}
                     </span>
                   </Col>
                 </Row>
                 <Row className="align-items-center">
                   <Col>
                     <span>
-                    Payables: {jsonData.Payables}
+                    Salaries & Wages: {jsonData.SalariesAndWages}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Payables And Accrued Expenses: {jsonData.PayablesAndAccruedExpenses}
+                    Interest Expense: {jsonData.InterestExpense}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="align-items-center">
+                  <Col>
+                    <span>
+                    Selling & Marketing Expense: {jsonData.SellingAndMarketingExpense}
+                    </span>
+                  </Col>
+                  <Col>
+                    <span>
+                    Selling General & Administration: {jsonData.SellingGeneralAndAdministration}
                     </span>
                   </Col>
                 </Row>
                 <Row className="align-items-center mb-2">
                   <Col>
                     <span>
-                    Long Term Debt: {jsonData.LongTermDebt}
+                    Amortization: {jsonData.Amortization}
                     </span>
                   </Col>
                   <Col>
                     <span>
-                    Net Debt: {jsonData.NetDebt}
-                    </span>
-                  </Col>
-                </Row>
-              </Container>
-
-              <Row className={classes.cardDivider}></Row>
-              <Container className={classes.cardSubSection}>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                    Total Non-Current Assets: {jsonData.TotalNonCurrentAssets}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                    Accumulated Depreciation: {jsonData.AccumulatedDepreciation}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                    Gross PPE: {jsonData.GrossPPE}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                    Net PPE: {jsonData.NetPPE}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                    Common Stock Equity: {jsonData.CommonStockEquity}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                    Stockholders Equity: {jsonData.StockholdersEquity}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                    Tangible Book Value: {jsonData.TangibleBookValue}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                    Share Issued: {jsonData.ShareIssued}
+                    Write Off: {jsonData.WriteOff}
                     </span>
                   </Col>
                 </Row>
               </Container>
             </Container>
           </Card.Body>
-
         </Container>
       </section>
 
   );
 };
 
-export default BalanceSheetComponent;
+export default IncomeStatementComponent;
