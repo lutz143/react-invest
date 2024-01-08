@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card, Container, Row, Col } from "react-bootstrap";
 
 import classes from "../pages/Stock.module.css";
+import formatModel from '../utils/formatUtils';
 
 const BalanceSheetComponent = () => {
   const [jsonData, setJsonData] = useState([]);
@@ -13,8 +14,18 @@ const BalanceSheetComponent = () => {
     axios.get(`http://localhost:3001/api/balanceSheet/${id}`)
       .then((response) => {
         const balanceSheetData = response.data;
-        console.log(balanceSheetData);
-        setJsonData(balanceSheetData);
+
+        // Iterate through balanceSheetData fields and apply formatting
+        const formattedData = Object.keys(balanceSheetData).reduce((acc, key) => {
+          if (typeof balanceSheetData[key] === 'number') {
+            acc[key] = formatModel.formatInteger(balanceSheetData[key]);
+          } else {
+            acc[key] = balanceSheetData[key];
+          }
+          return acc;
+        }, {});
+
+        setJsonData(formattedData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);

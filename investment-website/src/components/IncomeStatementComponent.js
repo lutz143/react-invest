@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card, Container, Row, Col } from "react-bootstrap";
 
 import classes from "../pages/Stock.module.css";
+import formatModel from '../utils/formatUtils';
 
 const IncomeStatementComponent = () => {
   const [jsonData, setJsonData] = useState([]);
@@ -13,8 +14,26 @@ const IncomeStatementComponent = () => {
     axios.get(`http://localhost:3001/api/incomeStatement/${id}`)
       .then((response) => {
         const incomeStatementData = response.data;
-        console.log(incomeStatementData);
-        setJsonData(incomeStatementData);
+
+        // Iterate through balanceSheetData fields and apply formatting
+        const formattedData = Object.keys(incomeStatementData).reduce((acc, key) => {
+          if (typeof incomeStatementData[key] === 'number') {
+            if (key === 'BasicEPS' || key === 'DilutedEPS') {
+              acc[key] = formatModel.formatDecimal(incomeStatementData[key]);
+            } else {
+              acc[key] = formatModel.formatInteger(incomeStatementData[key]);
+            }
+          } else {
+            if (key === 'BasicEPS' || key === 'DilutedEPS' || key === 'TaxRateForCalcs') {
+              acc[key] = formatModel.formatDecimal(incomeStatementData[key]);
+            } else {
+              acc[key] = incomeStatementData[key];
+            }
+          }
+          return acc;
+        }, {});
+        
+        setJsonData(formattedData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);

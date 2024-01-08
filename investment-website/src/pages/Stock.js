@@ -10,6 +10,7 @@ import moment from "moment";
 // import axios from 'axios';
 
 import classes from "./Stock.module.css";
+import formatModel from '../utils/formatUtils';
 
 import PageContainer from "../containers/PageContainer";
 import CashFlow from "../components/CashFlow";
@@ -28,41 +29,32 @@ const Stock = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
+  const specialPercentageFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM']
+
   useEffect(() => {
     // Make a GET request to API endpoint by stock ID
     axios
       .get(`http://localhost:3001/api/metaData/${id}`)
       .then((response) => {
         const stock = response.data;
-        console.log(stock);
-        const formattedData = {
-          ...stock,
-          Assessment_Date: moment(stock.Assessment_Date).format("M/DD/YYYY"),
-          exDividendDate: moment(stock.exDividendDate).format("M/DD/YYYY"),
-          previousClose: parseFloat(stock.previousClose).toFixed(2),
-          previousCloseFloat: stock.previousClose,
-          dividendRate: parseFloat(stock.dividendRate).toFixed(2),
-          beta: parseFloat(stock.beta).toFixed(2),
-          CAGR_CPS: parseFloat(stock.CAGR_CPS).toFixed(2),
-          NOM_CPS: parseFloat(stock.NOM_CPS).toFixed(2),
-          CON_CPS: parseFloat(stock.CON_CPS).toFixed(2),
-          CONF_NOM: parseFloat(stock.CONF_NOM).toFixed(0),
-          debtToEquity: parseFloat(stock.debtToEquity).toFixed(1) + "%",
-          toolTip_CONF_CAGR:
-            "CAGR Confidence: " + parseFloat(stock.CONF_CAGR).toFixed(0),
-          marketCap: stock.marketCap.toLocaleString("en-US"),
-          sharesOutstanding: stock.sharesOutstanding.toLocaleString("en-US"),
-          Terminal_Rate: (stock.Terminal_Rate * 100).toFixed(1) + "%",
-          WACC: (stock.WACC * 100).toFixed(1) + "%",
-          toolTip_Swing_NOM:
-            "NOM-CON Swing: " + (stock.Swing_NOM * 100).toFixed(1) + "%",
-          dividendYield: (stock.dividendYield * 100).toFixed(1) + "%",
-          toolTip_TerminalValue_NOM:
-            "NOM Terminal Value: " +
-            stock.TerminalValue_NOM.toLocaleString("en-US"),
-          toolTip_NPV_Total_NOM:
-            "NOM NPV: " + stock.NPV_Total_NOM.toLocaleString("en-US"),
-        };
+
+        // Iterate through balanceSheetData fields and apply formatting
+        const formattedData = Object.keys(stock).reduce((acc, key) => {
+          if (typeof stock[key] === 'number') {
+            // Check if the field should be formatted as a percentage
+            if (specialPercentageFields.includes(key)) {
+              acc[key] = formatModel.formatDecimal(stock[key]);
+            } else {
+              acc[key] = formatModel.formatInteger(stock[key]);
+            }
+          } else if (specialPercentageFields.includes(key)) {
+            acc[key] = formatModel.formatDecimal(stock[key]);
+          } else {
+            acc[key] = stock[key];
+          }
+          return acc;
+        }, {});
+
         setValuation(formattedData);
       })
       .catch((error) => {
