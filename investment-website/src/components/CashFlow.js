@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card, Container, Row, Col } from "react-bootstrap";
 
 import classes from "../pages/Stock.module.css";
+import formatModel from '../utils/formatUtils';
 
 
 const CashFlowComponent = () => {
@@ -14,8 +15,18 @@ const CashFlowComponent = () => {
     axios.get(`http://localhost:3001/api/cashFlow/${id}`)
       .then((response) => {
         const cashFlowData = response.data;
-        console.log(cashFlowData);
-        setJsonData(cashFlowData);
+
+        // Iterate through cashFlowData fields and apply formatting
+        const formattedData = Object.keys(cashFlowData).reduce((acc, key) => {
+          if (typeof cashFlowData[key] === 'number') {
+            acc[key] = formatModel.formatInteger(cashFlowData[key]);
+          } else {
+            acc[key] = cashFlowData[key];
+          }
+          return acc;
+        }, {});
+
+        setJsonData(formattedData);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
