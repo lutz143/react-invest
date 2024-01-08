@@ -29,7 +29,9 @@ const Stock = () => {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
-  const specialPercentageFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM']
+  const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
+  
+  const specialPercentageFields = ['dividendYield', 'Swing_NOM']
 
   useEffect(() => {
     // Make a GET request to API endpoint by stock ID
@@ -42,13 +44,18 @@ const Stock = () => {
         const formattedData = Object.keys(stock).reduce((acc, key) => {
           if (typeof stock[key] === 'number') {
             // Check if the field should be formatted as a percentage
-            if (specialPercentageFields.includes(key)) {
+            if (specialDecimalFields.includes(key)) {
               acc[key] = formatModel.formatDecimal(stock[key]);
+            } else if (specialPercentageFields.includes(key)) {
+              acc[key] = formatModel.formatPercentage(stock[key]);
             } else {
               acc[key] = formatModel.formatInteger(stock[key]);
             }
-          } else if (specialPercentageFields.includes(key)) {
+
+          } else if (specialDecimalFields.includes(key)) {
             acc[key] = formatModel.formatDecimal(stock[key]);
+          } else if (specialPercentageFields.includes(key)) {
+            acc[key] = formatModel.formatPercentage(stock[key]);
           } else {
             acc[key] = stock[key];
           }
@@ -459,22 +466,22 @@ const Stock = () => {
         <ReactTooltip
           id="nom-con-tooltip"
           place="bottom"
-          content={stock.toolTip_Swing_NOM}
+          content={`NOM-CON Swing: ${stock.Swing_NOM}`}
         />
         <ReactTooltip
           id="terminal-value-tooltip"
           place="bottom"
-          content={stock.toolTip_TerminalValue_NOM}
+          content={`NOM Terminal Value: ${stock.TerminalValue_NOM}`}
         />
         <ReactTooltip
           id="nom-npv-tooltip"
           place="bottom"
-          content={stock.toolTip_NPV_Total_NOM}
+          content={`NOM NPV: ${stock.NPV_Total_NOM}`}
         />
         <ReactTooltip
           id="cagr-conf-tooltip"
           place="bottom"
-          content={stock.toolTip_CONF_CAGR}
+          content={`CAGR Confidence: ${stock.CONF_CAGR}`}
         />
         <ReactTooltip
           id="ex-dividend-tooltip"

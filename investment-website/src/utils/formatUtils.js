@@ -9,7 +9,7 @@ const formatModel = {
 
   formatPercentage: function(percentage) {
     // Implement your percentage formatting logic here
-    return `${percentage.toFixed(2)}%`;
+    return `${(percentage * 100).toFixed(1)}%`;
   },
 
   formatInteger: function(integer) {
