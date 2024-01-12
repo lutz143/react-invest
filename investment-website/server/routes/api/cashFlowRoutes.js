@@ -12,20 +12,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single cashFLow record
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const cashFlowData = await CashFlow.findByPk(req.params.id);
-
-//     if (!cashFlowData) {
-//       res.status(404).json({ message: 'No stock found with this id!' });
-//       return;
-//     }
-//     res.status(200).json(cashFlowData);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+router.get('/xlsx/:id', async (req, res) => {
+  try {
+    const singleCashFlowData = await CashFlow.findAll({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json(singleCashFlowData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 // GET a single cashFlow data with the most recent date (more than likely TTM)
 router.get('/:id', async (req, res) => {

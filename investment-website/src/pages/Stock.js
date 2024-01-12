@@ -4,10 +4,9 @@ import {Button, Card, Container, Row, Col, Form, InputGroup, Tabs, Tab,} from "r
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Papa from "papaparse";
 import moment from "moment";
+import * as XLSX from 'xlsx';
 // import * as d3 from 'd3';
-// import axios from 'axios';
 
 import classes from "./Stock.module.css";
 import formatModel from '../utils/formatUtils';
@@ -27,6 +26,9 @@ const Stock = () => {
   const [editedComment, setEditedComment] = useState("");
   const [added, setAdded] = useState([]);
   const [error, setError] = useState(null);
+  const [balanceSheet, setBalanceSheetData] = useState([]);
+  const [cashFlow, setCashFlowData] = useState([]);
+  const [incomeStatement, setIncomeStatementData] = useState([]);
   const { id } = useParams();
 
   const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
@@ -103,12 +105,14 @@ const Stock = () => {
   // useEffect to fetch comments initially and whenever the component mounts or comments are posted
   useEffect(() => {
     fetchComments();
+    fetchBalanceSheet();
+    fetchCashFlow();
+    fetchIncomeStatement();
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
   const fetchComments = async () => {
     // Make a GET request to API endpoint by stock ID
-    axios
-      .get(`http://localhost:3001/api/comments/${id}`)
+    axios.get(`http://localhost:3001/api/comments/${id}`)
       .then((response) => {
         const commentData = response.data.map((comment) => ({
           ...comment,
@@ -120,6 +124,48 @@ const Stock = () => {
         console.error("Error fetching data:", error);
       });
   };
+
+  const fetchBalanceSheet = async () => {
+    axios.get(`http://localhost:3001/api/balanceSheet/xlsx/${id}`)
+    .then((response) => {
+      const balanceSheetData = response.data.map((balanceSheet) => ({
+        ...balanceSheet,
+      }));
+      setBalanceSheetData(balanceSheetData);
+      console.log(balanceSheetData);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    })
+  }
+
+  const fetchCashFlow = async () => {
+    axios.get(`http://localhost:3001/api/cashFlow/xlsx/${id}`)
+    .then((response) => {
+      const cashFlowData = response.data.map((cashFlow) => ({
+        ...cashFlow,
+      }));
+      setCashFlowData(cashFlowData);
+      console.log(cashFlowData);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    })
+  }
+
+  const fetchIncomeStatement = async () => {
+    axios.get(`http://localhost:3001/api/incomeStatement/xlsx/${id}`)
+    .then((response) => {
+      const incomeStatementData = response.data.map((incomeStatement) => ({
+        ...incomeStatement,
+      }));
+      setIncomeStatementData(incomeStatementData);
+      console.log(incomeStatementData);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    })
+  }
 
   const handleEditClick = (index) => {
     setIsEditing(index);
@@ -220,25 +266,23 @@ const Stock = () => {
     }
   };
 
-  const downloadCsv = () => {
-    // convert stock data to CSV format
-    const stockArray = [stock];
-    const csv = Papa.unparse(stockArray);
 
-    // trigger download option
-    downloadFile(csv, "data.csv");
-  };
+  const handleDownloadStock = () => {
+    const wb = XLSX.utils.book_new(),
+      wsMetaData = XLSX.utils.json_to_sheet([stock]),
+      wsComment = XLSX.utils.json_to_sheet(comment),
+      wsBalanceSheet = XLSX.utils.json_to_sheet(balanceSheet),
+      wsCashFlow = XLSX.utils.json_to_sheet(cashFlow),
+      wsIncomeStatement = XLSX.utils.json_to_sheet(incomeStatement);
 
-  const downloadFile = (content, filename) => {
-    const blob = new Blob([content], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
+    XLSX.utils.book_append_sheet(wb, wsMetaData, "MetaData");
+    XLSX.utils.book_append_sheet(wb, wsIncomeStatement, "Income Statement");
+    XLSX.utils.book_append_sheet(wb, wsBalanceSheet, "Balance Sheet");
+    XLSX.utils.book_append_sheet(wb, wsCashFlow, "Cash Flow");
+    XLSX.utils.book_append_sheet(wb, wsComment, "Comments");
+
+    XLSX.writeFile(wb, "testXLSX_1-12-24.xlsx");
+  }
 
   return (
     <PageContainer title="Stock Details">
@@ -283,7 +327,7 @@ const Stock = () => {
                     </div>
                     <div className="p-2 bd-highlight">
                       <Button
-                        onClick={downloadCsv}
+                        onClick={handleDownloadStock}
                         style={{ fontSize: "14px" }}
                       >
                         &#11123;

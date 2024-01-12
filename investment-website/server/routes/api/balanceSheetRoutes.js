@@ -12,6 +12,19 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/xlsx/:id', async (req, res) => {
+  try {
+    const balanceSheetData = await BalanceSheet.findAll({
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json(balanceSheetData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 // GET a single cashFlow data with the most recent date (more than likely TTM)
 router.get('/:id', async (req, res) => {
