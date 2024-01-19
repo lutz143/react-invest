@@ -1,122 +1,100 @@
 import PageContainer from "../containers/PageContainer";
-import classes from "./Form.module.css";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { signup } from '../store/authSlice';
-import { Form, Button, Alert } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+
+import { FaUser, FaLock  } from "react-icons/fa";
+import classes from "./LoginForm.module.css";
 
 function Register() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const user = useSelector((state) => state.auth.user)
-  const error = useSelector((state) => state.auth.error)
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showWarning, setShowWarning] = useState('');
+  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState(false);
+  const dispatch = useDispatch();
 
   // set state for form validation
   const [validated] = useState(false);
-  // set state for alert
-  const [showAlert, setShowAlert] = useState(false);
 
-  const submitHandler = e => {
+  const submitRegistration = e => {
     e.preventDefault()
     dispatch(signup({ username, password }))
     .then((res) => {
       setUsername('')
       setPassword('')
+      setRegistrationSuccessful(true)
     })
   }
 
+  const needInput = () => {
+    if (!username) {
+      console.log('Whoa, no username');
+      setShowWarning(true);
+    }
+    else {
+      console.log('username has been defined');
+      setShowWarning(false);
+    }
+  }
+
+  // redirect the new user to the home page after successful registration
+  if (isRegistrationSuccessful) {
+    navigate("/profile")
+  }
+
+
   return (
-  <PageContainer>
-    <div>
-      <h1>Sign Up</h1>
-      <Form
-        noValidate
-        validated={validated}
-        onSubmit={submitHandler}
-        className={classes.formHolder}
-      >
-        {/* show alert if server response is bad */}
-        <Alert
-          dismissible
-          onClose={() => setShowAlert(false)}
-          show={showAlert}
-          variant="danger"
-        >
-          Something went wrong with your signup!
-        </Alert>
+    <PageContainer>
+      <section className={classes.formContainer}>
+        <div className={classes.loginContainer} id={classes.registerContainer}>
+          <form 
+            noValidate 
+            validated={validated} 
+            onSubmit={submitRegistration}
+          >
+            <h1>Sign Up</h1>
+            <div className={classes.inputBox}>
+              <input 
+                type="text"
+                placeholder="Username"
+                name="username"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+                required
+              />
+              <FaUser className={classes.icon}/>
+            </div>
 
-        <Form.Group className="mb-3">
-          <Form.Label htmlFor="username" className={classes.inputLabel}>
-            Username
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Your username"
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Username is required!
-          </Form.Control.Feedback>
-        </Form.Group>
+            <div className={classes.inputBox}>
+              <input 
+                type="password"
+                placeholder="Password"
+                name="password"
+                autoComplete="false"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+              />
+              <FaLock className={classes.icon}/>
+            </div>
 
-        {/* <Form.Group className="mb-3">
-          <Form.Label htmlFor="email" className={classes.inputLabel}>
-            Email
-          </Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Your email address"
-            name="email"
-            onChange={set}
-            value={userFormData.email}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Email is required!
-          </Form.Control.Feedback>
-        </Form.Group> */}
+            <button 
+              onClick={needInput}
+              disabled={!(username && password)}
+              type="submit"
+              variant="success"
+              className={classes.formSubmit}
+            >
+              Register
+            </button>
 
-        <Form.Group className="mb-3">
-          <Form.Label htmlFor="password" className={classes.inputLabel}>
-            Password
-          </Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Your password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-            autoComplete="false"
-          />
-          <Form.Control.Feedback type="invalid">
-            Password is required!
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Button
-          disabled={
-            !(
-              username &&
-              // userFormData.email &&
-              password
-            )
-          }
-          type="submit"
-          variant="success"
-          className={classes.formSubmit}
-        >
-          Submit
-        </Button>
-        {error ? <p>{error}</p>: null}
-        {user ? <Navigate to='/profile' replace={true} /> : null}
+            {showWarning && <div className={classes.errorMessage}>Please enter both username and password.</div>}
 
-      </Form>
-      </div>
+          </form>
+        </div>
+      </section>
   </PageContainer>
 );
 }
