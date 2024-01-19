@@ -29,7 +29,7 @@ function Header() {
         ></input>
       </div>
       <div className={classes.rightSection}>
-        <NavLink to="/login-home" className={classes.profile}>
+        <NavLink to="/login" className={classes.profile}>
           <img
             src={profilePic}
             alt="User profile"

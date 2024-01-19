@@ -1,13 +1,16 @@
 import PageContainer from "../containers/PageContainer";
-import classes from "./Form.module.css";
+import React from 'react'
 import { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
-import { login } from "../store/authSlice";
+import { Link, Navigate } from 'react-router-dom';
+
 import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/authSlice";
+
+import { FaUser, FaLock  } from "react-icons/fa";
+import classes from "./LoginForm.module.css";
 
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [portfolioIds, setPortfolioIds] = useState('')
@@ -16,88 +19,82 @@ const LoginForm = () => {
   const error = useSelector((state) => state.auth.error)
   const dispatch = useDispatch()
 
-  // set state for form validation
-  const [validated] = useState(false);
-  // set state for alert
-  const [showAlert, setShowAlert] = useState(false);
+    // set state for form validation
+    const [validated] = useState(false);
+    // set state for alert
+    // const [showAlert, setShowAlert] = useState(false);
+  
+    const submitHandler = e => {
+      e.preventDefault()
+      dispatch(login({ username, password, portfolioIds }))
+      .then(() => {
+        setUsername('')
+        setPassword('')
+        setPortfolioIds('')
+      })
+    }
 
-  const submitHandler = e => {
-    e.preventDefault()
-    dispatch(login({ username, password, portfolioIds }))
-    .then(() => {
-      setUsername('')
-      setPassword('')
-      setPortfolioIds('')
-    })
-  }
 
   return (
     <PageContainer>
-      <div>
-        <h1>Login</h1>
-        <Form
-          noValidate
-          validated={validated}
-          onSubmit={submitHandler}
-          className={classes.formHolder}
-        >
-          <Alert
-            dismissible
-            onClose={() => setShowAlert(false)}
-            show={showAlert}
-            variant="danger"
+      <section className={classes.formContainer}>
+        <div className={classes.loginContainer}>
+          <form 
+            noValidate 
+            validated={validated} 
+            onSubmit={submitHandler}
           >
-            Incorrect username or password
-          </Alert>
+            <h1>Login</h1>
+            <div className={classes.inputBox}>
+              <input 
+                type="text"
+                placeholder="Username"
+                name="username"
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+                required
+              />
+              <FaUser className={classes.icon}/>
+            </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="username" className={classes.inputLabel}>
-              Username
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Your username"
-              name="username"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Username is required!
-            </Form.Control.Feedback>
-          </Form.Group>
+            <div className={classes.inputBox}>
+              <input 
+                type="password"
+                placeholder="Password"
+                name="password"
+                autoComplete="false"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+              />
+              <FaLock className={classes.icon}/>
+            </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label htmlFor="password" className={classes.inputLabel}>
-              Password
-            </Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Your password"
-              name="password"
-              autoComplete="false"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Password is required!
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Button
-            disabled={!(username && password)}
-            type="submit"
-            variant="success"
-            className={classes.formSubmit}
-          >
-            Submit
-          </Button>
-          {error ? <p>{error}</p>: null}
-          {user ? <Navigate to='/profile' replace={true} /> : null}
-        </Form>
-      </div>
+            {/* <div className={classes.rememberForgot}>
+              <label><input type='checkbox'></input>Remember Me</label>
+              <a href="#">Forgot Password</a>
+            </div> */}
+
+            <button 
+              disabled={!(username && password)}
+              type="submit"
+              variant="success"
+              className={classes.formSubmit}
+            >
+              Login
+            </button>
+
+            <div className={classes.registerLink}>
+              <p>Don't have an account? <Link to='/register' replace={true}>Register</Link></p>
+            </div>
+
+            {error ? <p className={classes.errorMessage}>{error}</p>: null}
+            {user ? <Navigate to='/profile' replace={true} /> : null}
+          </form>
+        </div>
+      </section>
     </PageContainer>
-  );
-};
+  )
+}
 
 export default LoginForm;
