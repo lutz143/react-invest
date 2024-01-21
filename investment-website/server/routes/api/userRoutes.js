@@ -22,7 +22,7 @@ router.get('/:id', async (req, res) => {
         include: [
           { 
             model: Comment,
-            attributes: ['id', 'comment', 'comment_date']
+            attributes: ['id', 'ticker', 'comment', 'created_at']
           }]
       }]
     });

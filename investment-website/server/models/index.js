@@ -36,14 +36,6 @@ MetaData.belongsTo(Valuation, {
   foreignKey: 'valuation_id'
 });
 
-Comment.belongsTo(User, {
-  foreignKey: 'user_id'
-});
-
-Comment.belongsTo(Valuation, {
-  foreignKey: 'valuation_id'
-});
-
 User.hasMany(Comment, {
   foreignKey: 'user_id',
   onDelete: 'CASCADE'
@@ -52,6 +44,14 @@ User.hasMany(Comment, {
 Valuation.hasMany(Comment, {
   foreignKey: 'valuation_id',
   onDelete: 'CASCADE'
+});
+
+Comment.belongsTo(User, {
+  foreignKey: 'user_id'
+});
+
+Comment.belongsTo(Valuation, {
+  foreignKey: 'valuation_id'
 });
 
 module.exports = { User, Valuation, Portfolio, MetaData, Comment, CashFlow, BalanceSheet, IncomeStatement };

@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
   try {
     const valuationData = await Valuation.findAll({
       include: [{ model: Comment,
-          attributes: ['id', 'comment', 'comment_date'],
+          attributes: ['id', 'Ticker', 'comment', 'created_at'],
           include: {
             model: User,
             attributes: ['username']
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
     const valuationData = await Valuation.findByPk(req.params.id, {
       // JOIN with locations, using the Trip through table
       include: [{ model: Comment,
-          attributes: ['id', 'comment', 'comment_date'],
+          attributes: ['id', 'Ticker', 'comment', 'created_at'],
       }],
     });
 
