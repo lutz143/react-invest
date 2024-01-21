@@ -29,3 +29,8 @@
   background-color: var(--light-gray);
   font-weight: 500;
 }
+
+.commentDate {
+  padding-right: 20px;
+  font-style: italic;
+}

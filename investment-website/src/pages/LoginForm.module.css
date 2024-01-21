@@ -111,6 +111,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.15s ease-in;
+}
+
+.loginContainer button:hover {
+  box-shadow: 0 0 10px var(--dark-gray);
+  background-color: var(--white);
 }
 
 #registerContainer button {
@@ -124,6 +130,11 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   cursor: pointer;
   font-size: 16px;
+  transition: all 0.15s ease-in;
+}
+
+#registerContainer button:hover {
+  box-shadow: 0 0 10px var(--dark-gray);
 }
 
 .loginContainer .registerLink {

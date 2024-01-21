@@ -22,6 +22,7 @@ const Stock = () => {
   const portfolioIds = useSelector((state) => state.auth.portfolioIds);
   const [stock, setValuation] = useState([]);
   const [comment, setComment] = useState([]);
+  const [ticker, setTicker] = useState([]);
   const [isEditing, setIsEditing] = useState(null);
   const [editedComment, setEditedComment] = useState("");
   const [added, setAdded] = useState([]);
@@ -32,8 +33,8 @@ const Stock = () => {
   const { id } = useParams();
 
   const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
-  
   const specialPercentageFields = ['dividendYield', 'Swing_NOM']
+  const specialDateFields = ['created_at']
 
   useEffect(() => {
     // Make a GET request to API endpoint by stock ID
@@ -116,6 +117,7 @@ const Stock = () => {
       .then((response) => {
         const commentData = response.data.map((comment) => ({
           ...comment,
+          created_at: formatModel.formatDate(comment.created_at)
         }));
         setComment(commentData);
         console.log(commentData);
@@ -214,7 +216,8 @@ const Stock = () => {
 
   const newComment = async (event) => {
     const commentText = document.getElementById("commentText").value.trim();
-    console.log(commentText);
+    const Ticker = stock.Ticker
+    console.log(Ticker);
     if (user && id && commentText) {
       const response = await fetch(`http://localhost:3001/api/comments`, {
         method: "POST",
@@ -222,6 +225,7 @@ const Stock = () => {
           user_id,
           valuation_id: id,
           comment: commentText,
+          Ticker: Ticker
         }),
         headers: {
           "Content-Type": "application/json",
@@ -425,6 +429,7 @@ const Stock = () => {
                                   </div>
                                   {user && user_id === comment.user.id ? (
                                     <div className="bd-highlight">
+                                      <span className={classes.commentDate}>{comment.created_at}</span>
                                       {isEditing === index ? (
                                         <>
                                           <Button variant="outline-secondary" style={{marginRight:"8px"}} onClick={() => handleSaveClick(comment.id)}>

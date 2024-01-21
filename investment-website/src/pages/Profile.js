@@ -9,6 +9,8 @@ import classes from "./Profile.module.css";
 import axios from 'axios';
 import moment from 'moment';
 
+import formatModel from '../utils/formatUtils';
+
 // import classes from "./Profile.module.css";
 
 
@@ -16,6 +18,7 @@ import moment from 'moment';
 const Profile= () => {
   const [portfolio, setPortfolio] = useState([]);
   const [data, setData] = useState([]);
+  const [comment, setComment] = useState([]);
   const user = useSelector(state => state.auth.user)
   const user_id = useSelector(state => state.auth.user_id)
   const dispatch = useDispatch();
@@ -40,6 +43,11 @@ const Profile= () => {
       
   }, [user_id, portfolio]); // include "id" in the dependency array
 
+  // useEffect to fetch comments initially and whenever the component mounts or comments are posted
+  useEffect(() => {
+    fetchUserComments();
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+
   const handleDeleteStock = async(stockId) => {
     dispatch(deleteStockFromPortfolio(stockId));
     dispatch(deleteStock(stockId));
@@ -63,57 +71,128 @@ const Profile= () => {
         alert(response.statusText);
       }
     }
+  }; 
+
+  const fetchUserComments = async () => {
+    // Make a GET request to API endpoint by stock ID
+    axios.get(`http://localhost:3001/api/comments/user/${user_id}`)
+      .then((response) => {
+        const commentData = response.data.map((comment) => ({
+          ...comment,
+          created_at: formatModel.formatDate(comment.created_at)
+        }));
+        setComment(commentData);
+        console.log(commentData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
   
   return (
     <PageContainer>
+      <section>
+        <Container>
+          <Row lg={1}>
+            <Card className="mb-3">
+              <Card.Header>
+                <Row className="align-items-center">
+                  <h1 className="d-flex bd-highlight">
+                    <div 
+                      className="p-2 flex-grow-1 bd-highlight"
+                      >
+                      Welcome, {user}!
+                    </div>
+                    <div className="p-2 bd-highlight">
+                      <Button onClick={() => dispatch(logout())}>
+                        <Nav.Link as={Link} to={`/`}>Logout</Nav.Link>
+                      </Button>
+                    </div>
+                  </h1>
+                </Row>
+              </Card.Header>
+              <Card.Body>
+                <Row>
+                  <Col xs={6} md={4} className={classes.bodyLeftContainter}>
+                    <Row className={classes.bodyLeftInnerContainer}>
+                      <Card.Header className={classes.bodyLeftHeader}>
+                        Your Stock Comments are Below
+                      </Card.Header>
+                    </Row>
+                    <Row className={classes.bodyLeftInnerContainer}>
+                      <Card.Body>
+                        {comment.map((comment, index) => (
+                          <div key ={comment.id} className="align-items-center">
+                            <Card.Header>
+                              <Row className="align-items-center">
+                                <div className="d-flex bd-highlight">
+                                  <div className="flex-grow-1 bd-highlight">
+                                    {comment.Ticker}
+                                  </div>
+                                  <span className={classes.commentDate}>
+                                    {comment.created_at}
+                                  </span>
+                                </div>
+                              </Row>
+                            </Card.Header>
+                            <Card.Body className={classes.commentBody}>
+                              <div>
+                                <Nav.Link as={Link} to={`/valuations/${comment.valuation_id}`}>
+                                  {comment.comment}
+                                </Nav.Link>
+                              </div>
+                            </Card.Body>
+                          </div>
+                        ))}
+                      </Card.Body>
+                    </Row>
+                  </Col>
+                  <Col xs={12} md={8}>
+                    <Row lg={3}>
+                      {data.map((stock, index) =>
+                        <div>
+                          <Col>
+                            <Card className='mb-3'>
+                              <Card.Body>
+                                <Card.Header className={classes.cardHeader}>
+                                  <div>
+                                    <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
+                                  </div>
+                                </Card.Header>
+                                <Card.Text className={classes.cardBody}>
+                                  <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
+                                  <div>Previous Close: {stock.previousClose}</div>
+                                  <div>CAGR CPS: {stock.CAGR_CPS}</div>
+                                  <div>NOM CPS: {stock.NOM_CPS}</div>
+                                  <div>CON CPS: {stock.CON_CPS}</div>
+                                </Card.Text>
+                                <Card.Footer className={classes.cardFooter}>
+                                  <Nav.Link as={Link} to={`/valuations/${stock.id}`}>
+                                    <Button className={classes.cardButton}>
+                                        {stock.Ticker}
+                                    </Button>
+                                  </Nav.Link>
+                                  <Button className={classes.cardDeleteButton}
+                                  variant="danger" onClick={() => handleDeleteStock(stock.id)}>
+                                    Delete Stock
+                                  </Button>
+                                </Card.Footer>
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        </div>)}
+                    </Row>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Row>
+        </Container>
+      </section>
     <div>
-      <div className={classes.profileHeader}>
-      <h1>{user} Profile</h1>
-      {user && (
-        <div>
-          <Button onClick={() => dispatch(logout())}>
-            <Nav.Link as={Link} to={`/`}>Logout</Nav.Link>
-          </Button>
-        </div>
-      )}
-      </div>
       <div>
         <Container>
-          <Row lg={4}>
-            {data.map((stock, index) =>
-              <div>
-                <Col>
-                  <Card className='mb-3'>
-                    <Card.Body>
-                      <Card.Header className={classes.cardHeader}>
-                        <div>
-                          <h3 style={{marginBottom: '0'}}>{stock.Ticker}</h3>
-                        </div>
-                      </Card.Header>
-                      <Card.Text className={classes.cardBody}>
-                        <div style={{fontStyle: 'italic', fontSize: '10px'}}>Assessment Date: {stock.Assessment_Date}</div>
-                        <div>Previous Close: {stock.previousClose}</div>
-                        <div>CAGR CPS: {stock.CAGR_CPS}</div>
-                        <div>NOM CPS: {stock.NOM_CPS}</div>
-                        <div>CON CPS: {stock.CON_CPS}</div>
-                      </Card.Text>
-                      <Card.Footer className={classes.cardFooter}>
-                        <Nav.Link as={Link} to={`/valuations/${stock.id}`}>
-                          <Button className={classes.cardButton}>
-                              {stock.Ticker}
-                          </Button>
-                        </Nav.Link>
-                        <Button className={classes.cardDeleteButton}
-                        variant="danger" onClick={() => handleDeleteStock(stock.id)}>
-                          Delete Stock
-                        </Button>
-                      </Card.Footer>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </div>)}
-            </Row>
+
         </Container>
       </div>      
     </div>

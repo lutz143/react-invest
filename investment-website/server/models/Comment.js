@@ -30,6 +30,10 @@ Comment.init(
           key: 'id'
         }
       },
+      Ticker: {
+        type: DataTypes.STRING(10),
+        allowNull: true,
+      },
       comment: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -37,7 +41,12 @@ Comment.init(
             len: [1]
         }
       },
-      comment_date: {
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,

@@ -28,3 +28,30 @@
   justify-content: space-between;
   margin-bottom: 14px;
 }
+
+.bodyLeftContainter {
+  border-right: 6px solid var(--gray);
+  border-top: 2.2px solid var(--gray);
+  border-bottom: 2.2px solid var(--gray);
+  border-left: 1px solid var(--gray);
+  border-radius: 10px;
+}
+
+.bodyLeftHeader {
+  font-weight: 600;
+  text-align: center;
+}
+
+.bodyLeftInnerContainer {
+  padding: 5px 5px 5px 8px;
+}
+
+.commentBody:hover {
+  background-color: var(--light-gray);
+  font-weight: 500;
+}
+
+.commentDate {
+  padding-right: 20px;
+  font-style: italic;
+}

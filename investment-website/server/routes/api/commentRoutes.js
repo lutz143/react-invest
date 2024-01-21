@@ -1,12 +1,23 @@
 const router = require('express').Router();
 const { Comment, Valuation, User } = require('../../models');
 
+// GET all comments
+router.get('/', async (req, res) => {
+  try {
+    const commentData = await Comment.findAll();
+    res.status(200).json(commentData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const newComment = await Comment.create({
       ...req.body,
       user_id: req.body.user_id,
-      valuation_id: req.body.valuation_id
+      valuation_id: req.body.valuation_id,
+      Ticker: req.body.Ticker
     });
 
     res.status(200).json(newComment);
@@ -21,7 +32,7 @@ router.get('/:id', async (req, res) => {
     const commentData = await Valuation.findByPk(req.params.id, {
       // JOIN with locations, using the Trip through table
       include: [{ model: Comment,
-        attributes: ['id', 'comment', 'comment_date'],
+        attributes: ['id', 'Ticker', 'comment', 'created_at'],
         include: {
           model: User,
           attributes: ['username', 'id']
@@ -34,6 +45,19 @@ router.get('/:id', async (req, res) => {
       return;
     }
     res.status(200).json(commentData.comments);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.get('/user/:id', async (req, res) => {
+  try {
+    const commentUserData = await Comment.findAll({
+      where: {
+        user_id: req.params.id
+      }
+    });
+    res.status(200).json(commentUserData);
   } catch (err) {
     res.status(500).json(err);
   }
