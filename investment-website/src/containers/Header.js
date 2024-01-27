@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import hamburgerMenu from "../images/hamburgerMenu.png"
 import profilePic from "../images/profilePic2.png"
 
+import { Nav, Container, Row, Col } from 'react-bootstrap';
+
 import classes from "./Header.module.css";
 
 // const handleClick = () => {
@@ -12,32 +14,37 @@ import classes from "./Header.module.css";
 function Header() {
   return (
     <header className={classes.header}>
-      <div className={classes.leftSection}>
-        <div className= {classes.headerIcon}>
-          <img className={classes.hamburgerMenu} src={hamburgerMenu} alt="Menu"/>
-          <NavLink to="/" className={classes.title}>
-            Home
-          </NavLink>
-        </div>
-      </div>
-      <div className={classes.middleSection}>
-        <input
-          type="text"
-          name="search"
-          placeholder="Search Stocks"
-          className={classes.search}
-        ></input>
-      </div>
-      <div className={classes.rightSection}>
-        <NavLink to="/login" className={classes.profile}>
-          <img
-            src={profilePic}
-            alt="User profile"
-            className={classes.profileImage}
-          />
-        </NavLink>
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <Row>
+              <Col>
+                <div>
+                  <img className={classes.hamburgerMenu} src={hamburgerMenu} alt="Menu"/>
+                  <NavLink to="/" className={classes.title}>
+                    Home
+                  </NavLink>
+                </div>
+                
+              </Col>
+            </Row>
+          </Col>
+          <Col xs={8}>
+            <div>
+              <input
+                type="text"
+                name="search"
+                placeholder="Search Stocks"
+                className={classes.search}
+              ></input>
+            </div>
+
+
+          </Col>
+        </Row>
+      </Container>
     </header>
+    
   );
 }
 

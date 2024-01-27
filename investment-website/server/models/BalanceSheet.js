@@ -12,15 +12,22 @@ BalanceSheet.init(
       primaryKey: true,
       // autoIncrement: true
     },
-    Pull_Date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
     Ticker: {
       type: DataTypes.STRING(10),
       allowNull: false,
     },
-
+    Pull_Date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    asOfDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    periodType: {
+      type: DataTypes.STRING(10),
+      allowNull: true,
+    },
     AccountsPayable: {
       type: DataTypes.DECIMAL(10, 6),
       allowNull: true,
