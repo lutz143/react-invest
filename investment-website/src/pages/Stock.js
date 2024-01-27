@@ -502,6 +502,9 @@ const Stock = () => {
                 <Tab eventKey="cashFlow" title="Cash Flow">
                   <CashFlow />
                 </Tab>
+                <Tab eventKey="priceHistory" title="Price History">
+                  <CashFlow />
+                </Tab>
               </Tabs>
             </Card>
           </Row>

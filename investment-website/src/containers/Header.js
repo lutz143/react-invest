@@ -38,8 +38,15 @@ function Header() {
                 className={classes.search}
               ></input>
             </div>
-
-
+          </Col>
+          <Col xs={1}>
+            <NavLink to="/login" className={classes.profile}>
+              <img
+                src={profilePic}
+                alt="User profile"
+                className={classes.profileImage}
+              />
+            </NavLink>
           </Col>
         </Row>
       </Container>
