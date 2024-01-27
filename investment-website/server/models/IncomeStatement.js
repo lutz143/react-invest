@@ -12,13 +12,21 @@ IncomeStatement.init(
       primaryKey: true,
       // autoIncrement: true
     },
+    Ticker: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+    },
     Pull_Date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    Ticker: {
+    asOfDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    periodType: {
       type: DataTypes.STRING(10),
-      allowNull: false,
+      allowNull: true,
     },
     BasicAverageShares: {
       type: DataTypes.INTEGER,

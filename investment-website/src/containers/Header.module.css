@@ -58,11 +58,13 @@ header{
 .hamburgerMenu {
   width: 22px;
   align-items: center;
+  
 
 }
 
 
 .title {
+  justify-content: left;
   text-decoration: none;
   color: white;
   font-size: 30px;
