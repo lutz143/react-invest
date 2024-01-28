@@ -71,10 +71,6 @@ const Stock = () => {
         console.error("Error fetching data:", error);
       });
 
-    // set up svg
-    // set up scaling
-    // set up the axes
-    // set up the data for svg
   }, [id]); // include "id" in the dependency array
 
   const newPortfolioStock = async (event) => {
@@ -100,8 +96,6 @@ const Stock = () => {
       }
     }
   };
-
-  // const svgRef = useRef();
 
   // useEffect to fetch comments initially and whenever the component mounts or comments are posted
   useEffect(() => {

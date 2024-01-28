@@ -36,6 +36,19 @@ const getSingleMetaData = async (req, res) => {
   }
 };
 
+
+const getSinglePriceData = async (req, res) => {
+  try {
+    const query = `SELECT * FROM priceData WHERE id = '${req.params.id}' ORDER BY price_date DESC;`;
+
+    const [rows] = await db.query(query);
+    console.log(rows)
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getSingleCashFlowData = async (req, res) => {
   try {
     const query = `SELECT * FROM cashFlow WHERE id = '${req.params.id}' ORDER BY asOfDate DESC LIMIT 1;`;
@@ -73,5 +86,5 @@ const getSingleIncomeStatementData = async (req, res) => {
 };
 
 module.exports = {
-  getMostRecentStock, getMetaData, getSingleMetaData, getSingleCashFlowData, getSingleBalanceSheetData, getSingleIncomeStatementData
+  getMostRecentStock, getMetaData, getSingleMetaData, getSingleCashFlowData, getSingleBalanceSheetData, getSingleIncomeStatementData, getSinglePriceData
 };
