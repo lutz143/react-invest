@@ -4,8 +4,8 @@ import {Button, Card, Container, Row, Col, Form, InputGroup, Tabs, Tab,} from "r
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import moment from "moment";
 import * as XLSX from 'xlsx';
+// import moment from "moment";
 // import * as d3 from 'd3';
 
 import classes from "./Stock.module.css";
@@ -15,6 +15,7 @@ import PageContainer from "../containers/PageContainer";
 import CashFlow from "../components/CashFlow";
 import BalanceSheetComponent from "../components/BalanceSheetComponent";
 import IncomeStatementComponent from "../components/IncomeStatementComponent";
+import PriceGraph from "../components/PriceGraph";
 
 const Stock = () => {
   const user = useSelector((state) => state.auth.user);
@@ -30,6 +31,7 @@ const Stock = () => {
   const [balanceSheet, setBalanceSheetData] = useState([]);
   const [cashFlow, setCashFlowData] = useState([]);
   const [incomeStatement, setIncomeStatementData] = useState([]);
+  const [priceData, setPriceData] = useState([]);
   const { id } = useParams();
 
   const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
@@ -103,6 +105,7 @@ const Stock = () => {
     fetchBalanceSheet();
     fetchCashFlow();
     fetchIncomeStatement();
+    fetchPriceData();
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
   const fetchComments = async () => {
@@ -114,7 +117,20 @@ const Stock = () => {
           created_at: formatModel.formatDate(comment.created_at)
         }));
         setComment(commentData);
-        console.log(commentData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+  const fetchPriceData = async () => {
+    // Make a GET request to API endpoint by stock ID
+    axios.get(`http://localhost:3001/api/priceData/${id}`)
+      .then((response) => {
+        const data = response.data.map((priceData) => ({
+          ...priceData,
+        }));
+        setPriceData(data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -128,7 +144,6 @@ const Stock = () => {
         ...balanceSheet,
       }));
       setBalanceSheetData(balanceSheetData);
-      console.log(balanceSheetData);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -142,7 +157,6 @@ const Stock = () => {
         ...cashFlow,
       }));
       setCashFlowData(cashFlowData);
-      console.log(cashFlowData);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -156,7 +170,6 @@ const Stock = () => {
         ...incomeStatement,
       }));
       setIncomeStatementData(incomeStatementData);
-      console.log(incomeStatementData);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -210,8 +223,7 @@ const Stock = () => {
 
   const newComment = async (event) => {
     const commentText = document.getElementById("commentText").value.trim();
-    const Ticker = stock.Ticker
-    console.log(Ticker);
+    const Ticker = stock.Ticker;
     if (user && id && commentText) {
       const response = await fetch(`http://localhost:3001/api/comments`, {
         method: "POST",
@@ -271,15 +283,17 @@ const Stock = () => {
       wsComment = XLSX.utils.json_to_sheet(comment),
       wsBalanceSheet = XLSX.utils.json_to_sheet(balanceSheet),
       wsCashFlow = XLSX.utils.json_to_sheet(cashFlow),
-      wsIncomeStatement = XLSX.utils.json_to_sheet(incomeStatement);
+      wsIncomeStatement = XLSX.utils.json_to_sheet(incomeStatement),
+      wsPriceData = XLSX.utils.json_to_sheet(priceData);
 
     XLSX.utils.book_append_sheet(wb, wsMetaData, "MetaData");
     XLSX.utils.book_append_sheet(wb, wsIncomeStatement, "Income Statement");
     XLSX.utils.book_append_sheet(wb, wsBalanceSheet, "Balance Sheet");
     XLSX.utils.book_append_sheet(wb, wsCashFlow, "Cash Flow");
     XLSX.utils.book_append_sheet(wb, wsComment, "Comments");
+    XLSX.utils.book_append_sheet(wb, wsPriceData, "Price Data");
 
-    XLSX.writeFile(wb, "testXLSX_1-12-24.xlsx");
+    XLSX.writeFile(wb, "testXLSX_2-5-24.xlsx");
   }
 
   return (
@@ -496,8 +510,11 @@ const Stock = () => {
                 <Tab eventKey="cashFlow" title="Cash Flow">
                   <CashFlow />
                 </Tab>
-                <Tab eventKey="priceHistory" title="Price History">
-                  <CashFlow />
+                {/* <Tab eventKey="priceHistory" title="Price History">
+                  <PriceDataComponent />
+                </Tab> */}
+                <Tab eventKey="priceGraph" title="Price Graph">
+                  <PriceGraph />
                 </Tab>
               </Tabs>
             </Card>
