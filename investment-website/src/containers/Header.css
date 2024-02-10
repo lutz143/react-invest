@@ -1,0 +1,127 @@
+@import '../App.css';
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--dark-gray);
+  border-bottom: solid 3px var(--yellow);
+  width: 100%;
+  padding: 10px 80px;
+}
+
+.logo{
+  height: 8vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 20px;
+}
+
+.navbar li {
+  list-style: none;
+  padding: 0 20px;
+  position: relative;
+
+}
+
+.navbar li a {
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-family: 600;
+  color: var(--white);
+  transition: 0.3s ease-in-out;
+  padding: 5px 10px 0.5em;
+}
+
+.navbar li a:hover,
+.navbar li a.active {
+  color: var(--yellow);
+  background: linear-gradient(100deg, var(--yellow) 0%, var(--yellow) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 0.25em;
+  background-position: bottom;
+}
+
+.navbar li a:hover::after,
+.navbar li a.active::after {
+  content: "";
+  position: absolute;
+  background: var(--yellow);
+  background-size: 100%;
+  height: 2px;
+  bottom: -4px;
+  left: 20px;
+}
+
+.menu-bars {
+  display: none;
+}
+
+
+@media screen and (max-width: 769px) {
+
+  #nav-container {
+    position: fixed;
+    z-index: 100;
+    padding: 0;
+  }
+  
+  .navbar .navbar{
+    display: none;
+  }
+
+  .menu-bars {
+    display: block;
+    margin: 12px 12px 12px;
+    font-size: 2rem;
+    background: none;
+    color: var(--yellow);
+  }
+
+  .menu-bars {
+    margin: 0 12px 12px 12px;
+    font-size: 2rem;
+    background: none;
+    color: var(--yellow);
+  }
+
+  .mobile.active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: fixed;
+    top: 82px;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: var(--light-gray);
+    padding: 40px 0 0 10px;
+    z-index: 150;
+    transition: 0.3s ease-in-out;
+  }
+
+  .mobile li {
+    margin-bottom: 18px;
+  }
+
+  .mobile li a {
+    text-decoration: none;
+    color: var(--black);
+  }
+
+  .mobile li a:hover,
+  .mobile li a.active {
+    color: var(--black);
+  }
+
+  .mobile li a::after
+  .mobile li a.active::after {
+    color: var(--black);
+  }
+
+}

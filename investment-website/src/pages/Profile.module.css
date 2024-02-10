@@ -12,11 +12,17 @@
 .cardButton {
   composes: cardButton from "./Home.module.css";
   margin: 0 5px 0 5px;
+  font-size: 8px;
+  min-width: 75px;
+  height: 2rem;
 }
 
 .cardDeleteButton {
   font-weight: 700;
-  min-width: 85px;
+  margin: 0 5px 0 5px;
+  min-width: 75px;
+  height: 2rem;
+  font-size: 8px;
 }
 
 .cardFooter {
@@ -30,8 +36,8 @@
 }
 
 .bodyLeftContainter {
-  border-right: 6px solid var(--gray);
-  border-top: 2.2px solid var(--gray);
+  border-right: 3.5px solid var(--gray);
+  border-top: 1.2px solid var(--gray);
   border-bottom: 2.2px solid var(--gray);
   border-left: 1px solid var(--gray);
   border-radius: 10px;

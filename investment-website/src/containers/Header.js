@@ -1,57 +1,46 @@
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import hamburgerMenu from "../images/hamburgerMenu.png"
-import profilePic from "../images/profilePic2.png"
+import * as FaIcons from "react-icons/fa";
 
-import { Nav, Container, Row, Col } from 'react-bootstrap';
-
-import classes from "./Header.module.css";
-
-// const handleClick = () => {
-//   // Code to handle button click
-// };
+import joshScript from "../images/joshScript.png";
+import "./Header.css";
 
 
 function Header() {
+  const [sidebar, setSidebar] = useState(false);
+
+  const showSidebar = () => setSidebar(!sidebar);
+
   return (
-    <header className={classes.header}>
-      <Container>
-        <Row>
-          <Col>
-            <Row>
-              <Col>
-                <div>
-                  <img className={classes.hamburgerMenu} src={hamburgerMenu} alt="Menu"/>
-                  <NavLink to="/" className={classes.title}>
-                    Home
-                  </NavLink>
-                </div>
-                
-              </Col>
-            </Row>
-          </Col>
-          <Col xs={8}>
-            <div>
-              <input
-                type="text"
-                name="search"
-                placeholder="Search Stocks"
-                className={classes.search}
-              ></input>
-            </div>
-          </Col>
-          <Col xs={1}>
-            <NavLink to="/login" className={classes.profile}>
-              <img
-                src={profilePic}
-                alt="User profile"
-                className={classes.profileImage}
-              />
-            </NavLink>
-          </Col>
-        </Row>
-      </Container>
-    </header>
-    
+    <nav id="nav-container">
+      <div className="navbar">
+        <NavLink to="#" className="menu-bars">
+          <FaIcons.FaBars onClick={showSidebar} />
+        </NavLink>
+        <NavLink to="/">
+          <img className="logo" src={joshScript} alt="Menu"/>
+        </NavLink>
+      </div>
+      <div className={sidebar ? "mobile active" : "navbar"}>
+        <ul className="navbar" onClick={showSidebar}>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/index.html">About</NavLink>
+          </li>
+          <li>
+            <NavLink to="/index.html">Stocks</NavLink>
+          </li>
+          <li>
+            <NavLink to="/index.html">Search</NavLink>
+          </li>
+          <li>
+            <NavLink to="/login">Profile</NavLink>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 }
 
