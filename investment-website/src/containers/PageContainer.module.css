@@ -1,5 +1,5 @@
 .pageBody {
-  /* overflow-y: auto; */
+  overflow-y: auto;
   min-height: 700px;
   height: calc(100vh);
   padding: 70px 0 0;
@@ -14,3 +14,12 @@
     padding: 5.5rem 2rem 5rem;
   }
 }
+
+  @media screen and (max-width: 769px) {
+  .pageBody {
+    /* overflow-y: scroll; */
+    padding: 8rem 5.5rem 6rem 5rem;
+  }
+}
+
+

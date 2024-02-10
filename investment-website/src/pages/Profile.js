@@ -172,10 +172,12 @@ const Profile= () => {
                                         {stock.Ticker}
                                     </Button>
                                   </Nav.Link>
-                                  <Button className={classes.cardDeleteButton}
-                                  variant="danger" onClick={() => handleDeleteStock(stock.id)}>
-                                    Delete Stock
-                                  </Button>
+                                  <div>
+                                    <Button className={classes.cardDeleteButton}
+                                      variant="danger" onClick={() => handleDeleteStock(stock.id)}>
+                                        Delete Stock
+                                    </Button>
+                                  </div>
                                 </Card.Footer>
                               </Card.Body>
                             </Card>
