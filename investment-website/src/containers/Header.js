@@ -17,9 +17,9 @@ function Header() {
         <NavLink to="#" className="menu-bars">
           <FaIcons.FaBars onClick={showSidebar} />
         </NavLink>
-        <NavLink to="/">
-          <img className="logo" src={joshScript} alt="Menu"/>
-        </NavLink>
+        
+        <NavLink to="/" className="nav-title">nomin<span style={{fontSize: "3.5rem"}}>al</span>.com</NavLink>
+        
       </div>
       <div className={sidebar ? "mobile active" : "navbar"}>
         <ul className="navbar" onClick={showSidebar}>
