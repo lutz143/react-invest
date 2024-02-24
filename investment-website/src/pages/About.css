@@ -1,0 +1,21 @@
+@import '../App.css';
+
+/* style the banner and include a Heinz field (Steelers stadium) as the background image */
+.top-banner{
+  background: linear-gradient(200deg, var(--dark-blue-transparent) 0%, var(--dark-blue-transparent) 100%), url('../images/nominal_computer.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: soft-light;
+  min-height: 30em;
+  max-height: 40em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+  padding: 0 8.2% 2.5%;
+}
+
+.test {
+  font-size: 2rem;
+}
