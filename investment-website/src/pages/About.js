@@ -46,14 +46,14 @@ function About () {
         <section className="team-container">
           <div>
             <p>
-              So whether we manufacture, market, stock, check, deliver, or manage, we all try to make their experience as uplifting as possible. 
-              Just like Barney Kroger did when he brought together the butcher, the baker, dry goods, and produce all under one roof. 
-              We’ve always been about value, convenience, and making customers’ lives simpler.
+              Nominal's platform makes investment analysis easy with the incorporation of several machine learning and statistical techniques via python.  
+              Nominal utilizes a value-based investment approach, mapping and forecasting key Discounted Cash Flow (DCF) metrics to derive Nominal (NOM), 
+              Conservative (CON), and Compounded Annual Growth Rate (CAGR) positions to assess a stock price Confidence.
             </p>
             <p>
-              So whether we manufacture, market, stock, check, deliver, or manage, we all try to make their experience as uplifting as possible. 
-              Just like Barney Kroger did when he brought together the butcher, the baker, dry goods, and produce all under one roof. 
-              We’ve always been about value, convenience, and making customers’ lives simpler.
+              In addition to DCF, nominal empowers the investment community to have a dialogue around what constitutes a good investment.  
+              <span style={{fontStyle: 'italic'}}>  'Market Reactions'</span> enables the generation of ideas and continual feedback via comments.  
+              Additionally, future functionality will look to expand the power of sharing ideas as nominal continues to evolve.
             </p>
           </div>
         </section>
@@ -62,9 +62,8 @@ function About () {
         <section className="team-container">
           <div>
             <p>
-              So whether we manufacture, market, stock, check, deliver, or manage, we all try to make their experience as uplifting as possible. 
-              Just like Barney Kroger did when he brought together the butcher, the baker, dry goods, and produce all under one roof. 
-              We’ve always been about value, convenience, and making customers’ lives simpler.
+              Nominal is currently a personal project that aims to expand upon investment knowledge, developer experience, and user experience. 
+              All data provided on nominal is provided for informational purposes only, and is not intended for trading or investing purposes.
             </p>
           </div>
         </section>

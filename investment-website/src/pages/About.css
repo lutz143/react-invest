@@ -81,7 +81,7 @@ p:nth-child(4) {
 
 .about-link {
   text-decoration: none;
-  color: black;
+  color: var(--blue-gray);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 650;
 }
