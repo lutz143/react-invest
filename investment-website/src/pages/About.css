@@ -7,8 +7,12 @@ p {
   line-height: 1.7;
 }
 
+p:last-child {
+  margin-bottom: 40px;
+}
+
 p:nth-child(4) {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 /* style the banner and include a Heinz field (Steelers stadium) as the background image */
@@ -84,4 +88,56 @@ p:nth-child(4) {
   color: var(--blue-gray);
   cursor: pointer;
   font-weight: 650;
+}
+
+
+@media screen and (max-width: 872px) {
+  .about-page {
+    height: 1500px;
+  }
+
+  .top-banner h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    line-height: 1.1;
+    font-size: 1.2rem;
+  }
+
+  .leading {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    font-weight: 400;
+  }
+
+  .about-header {
+    font-size: 2rem;
+    margin-top: 30px;
+  }
+
+  .top-banner {
+    padding-top: 110px;
+  }
+
+  .our-purpose-container {
+    padding-top: 10px;
+  }
+
+  .team-pic {
+    max-width: 75px;
+    float: left;
+    height: auto;
+    margin: 10px 12px 0 0;
+    box-shadow: 1.5px 1.7px 5px 0.5px var(--dark-gray);
+  }
+
+  .team-container {
+    display: block;
+    float: left;
+  }
+
+  .team-description {
+    margin-left: 0;
+  }
 }

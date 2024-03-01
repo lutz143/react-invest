@@ -5,7 +5,7 @@ import "./About.css";
 
 function About () {
   return (    
-    <section>
+    <section className='about-page'>
       <div className="top-banner" alt="Banner Image">
         <h2>MODEL THE FUTURE</h2>
       </div>
