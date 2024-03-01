@@ -8,6 +8,17 @@ nav {
   border-bottom: solid 3px var(--yellow);
   width: 100%;
   padding: 10px 80px;
+  height: 90px;
+}
+
+.nav-title {
+  font-family: "Gloria Hallelujah", cursive;
+  padding-bottom: 18px;
+  font-weight: 400;
+  font-size: 2.8rem;
+  color: var(--white);
+  text-decoration: none !important;
+  border: none;
 }
 
 .logo{
@@ -95,7 +106,7 @@ nav {
     align-items: flex-start;
     justify-content: flex-start;
     position: fixed;
-    top: 82px;
+    top: 88px;
     left: 0;
     width: 200px;
     height: 100vh;

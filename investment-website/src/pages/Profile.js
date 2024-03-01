@@ -11,10 +11,6 @@ import moment from 'moment';
 
 import formatModel from '../utils/formatUtils';
 
-// import classes from "./Profile.module.css";
-
-
-
 const Profile= () => {
   const [portfolio, setPortfolio] = useState([]);
   const [data, setData] = useState([]);

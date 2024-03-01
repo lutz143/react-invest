@@ -18,6 +18,7 @@ import Stock from "./pages/Stock";
 import Register from "./pages/Register";
 import Login from "./pages/LoginForm";
 import Profile from "./pages/Profile";
+import About from "./pages/About";
 // import SearchResults from "./pages/SearchResults";
 
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/about" element={<About />} />
           {/* <Route path="/search" element={<SearchResults />} /> */}
         </Routes>
         <Footer />
