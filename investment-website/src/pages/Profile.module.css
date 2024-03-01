@@ -36,7 +36,7 @@
 }
 
 .bodyLeftContainter {
-  border-right: 3.5px solid var(--gray);
+  border-right: 2.5px solid var(--gray);
   border-top: 1.2px solid var(--gray);
   border-bottom: 2.2px solid var(--gray);
   border-left: 1px solid var(--gray);
@@ -60,4 +60,25 @@
 .commentDate {
   padding-right: 20px;
   font-style: italic;
+}
+
+@media screen and (max-width: 872px) {
+
+  .bodyLeftHeader {
+    font-size: 12px;
+  }
+
+  #profileHeader {
+    display: flex;
+    font-size: 16px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bodyLeftContainter {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+  
 }

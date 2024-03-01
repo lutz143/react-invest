@@ -96,6 +96,7 @@ const Profile= () => {
                   <h1 className="d-flex bd-highlight">
                     <div 
                       className="p-2 flex-grow-1 bd-highlight"
+                      id={classes.profileHeader}
                       >
                       Welcome, {user}!
                     </div>
@@ -109,7 +110,7 @@ const Profile= () => {
               </Card.Header>
               <Card.Body>
                 <Row>
-                  <Col xs={6} md={4} className={classes.bodyLeftContainter}>
+                  <Col xs={12} md={4} className={classes.bodyLeftContainter}>
                     <Row className={classes.bodyLeftInnerContainer}>
                       <Card.Header className={classes.bodyLeftHeader}>
                         Your Stock Comments are Below
