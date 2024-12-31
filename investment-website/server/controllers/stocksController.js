@@ -2,7 +2,11 @@ const db = require('../config/connection.js'); // Import database connection
 
 const getMostRecentStock = async () => {
     try {
-        const query = `SELECT * FROM valuation ORDER BY Assessment_Date DESC LIMIT 3;`;
+        const query = `
+            SELECT id, Ticker, previousClose, MarketValuePerShare, NominalValuePerShare, profitMargins, beta, dividendRate, exDividendDate, TargetPriceUpside, IRR, targetMeanPrice, exDividendDate, freeCashflow
+            FROM ArchiveStockForecast
+            GROUP BY id, Ticker, previousClose, MarketValuePerShare, NominalValuePerShare, profitMargins, beta, dividendRate, exDividendDate, TargetPriceUpside, IRR, targetMeanPrice, exDividendDate, freeCashflow
+        ;`;
 
         const [rows] = await db.query(query);
         console.log(rows)
@@ -12,48 +16,16 @@ const getMostRecentStock = async () => {
     }
 };
 
-
-const getSinglePriceData = async (req, res) => {
+const getSingleMostRecentStock = async (req, res) => {
     try {
-        const query = `SELECT * FROM priceData WHERE id = '${req.params.id}' ORDER BY price_date DESC;`;
+        const query = `
+            SELECT id, Ticker, previousClose, MarketValuePerShare, NominalValuePerShare, profitMargins, beta, dividendRate, exDividendDate, TargetPriceUpside, IRR, targetMeanPrice, exDividendDate, freeCashflow
+            FROM ArchiveStockForecast
+            WHERE id = '${req.params.id}'
+            GROUP BY id, Ticker, previousClose, MarketValuePerShare, NominalValuePerShare, profitMargins, beta, dividendRate, exDividendDate, TargetPriceUpside, IRR, targetMeanPrice, exDividendDate, freeCashflow
+        ;`;
 
         const [rows] = await db.query(query);
-        console.log(rows)
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getSingleCashFlowData = async (req, res) => {
-    try {
-        const query = `SELECT * FROM cashFlow WHERE id = '${req.params.id}' ORDER BY asOfDate DESC LIMIT 1;`;
-
-        const [[rows]] = await db.query(query);
-        console.log(rows)
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getSingleBalanceSheetData = async (req, res) => {
-    try {
-        const query = `SELECT * FROM balanceSheet WHERE id = '${req.params.id}' ORDER BY asOfDate DESC LIMIT 1;`;
-
-        const [[rows]] = await db.query(query);
-        console.log(rows)
-        return rows;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getSingleIncomeStatementData = async (req, res) => {
-    try {
-        const query = `SELECT * FROM incomeStatement WHERE id = '${req.params.id}' ORDER BY asOfDate DESC LIMIT 1;`;
-
-        const [[rows]] = await db.query(query);
         console.log(rows)
         return rows;
     } catch (error) {
@@ -62,5 +34,5 @@ const getSingleIncomeStatementData = async (req, res) => {
 };
 
 module.exports = {
-    getMostRecentStock, getSingleCashFlowData, getSingleBalanceSheetData, getSingleIncomeStatementData, getSinglePriceData
+    getMostRecentStock, getSingleMostRecentStock
 };
