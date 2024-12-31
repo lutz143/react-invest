@@ -36,5 +36,3 @@ const getSingleMostRecentStock = async (req, res) => {
 module.exports = {
     getMostRecentStock, getSingleMostRecentStock
 };
-
-//test
