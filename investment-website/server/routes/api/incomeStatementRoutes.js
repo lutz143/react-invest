@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET a single stock income statement data
-router.get('/:id', async (req, res) => {
+router.get('/xlsx/:id', async (req, res) => {
     try {
         const singleStockData = await stocksController.getSingleIncomeStatment(req, res);
         if (!singleStockData) {
@@ -26,18 +26,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// router.get('/xlsx/:id', async (req, res) => {
-//   try {
-//     const singleIncomeStatementData = await IncomeStatement.findAll({
-//       where: {
-//         id: req.params.id
-//       }
-//     });
-//     res.status(200).json(singleIncomeStatementData);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+// GET a single stock most recent income statement data
+router.get('/:id', async (req, res) => {
+    try {
+        const singleStockData = await stocksController.getMostRecentIncomeStatement(req, res);
+        if (!singleStockData) {
+            res.status(404).json({ message: 'No stock found with this id!' });
+            return;
+        }
+        res.status(200).json(singleStockData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 // GET a single incomeStatement data
 router.get('/:id', async (req, res) => {

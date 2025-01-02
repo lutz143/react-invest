@@ -31,7 +31,7 @@ const Stock = () => {
     const [balanceSheet, setBalanceSheetData] = useState([]);
     const [cashFlow, setCashFlowData] = useState([]);
     const [incomeStatement, setIncomeStatementData] = useState([]);
-    const [priceData, setPriceData] = useState([]);
+    // const [priceData, setPriceData] = useState([]);
     const { id } = useParams();
 
     const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
@@ -105,7 +105,7 @@ const Stock = () => {
         fetchBalanceSheet();
         fetchCashFlow();
         fetchIncomeStatement();
-        fetchPriceData();
+        // fetchPriceData();
     }, []); // Empty dependency array means this effect runs once when the component mounts
 
     const fetchComments = async () => {
@@ -123,19 +123,19 @@ const Stock = () => {
             });
     };
 
-    const fetchPriceData = async () => {
-        // Make a GET request to API endpoint by stock ID
-        axios.get(`http://localhost:3001/api/priceData/${id}`)
-            .then((response) => {
-                const data = response.data.map((priceData) => ({
-                    ...priceData,
-                }));
-                setPriceData(data);
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    };
+    // const fetchPriceData = async () => {
+    //     // Make a GET request to API endpoint by stock ID
+    //     axios.get(`http://localhost:3001/api/priceData/${id}`)
+    //         .then((response) => {
+    //             const data = response.data.map((priceData) => ({
+    //                 ...priceData,
+    //             }));
+    //             setPriceData(data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error fetching data:", error);
+    //         });
+    // };
 
     const fetchBalanceSheet = async () => {
         axios.get(`http://localhost:3001/api/balanceSheet/xlsx/${id}`)
@@ -283,15 +283,15 @@ const Stock = () => {
             wsComment = XLSX.utils.json_to_sheet(comment),
             wsBalanceSheet = XLSX.utils.json_to_sheet(balanceSheet),
             wsCashFlow = XLSX.utils.json_to_sheet(cashFlow),
-            wsIncomeStatement = XLSX.utils.json_to_sheet(incomeStatement),
-            wsPriceData = XLSX.utils.json_to_sheet(priceData);
+            wsIncomeStatement = XLSX.utils.json_to_sheet(incomeStatement)
+        // wsPriceData = XLSX.utils.json_to_sheet(priceData);
 
         XLSX.utils.book_append_sheet(wb, wsMetaData, "MetaData");
         XLSX.utils.book_append_sheet(wb, wsIncomeStatement, "Income Statement");
         XLSX.utils.book_append_sheet(wb, wsBalanceSheet, "Balance Sheet");
         XLSX.utils.book_append_sheet(wb, wsCashFlow, "Cash Flow");
         XLSX.utils.book_append_sheet(wb, wsComment, "Comments");
-        XLSX.utils.book_append_sheet(wb, wsPriceData, "Price Data");
+        // XLSX.utils.book_append_sheet(wb, wsPriceData, "Price Data");
 
         XLSX.writeFile(wb, "testXLSX_2-5-24.xlsx");
     }

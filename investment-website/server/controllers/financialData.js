@@ -34,6 +34,25 @@ const getSingleIncomeStatment = async (req, res) => {
     }
 };
 
+const getMostRecentIncomeStatement = async (req, res) => {
+    try {
+        const query = `
+            SELECT *
+            FROM incomeStatement
+            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            ORDER BY asOfDate DESC LIMIT 1;
+        ;`;
+
+        const [[rows]] = await db.query(query);
+        console.log(rows)
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+
 const getAllBalanceSheetData = async () => { // Retrieve all the metadata for the stock
     try {
         const query = `
@@ -67,6 +86,25 @@ const getSingleBalanceSheet = async (req, res) => {
         throw error;
     }
 };
+
+const getMostRecentBalanceSheet = async (req, res) => {
+    try {
+        const query = `
+            SELECT *
+            FROM balanceSheet
+            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            ORDER BY asOfDate DESC LIMIT 1;
+        ;`;
+
+        const [[rows]] = await db.query(query);
+        console.log(rows)
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 
 const getAllCashFlowData = async () => { // Retrieve all the metadata for the stock
     try {
@@ -102,8 +140,25 @@ const getSingleCashFlow = async (req, res) => {
     }
 };
 
+const getMostRecentCashFlow = async (req, res) => {
+    try {
+        const query = `
+            SELECT *
+            FROM cashFlow
+            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            ORDER BY asOfDate DESC LIMIT 1;
+        ;`;
+
+        const [[rows]] = await db.query(query);
+        console.log(rows)
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
-    getAllIncomeData, getSingleIncomeStatment,
-    getAllBalanceSheetData, getSingleBalanceSheet,
-    getAllCashFlowData, getSingleCashFlow
+    getAllIncomeData, getSingleIncomeStatment, getMostRecentIncomeStatement,
+    getAllBalanceSheetData, getSingleBalanceSheet, getMostRecentBalanceSheet,
+    getAllCashFlowData, getSingleCashFlow, getMostRecentCashFlow
 };
