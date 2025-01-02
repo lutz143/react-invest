@@ -6,8 +6,57 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 import classes from "../pages/Stock.module.css";
 import formatModel from '../utils/formatUtils';
 
+import { Line } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+} from "chart.js"
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+// const lineChartData = {
+//     labels: [
+//         "Monday",
+//         "Tuesday",
+//         "Wednesday",
+//         "Thursday",
+//         "Friday",
+//         "Saturday",
+//         "Sunday",
+//     ],
+//     datasets: [
+//         {
+//             label: "Steps",
+//             data: [3000, 5000, 4500, 6000, 8000, 7000, 9000],
+//             borderColor: "rgb(75, 192, 192)",
+//         }
+//     ]
+// };
+
+
+
 const BalanceSheetComponent = () => {
     const [jsonData, setJsonData] = useState([]);
+    const [quickRatioData, setQuickRatioData] = useState([]);
+    const [currentAssetsData, setCurrentAssetsData] = useState([]);
+    const [currentLiabilitiesData, setCurrentLiabilitiesData] = useState([]);
+    const [labels, setLabels] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
@@ -32,6 +81,37 @@ const BalanceSheetComponent = () => {
                 console.error('Error fetching data:', error);
             });
     }, [id]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:3001/api/balanceSheet/xlsx/${id}`)
+            .then((response) => {
+                const balanceSheetData = response.data;
+
+                // Extract and format data
+                const currentAssets = balanceSheetData.map(entry => entry.CurrentAssets);
+                const currentLiabilities = balanceSheetData.map(entry => entry.CurrentLiabilities);
+                const inventory = balanceSheetData.map(entry => entry.Inventory);
+                const labels = balanceSheetData.map(entry => entry.asOfYear); // Assumes a `date` field exists
+
+                // Calculate quick ratio
+                const quickRatios = currentAssets.map((assets, index) =>
+                    assets && inventory[index] && currentLiabilities[index]
+                        ? (assets - inventory[index]) / currentLiabilities[index]
+                        : 0
+                );
+
+                console.log(quickRatios)
+
+                setQuickRatioData(quickRatios);
+                setCurrentAssetsData(currentAssets);
+                setCurrentLiabilitiesData(currentLiabilities);
+                setLabels(labels);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, [id]);
+
 
     if (!jsonData) {
         return <p>Loading...</p>;
@@ -221,6 +301,75 @@ const BalanceSheetComponent = () => {
                                     </span>
                                 </Col>
                             </Row>
+                        </Container>
+                        <Container className={classes.cardSubSection}>
+                            <Line
+                                data={{
+                                    labels: labels,
+                                    datasets: [
+                                        {
+                                            label: "Quick Ratio",
+                                            data: quickRatioData,
+                                            borderColor: "rgba(75, 192, 192, 1)",
+                                            backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                            type: "line",
+                                            yAxisID: "y1", // Associate with the primary y-axis
+                                            tension: 0.4, // Optional for smooth curves
+                                        },
+                                        {
+                                            label: "Current Assets",
+                                            data: currentAssetsData,
+                                            backgroundColor: "rgba(54, 162, 235, 0.7)",
+                                            borderColor: "rgba(54, 162, 235, 1)",
+                                            type: "bar",
+                                            yAxisID: "y2", // Associate with the secondary y-axis
+                                        },
+                                        {
+                                            label: "Current Liabilities",
+                                            data: currentLiabilitiesData,
+                                            backgroundColor: "rgba(255, 99, 132, 0.7)",
+                                            borderColor: "rgba(255, 99, 132, 1)",
+                                            type: "bar",
+                                            yAxisID: "y2", // Associate with the secondary y-axis
+                                        }
+                                    ],
+                                }}
+                                options={{
+                                    responsive: true,
+                                    scales: {
+                                        y1: {
+                                            type: "linear",
+                                            position: "left", // Primary axis
+                                            title: {
+                                                display: true,
+                                                text: "Quick Ratio",
+                                            },
+                                            ticks: {
+                                                beginAtZero: true,
+                                            },
+                                        },
+                                        y2: {
+                                            type: "linear",
+                                            position: "right", // Secondary axis
+                                            title: {
+                                                display: true,
+                                                text: "Current Assets / Liabilities",
+                                            },
+                                            ticks: {
+                                                beginAtZero: true,
+                                            },
+                                            grid: {
+                                                drawOnChartArea: false, // Prevent gridlines overlap
+                                            },
+                                        },
+                                    },
+                                    plugins: {
+                                        legend: {
+                                            display: true,
+                                        },
+                                    },
+                                }}
+                            />
                         </Container>
                     </Container>
                 </Card.Body>
