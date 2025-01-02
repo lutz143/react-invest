@@ -30,27 +30,6 @@ ChartJS.register(
     Legend
 );
 
-// const lineChartData = {
-//     labels: [
-//         "Monday",
-//         "Tuesday",
-//         "Wednesday",
-//         "Thursday",
-//         "Friday",
-//         "Saturday",
-//         "Sunday",
-//     ],
-//     datasets: [
-//         {
-//             label: "Steps",
-//             data: [3000, 5000, 4500, 6000, 8000, 7000, 9000],
-//             borderColor: "rgb(75, 192, 192)",
-//         }
-//     ]
-// };
-
-
-
 const BalanceSheetComponent = () => {
     const [jsonData, setJsonData] = useState([]);
     const [quickRatioData, setQuickRatioData] = useState([]);
@@ -75,7 +54,6 @@ const BalanceSheetComponent = () => {
                 }, {});
 
                 setJsonData(formattedData);
-                console.log(formattedData);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -99,8 +77,6 @@ const BalanceSheetComponent = () => {
                         ? (assets - inventory[index]) / currentLiabilities[index]
                         : 0
                 );
-
-                console.log(quickRatios)
 
                 setQuickRatioData(quickRatios);
                 setCurrentAssetsData(currentAssets);
@@ -289,7 +265,7 @@ const BalanceSheetComponent = () => {
                                     </span>
                                 </Col>
                             </Row>
-                            <Row className="align-items-center">
+                            <Row className="align-items-center mb-2">
                                 <Col>
                                     <span>
                                         Tangible Book Value: {jsonData.TangibleBookValue}
@@ -302,74 +278,151 @@ const BalanceSheetComponent = () => {
                                 </Col>
                             </Row>
                         </Container>
+
+                        <Row className={classes.cardDivider}></Row>
                         <Container className={classes.cardSubSection}>
-                            <Line
-                                data={{
-                                    labels: labels,
-                                    datasets: [
-                                        {
-                                            label: "Quick Ratio",
-                                            data: quickRatioData,
-                                            borderColor: "rgba(75, 192, 192, 1)",
-                                            backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                            type: "line",
-                                            yAxisID: "y1", // Associate with the primary y-axis
-                                            tension: 0.4, // Optional for smooth curves
-                                        },
-                                        {
-                                            label: "Current Assets",
-                                            data: currentAssetsData,
-                                            backgroundColor: "rgba(54, 162, 235, 0.7)",
-                                            borderColor: "rgba(54, 162, 235, 1)",
-                                            type: "bar",
-                                            yAxisID: "y2", // Associate with the secondary y-axis
-                                        },
-                                        {
-                                            label: "Current Liabilities",
-                                            data: currentLiabilitiesData,
-                                            backgroundColor: "rgba(255, 99, 132, 0.7)",
-                                            borderColor: "rgba(255, 99, 132, 1)",
-                                            type: "bar",
-                                            yAxisID: "y2", // Associate with the secondary y-axis
-                                        }
-                                    ],
-                                }}
-                                options={{
-                                    responsive: true,
-                                    scales: {
-                                        y1: {
-                                            type: "linear",
-                                            position: "left", // Primary axis
-                                            title: {
-                                                display: true,
-                                                text: "Quick Ratio",
+                            <Row>
+                                <Col>
+                                    <Line
+                                        data={{
+                                            labels: labels,
+                                            datasets: [
+                                                {
+                                                    label: "Quick Ratio",
+                                                    data: quickRatioData,
+                                                    borderColor: "rgba(75, 192, 192, 1)",
+                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                                    type: "line",
+                                                    yAxisID: "y1", // Associate with the primary y-axis
+                                                    tension: 0.4, // Optional for smooth curves
+                                                },
+                                                {
+                                                    label: "Current Assets",
+                                                    data: currentAssetsData,
+                                                    backgroundColor: "rgba(54, 162, 235, 0.7)",
+                                                    borderColor: "rgba(54, 162, 235, 1)",
+                                                    type: "bar",
+                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                },
+                                                {
+                                                    label: "Current Liabilities",
+                                                    data: currentLiabilitiesData,
+                                                    backgroundColor: "rgba(255, 99, 132, 0.7)",
+                                                    borderColor: "rgba(255, 99, 132, 1)",
+                                                    type: "bar",
+                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                }
+                                            ],
+                                        }}
+                                        options={{
+                                            responsive: true,
+                                            scales: {
+                                                y1: {
+                                                    type: "linear",
+                                                    position: "left", // Primary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "Quick Ratio",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                    },
+                                                },
+                                                y2: {
+                                                    type: "linear",
+                                                    position: "right", // Secondary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "Current Assets / Liabilities",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                    },
+                                                    grid: {
+                                                        drawOnChartArea: false, // Prevent gridlines overlap
+                                                    },
+                                                },
                                             },
-                                            ticks: {
-                                                beginAtZero: true,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: "bottom"
+                                                },
                                             },
-                                        },
-                                        y2: {
-                                            type: "linear",
-                                            position: "right", // Secondary axis
-                                            title: {
-                                                display: true,
-                                                text: "Current Assets / Liabilities",
+                                        }}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Line
+                                        data={{
+                                            labels: labels,
+                                            datasets: [
+                                                {
+                                                    label: "Quick Ratio",
+                                                    data: quickRatioData,
+                                                    borderColor: "rgba(75, 192, 192, 1)",
+                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                                    type: "line",
+                                                    yAxisID: "y1", // Associate with the primary y-axis
+                                                    tension: 0.4, // Optional for smooth curves
+                                                },
+                                                {
+                                                    label: "Current Assets",
+                                                    data: currentAssetsData,
+                                                    backgroundColor: "rgba(54, 162, 235, 0.7)",
+                                                    borderColor: "rgba(54, 162, 235, 1)",
+                                                    type: "bar",
+                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                },
+                                                {
+                                                    label: "Current Liabilities",
+                                                    data: currentLiabilitiesData,
+                                                    backgroundColor: "rgba(255, 99, 132, 0.7)",
+                                                    borderColor: "rgba(255, 99, 132, 1)",
+                                                    type: "bar",
+                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                }
+                                            ],
+                                        }}
+                                        options={{
+                                            responsive: true,
+                                            scales: {
+                                                y1: {
+                                                    type: "linear",
+                                                    position: "left", // Primary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "Quick Ratio",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                    },
+                                                },
+                                                y2: {
+                                                    type: "linear",
+                                                    position: "right", // Secondary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "Current Assets / Liabilities",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
+                                                    },
+                                                    grid: {
+                                                        drawOnChartArea: false, // Prevent gridlines overlap
+                                                    },
+                                                },
                                             },
-                                            ticks: {
-                                                beginAtZero: true,
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: "bottom"
+                                                },
                                             },
-                                            grid: {
-                                                drawOnChartArea: false, // Prevent gridlines overlap
-                                            },
-                                        },
-                                    },
-                                    plugins: {
-                                        legend: {
-                                            display: true,
-                                        },
-                                    },
-                                }}
-                            />
+                                        }}
+                                    />
+                                </Col>
+                            </Row>
                         </Container>
                     </Container>
                 </Card.Body>
