@@ -41,4 +41,4 @@ Comment.belongsTo(Valuation, {
     foreignKey: 'valuation_id'
 });
 
-module.exports = { User, Portfolio, Comment };
+module.exports = { User, Valuation, Portfolio, Comment };
