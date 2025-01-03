@@ -34,8 +34,8 @@ const Stock = () => {
     // const [priceData, setPriceData] = useState([]);
     const { id } = useParams();
 
-    const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'Terminal_Rate', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
-    const specialPercentageFields = ['dividendYield', 'Swing_NOM']
+    const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'trailingPE', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
+    const specialPercentageFields = ['dividendYield', 'Swing_NOM', 'profitMargins', 'TargetPriceUpside', 'IRR']
     const specialDateFields = ['created_at']
 
     useEffect(() => {
@@ -355,6 +355,9 @@ const Stock = () => {
                             >
                                 <Tab eventKey="home" title="Home">
                                     <Card.Body>
+                                        <Card.Header className="mb-2">
+                                            <span >{stock.sector}: </span><span>{stock.industry}</span>
+                                        </Card.Header>
                                         <Container>
                                             <Row>
                                                 <Col>Previous Close: {stock.previousClose}</Col>
@@ -376,9 +379,21 @@ const Stock = () => {
                                                     </span>
                                                 </Col>
                                             </Row>
+                                            <Row>
+                                                <Col>
+                                                    <span data-tooltip-id="nom-con-tooltip">
+                                                        NOM Upside: {stock.TargetPriceUpside}
+                                                    </span>
+                                                </Col>
+                                                <Col>
+                                                    <span data-tooltip-id="nom-con-tooltip">
+                                                        IRR: {stock.IRR}
+                                                    </span>
+                                                </Col>
+                                            </Row>
                                             <Row className="mb-2">
                                                 <Col>
-                                                    <span>Confidence: {stock.CONF_NOM}</span>
+                                                    <span>Full Time Employees: {stock.fullTimeEmployees}</span>
                                                 </Col>
                                                 {Number(stock.dividendRate) ? (
                                                     <Col>
@@ -402,12 +417,12 @@ const Stock = () => {
                                             <Row>
                                                 <Col>
                                                     <span data-tooltip-id="terminal-value-tooltip">
-                                                        Terminal Rate: {stock.Terminal_Rate}
+                                                        Profit Margin: {stock.profitMargins}
                                                     </span>
                                                 </Col>
                                                 <Col>
                                                     <span data-tooltip-id="nom-npv-tooltip">
-                                                        WACC: {stock.WACC}
+                                                        Trailing P/E: {stock.trailingPE}
                                                     </span>
                                                 </Col>
                                             </Row>
@@ -431,7 +446,8 @@ const Stock = () => {
                                         </Container>
                                         <Row className={classes.cardDivider}></Row>
 
-                                        <Container className={classes.cardSubSection}>
+                                        <Container className={classes.cardSubSection} >
+                                            <div className="mt-4"></div>
                                             <Card.Header className={classes.commentHeader}>
                                                 Comments
                                             </Card.Header>
