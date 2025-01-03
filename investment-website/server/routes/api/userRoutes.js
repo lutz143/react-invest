@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const portfolioData = require('../../controllers/portfolioData.js');
 const { User, Portfolio, Valuation, Comment } = require('../../models');
 // const withAuth = require('../../utils/auth');
 
@@ -12,31 +13,45 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET single user
+// GET user portfolio
 router.get('/:id', async (req, res) => {
     try {
-        const userData = await User.findByPk(req.params.id, {
-            attributes: { exclude: ['password'] },
-            include: [{
-                model: Valuation,
-                through: Portfolio, as: 'portfolio_stocks',
-                include: [
-                    {
-                        model: Comment,
-                        attributes: ['id', 'ticker', 'comment', 'created_at']
-                    }]
-            }]
-        });
-
-        if (!userData) {
-            res.status(404).json({ message: 'No user with this id!' });
+        const userPortfolio = await portfolioData.getUserPortfolio(req, res);
+        if (!userPortfolio) {
+            res.status(404).json({ message: 'No stock found with this id!' });
             return;
         }
-        res.status(200).json(userData);
+        res.status(200).json(userPortfolio);
     } catch (err) {
         res.status(500).json(err);
     }
 });
+
+// GET single user
+// router.get('/:id', async (req, res) => {
+//     try {
+//         const userData = await User.findByPk(req.params.id, {
+//             attributes: { exclude: ['password'] },
+//             include: [{
+//                 model: Valuation,
+//                 through: Portfolio, as: 'portfolio_stocks',
+//                 include: [
+//                     {
+//                         model: Comment,
+//                         attributes: ['id', 'ticker', 'comment', 'created_at']
+//                     }]
+//             }]
+//         });
+
+//         if (!userData) {
+//             res.status(404).json({ message: 'No user with this id!' });
+//             return;
+//         }
+//         res.status(200).json(userData);
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
 
 // create a new user
 router.post('/', async (req, res) => {
