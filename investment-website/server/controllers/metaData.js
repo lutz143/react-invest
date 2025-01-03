@@ -14,7 +14,12 @@ const getAllMetaData = async () => { // Retrieve all the metadata for the stock
 
 const getSingleMetaData = async (req, res) => {
     try {
-        const query = `SELECT * FROM MetaData WHERE MetaData.id = '${req.params.id}';`;
+        const query = `
+            SELECT *
+            FROM MetaData
+            INNER JOIN ArchiveStockForecast
+            ON MetaData.id = ArchiveStockForecast.id
+            WHERE MetaData.id = '${req.params.id}';`;
 
         const [[rows]] = await db.query(query);
         console.log(rows)

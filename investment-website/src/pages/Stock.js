@@ -360,19 +360,19 @@ const Stock = () => {
                                                 <Col>Previous Close: {stock.previousClose}</Col>
                                                 <Col>
                                                     <span data-tooltip-id="cagr-conf-tooltip">
-                                                        CAGR Estimate: {stock.CAGR_CPS}
+                                                        Market Value: {stock.MarketValuePerShare}
                                                     </span>
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <Col>
                                                     <span data-tooltip-id="nom-con-tooltip">
-                                                        Nominal Estimate: {stock.NOM_CPS}
+                                                        Target Price: {stock.targetMeanPrice}
                                                     </span>
                                                 </Col>
                                                 <Col>
                                                     <span data-tooltip-id="nom-con-tooltip">
-                                                        Conservative Estimate: {stock.CON_CPS}
+                                                        NOM Price: {stock.NominalValuePerShare}
                                                     </span>
                                                 </Col>
                                             </Row>
@@ -418,6 +418,15 @@ const Stock = () => {
                                                 <Col>
                                                     <span>Debt:Equity: {stock.debtToEquity}</span>
                                                 </Col>
+                                            </Row>
+                                        </Container>
+
+                                        <Row className={classes.cardDivider}></Row>
+
+                                        <Container className={classes.cardSubSection}>
+                                            <Row className="mb-2">
+                                                <div>{stock.longBusinessSummary}
+                                                </div>
                                             </Row>
                                         </Container>
                                         <Row className={classes.cardDivider}></Row>
