@@ -6,6 +6,7 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 import classes from "../pages/Stock.module.css";
 import formatModel from '../utils/formatUtils';
 
+import { useTable } from "react-table";
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -30,8 +31,17 @@ ChartJS.register(
     Legend
 );
 
+const formatCurrencyInThousands = (value) =>
+    new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0, // No decimals
+        maximumFractionDigits: 0, // No decimals
+    }).format(value / 1000);
+
 const IncomeStatementComponent = () => {
     const [jsonData, setJsonData] = useState([]);
+    const [tableData, setTableData] = useState([]);
     const [ros, setROS] = useState([]);
     const [revenue, setTotalRevenue] = useState([]);
     const [ebit, setEbit] = useState([]);
@@ -76,7 +86,6 @@ const IncomeStatementComponent = () => {
                 // Extract and format data
                 const revenue = incomeStatementData.map(entry => entry.TotalRevenue);
                 const ebit = incomeStatementData.map(entry => entry.EBIT);
-                // const inventory = incomeStatementData.map(entry => entry.Inventory);
                 const labels = incomeStatementData.map(entry => entry.asOfYear); // Assumes a `date` field exists
 
                 // Calculate ROS
@@ -86,15 +95,77 @@ const IncomeStatementComponent = () => {
                         : 0
                 );
 
+                // Add ROS to table data
+                const formattedData = incomeStatementData.map((entry, index) => ({
+                    ...entry,
+                    ROS: ros[index], // Append ROS to each entry
+                }));
+
                 setROS(ros);
                 setTotalRevenue(revenue);
                 setEbit(ebit);
                 setLabels(labels);
+                setTableData(formattedData);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
     }, [id]);
+
+    // Define columns for react-table
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'Year',
+                accessor: 'asOfYear', // Key in the data object
+            },
+            {
+                Header: 'Total Revenue $K',
+                accessor: 'TotalRevenue',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'COGS',
+                accessor: 'CostOfRevenue',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'Gross Profit',
+                accessor: 'GrossProfit',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'Total Expenses',
+                accessor: 'TotalExpenses',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'EBIT',
+                accessor: 'EBIT',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'Net Income',
+                accessor: 'NetIncome',
+                Cell: ({ value }) => formatCurrencyInThousands(value),
+            },
+            {
+                Header: 'ROS',
+                accessor: 'ROS',
+                Cell: ({ value }) => `${(value * 100).toFixed(1)}%`,
+            },
+        ],
+        []
+    );
+
+    // Use the useTable hook
+    const {
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        rows,
+        prepareRow,
+    } = useTable({ columns, data: tableData });
 
     if (!jsonData) {
         return <p>Loading...</p>;
@@ -262,74 +333,49 @@ const IncomeStatementComponent = () => {
 
                             <Row>
                                 <Col>
-                                    <Line
-                                        data={{
-                                            labels: labels,
-                                            datasets: [
-                                                {
-                                                    label: "Quick Ratio",
-                                                    data: ros,
-                                                    borderColor: "rgba(75, 192, 192, 1)",
-                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                                    type: "line",
-                                                    yAxisID: "y1", // Associate with the primary y-axis
-                                                    tension: 0.4, // Optional for smooth curves
-                                                },
-                                                {
-                                                    label: "Total Revenue",
-                                                    data: revenue,
-                                                    backgroundColor: "rgba(54, 162, 235, 0.7)",
-                                                    borderColor: "rgba(54, 162, 235, 1)",
-                                                    type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
-                                                },
-                                                {
-                                                    label: "EBIT",
-                                                    data: ebit,
-                                                    backgroundColor: "rgba(255, 99, 132, 0.7)",
-                                                    borderColor: "rgba(255, 99, 132, 1)",
-                                                    type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
-                                                }
-                                            ],
-                                        }}
-                                        options={{
-                                            responsive: true,
-                                            scales: {
-                                                y1: {
-                                                    type: "linear",
-                                                    position: "left", // Primary axis
-                                                    title: {
-                                                        display: true,
-                                                        text: "Quick Ratio",
-                                                    },
-                                                    ticks: {
-                                                        beginAtZero: true,
-                                                    },
-                                                },
-                                                y2: {
-                                                    type: "linear",
-                                                    position: "right", // Secondary axis
-                                                    title: {
-                                                        display: true,
-                                                        text: "Current Assets / Liabilities",
-                                                    },
-                                                    ticks: {
-                                                        beginAtZero: true,
-                                                    },
-                                                    grid: {
-                                                        drawOnChartArea: false, // Prevent gridlines overlap
-                                                    },
-                                                },
-                                            },
-                                            plugins: {
-                                                legend: {
-                                                    display: true,
-                                                    position: "bottom"
-                                                },
-                                            },
-                                        }}
-                                    />
+                                    <div>
+                                        <table {...getTableProps()} style={{ border: '1px solid black', width: '100%' }}>
+                                            <thead>
+                                                {headerGroups.map((headerGroup) => (
+                                                    <tr {...headerGroup.getHeaderGroupProps()}>
+                                                        {headerGroup.headers.map((column) => (
+                                                            <th
+                                                                {...column.getHeaderProps()}
+                                                                style={{
+                                                                    border: '1px solid black',
+                                                                    padding: '8px',
+                                                                    backgroundColor: '#f2f2f2',
+                                                                }}
+                                                            >
+                                                                {column.render('Header')}
+                                                            </th>
+                                                        ))}
+                                                    </tr>
+                                                ))}
+                                            </thead>
+                                            <tbody {...getTableBodyProps()}>
+                                                {rows.map((row) => {
+                                                    prepareRow(row);
+                                                    return (
+                                                        <tr {...row.getRowProps()}>
+                                                            {row.cells.map((cell) => (
+                                                                <td
+                                                                    {...cell.getCellProps()}
+                                                                    style={{
+                                                                        border: '1px solid black',
+                                                                        padding: '8px',
+                                                                        textAlign: 'center',
+                                                                    }}
+                                                                >
+                                                                    {cell.render('Cell')}
+                                                                </td>
+                                                            ))}
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </Col>
                                 <Col>
                                     <Line
@@ -337,7 +383,7 @@ const IncomeStatementComponent = () => {
                                             labels: labels,
                                             datasets: [
                                                 {
-                                                    label: "Quick Ratio",
+                                                    label: "ROS",
                                                     data: ros,
                                                     borderColor: "rgba(75, 192, 192, 1)",
                                                     backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -371,7 +417,7 @@ const IncomeStatementComponent = () => {
                                                     position: "left", // Primary axis
                                                     title: {
                                                         display: true,
-                                                        text: "Quick Ratio",
+                                                        text: "ROS",
                                                     },
                                                     ticks: {
                                                         beginAtZero: true,
@@ -382,7 +428,7 @@ const IncomeStatementComponent = () => {
                                                     position: "right", // Secondary axis
                                                     title: {
                                                         display: true,
-                                                        text: "Current Assets / Liabilities",
+                                                        text: "Total Revenue / EBIT",
                                                     },
                                                     ticks: {
                                                         beginAtZero: true,
