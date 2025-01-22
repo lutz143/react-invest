@@ -158,7 +158,7 @@ const IncomeStatementComponent = () => {
         []
     );
 
-    // Use the useTable hook
+    // declare useTable hook
     const {
         getTableProps,
         getTableBodyProps,
@@ -333,7 +333,7 @@ const IncomeStatementComponent = () => {
 
                             <Row>
                                 <Col>
-                                    <div>
+                                    <div style={{ overflowY: 'scroll', overflowX: 'scroll', maxWidth: '500px' }}>
                                         <table {...getTableProps()} style={{ border: '1px solid black', width: '100%' }}>
                                             <thead>
                                                 {headerGroups.map((headerGroup) => (
