@@ -512,6 +512,7 @@ const Stock = () => {
                                                             aria-label="Recipient's username"
                                                             aria-describedby="basic-addon2"
                                                             id="commentText"
+                                                            autoComplete="off"
                                                         />
                                                         <Button
                                                             variant="outline-secondary"

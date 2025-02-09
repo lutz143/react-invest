@@ -22,7 +22,7 @@ function Home() {
             .then(response => {
                 const formattedData = response.data.map((stock) => ({
                     ...stock,
-                    exDividendDate: moment(stock.exDividendDate).format('M/DD/YYYY'),
+                    Valuation_Date: moment(stock.Valuation_Date).format('M/DD/YYYY'),
                     previousClose: parseFloat(stock.previousClose).toFixed(2),
                     previousCloseFloat: stock.previousClose,
                     MarketValuePerShare: parseFloat(stock.MarketValuePerShare).toFixed(2),
@@ -52,7 +52,7 @@ function Home() {
                                                 </div>
                                             </Card.Header>
                                             <Card.Text className={classes.cardBody}>
-                                                <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Ex Div Date: {stock.exDividendDate}</div>
+                                                <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Valuation Date: {stock.Valuation_Date}</div>
                                                 <div>Previous Close: {stock.previousClose}</div>
                                                 <div>Market Value: {stock.MarketValuePerShare}</div>
                                                 <div>Target Price: {stock.targetMeanPrice}</div>

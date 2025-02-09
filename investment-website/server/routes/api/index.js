@@ -9,6 +9,7 @@ const commentRoutes = require('./commentRoutes');
 const cashFlowRoutes = require('./cashFlowRoutes');
 const balanceSheetRoutes = require('./balanceSheetRoutes');
 const incomeStatementRoutes = require('./incomeStatementRoutes');
+const userPositionsRoutes = require('./userPositionRoutes');
 
 router.use('/users', userRoutes);
 router.use('/valuations', valuationRoutes);
@@ -20,5 +21,6 @@ router.use('/comments', commentRoutes);
 router.use('/cashFlow', cashFlowRoutes);
 router.use('/balanceSheet', balanceSheetRoutes);
 router.use('/incomeStatement', incomeStatementRoutes);
+router.use('/updatePosition', userPositionsRoutes);
 
 module.exports = router;
