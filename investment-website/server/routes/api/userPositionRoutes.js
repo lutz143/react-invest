@@ -6,7 +6,6 @@ router.put('/:id', async (req, res) => {
     const { quantity, avg_price } = req.body;  // Get updated values from request body
 
     console.log(`This is the ID captured: ${id}`);
-
     if (!id) {
         return res.status(400).json({ success: false, message: "Missing position id" });
     }

@@ -34,15 +34,6 @@ ChartJS.register(
     Legend
 );
 
-const formatCurrencyInThousands = (value) =>
-    new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0, // No decimals
-        maximumFractionDigits: 0, // No decimals
-    }).format(value / 1000);
-
-
 const Profile = () => {
     const [portfolio, setPortfolio] = useState([]);
     const [data, setData] = useState([]);
@@ -57,7 +48,6 @@ const Profile = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // Make a GET request to API endpoint by stock ID
         axios.get(`http://localhost:3001/api/users/${user_id}`)
             .then(response => {
                 const portfolioData = response.data.map((stock) => ({
@@ -71,12 +61,16 @@ const Profile = () => {
                 }));
                 setData(portfolioData);
                 setTableData(portfolioData);
+                setEditedValues(
+                    Object.fromEntries(portfolioData.map(stock => [stock.id, { quantity: stock.quantity, avg_price: stock.avg_price }]))
+                ); // Initialize edited values properly
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
 
-    }, [user_id, portfolio]); // include "id" in the dependency array
+    }, [user_id, portfolio]);
+
 
     const columns = React.useMemo(
         () => [
@@ -96,7 +90,7 @@ const Profile = () => {
             {
                 Header: "Quantity",
                 accessor: "quantity",
-                Cell: ({ row }) =>
+                Cell: ({ row }) => (
                     isEditing ? (
                         <input
                             type="number"
@@ -107,11 +101,12 @@ const Profile = () => {
                     ) : (
                         row.original.quantity
                     )
+                )
             },
             {
                 Header: "Avg Price",
                 accessor: "avg_price",
-                Cell: ({ row }) =>
+                Cell: ({ row }) => (
                     isEditing ? (
                         <input
                             type="number"
@@ -122,6 +117,7 @@ const Profile = () => {
                     ) : (
                         `$${formatModel.formatDecimal(row.original.avg_price)}`
                     )
+                )
             },
             {
                 Header: 'Cost Basis',
@@ -147,15 +143,27 @@ const Profile = () => {
                 Header: "Actions",
                 accessor: "actions",
                 Cell: ({ row }) => (
-                    <Button
-                        className={classes.cardDeleteButton}
-                        variant="danger"
-                        onClick={() => handleDeleteStock(row.original.valuation_id)}
-                    >
-                        Delete Stock
-                    </Button>
-                ),
-            },
+                    <div className="p-2 bd-highlight">
+                        {!isEditing ? (
+                            <>
+                                <Button
+                                    className={classes.cardDeleteButton}
+                                    variant="danger"
+                                    onClick={() => handleDeleteStock(row.original.valuation_id)}
+                                >
+                                    Delete Stock
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button onClick={saveChanges} variant="success">
+                                    Save
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                )
+            }
         ],
         [isEditing, editedValues]
     );
@@ -171,9 +179,20 @@ const Profile = () => {
 
     // Track input changes
     const handleInputChange = (e, rowId, field) => {
+        const value = e.target.value;
+        console.log(e);
+        console.log(value);
+        console.log(rowId);
+        console.log(field);
+
         setEditedValues(prev => ({
             ...prev,
-            [rowId]: { ...prev[rowId], [field]: e.target.value }
+            [rowId]: {
+                ...prev[rowId], // Preserve existing changes for this row
+                [field]: value // Always pass through the input value regardless if it changed or not
+                // [field]: !value ? value : prev.value,
+                // [field]: value !== "" ? value : undefined // Only store value if not empty
+            }
         }));
     };
 
@@ -183,15 +202,19 @@ const Profile = () => {
             await Promise.all(Object.keys(editedValues).map(async (rowId) => {
                 const updatedStock = editedValues[rowId];
 
-                await axios.put(`http://localhost:3001/api/update-position/${rowId}`, {
+                await axios.put(`http://localhost:3001/api/updatePosition/${rowId}`, {
                     quantity: updatedStock.quantity,
-                    avg_price: updatedStock.avg_price,
+                    avg_price: updatedStock.avg_price
                 });
             }));
 
             // Update UI with new data
             setTableData(prev =>
-                prev.map(stock => (editedValues[stock.id] ? { ...stock, ...editedValues[stock.id] } : stock))
+                prev.map(stock => ({
+                    ...stock,
+                    quantity: editedValues[stock.id]?.quantity ?? stock.quantity,
+                    avg_price: editedValues[stock.id]?.avg_price ?? stock.avg_price
+                }))
             );
 
             setIsEditing(false); // Exit edit mode
@@ -273,9 +296,6 @@ const Profile = () => {
                                                 </Button>
                                             ) : (
                                                 <>
-                                                    <Button onClick={saveChanges} variant="success">
-                                                        Save
-                                                    </Button>
                                                     <Button onClick={() => {
                                                         setTableData(originalData); // Restore previous data
                                                         setEditedValues({}); // Clear edits
