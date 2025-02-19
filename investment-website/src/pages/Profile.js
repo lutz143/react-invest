@@ -1,5 +1,5 @@
 import PageContainer from "../containers/PageContainer";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
@@ -45,6 +45,7 @@ const Profile = () => {
     const [comment, setComment] = useState([]);
     const user = useSelector(state => state.auth.user)
     const user_id = useSelector(state => state.auth.user_id)
+    const inputRefs = useRef({});
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -91,16 +92,18 @@ const Profile = () => {
                 Header: "Quantity",
                 accessor: "quantity",
                 Cell: ({ row }) => (
-                    isEditing ? (
-                        <input
-                            type="number"
-                            className="form-control"
-                            value={editedValues[row.original.id]?.quantity ?? row.original.quantity}
-                            onChange={(e) => handleInputChange(e, row.original.id, "quantity")}
-                        />
-                    ) : (
-                        row.original.quantity
-                    )
+                    <input
+                        type="number"
+                        className="form-control"
+                        ref={(el) => {
+                            if (!inputRefs.current[row.original.id]) {
+                                inputRefs.current[row.original.id] = {};
+                            }
+                            inputRefs.current[row.original.id]["quantity"] = el;
+                        }}
+                        value={editedValues[row.original.id]?.quantity ?? row.original.quantity}
+                        onChange={(e) => handleInputChange(e, row.original.id, "quantity")}
+                    />
                 )
             },
             {
@@ -194,6 +197,11 @@ const Profile = () => {
                 // [field]: value !== "" ? value : undefined // Only store value if not empty
             }
         }));
+
+        // Refocus after state update
+        if (inputRefs.current[rowId]?.[field]) {
+            inputRefs.current[rowId][field].focus();
+        }
     };
 
     // Save all edited data to backend

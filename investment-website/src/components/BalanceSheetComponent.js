@@ -34,6 +34,9 @@ const BalanceSheetComponent = () => {
     const [jsonData, setJsonData] = useState([]);
     const [quickRatioData, setQuickRatioData] = useState([]);
     const [currentAssetsData, setCurrentAssetsData] = useState([]);
+    const [accountsReceivableData, setAccountsReceivables] = useState([]);
+    const [payablesData, setPayablesData] = useState([]);
+    const [workingCaptialData, setWorkingCapital] = useState([]);
     const [currentLiabilitiesData, setCurrentLiabilitiesData] = useState([]);
     const [labels, setLabels] = useState([]);
     const { id } = useParams();
@@ -69,6 +72,10 @@ const BalanceSheetComponent = () => {
                 const currentAssets = balanceSheetData.map(entry => entry.CurrentAssets);
                 const currentLiabilities = balanceSheetData.map(entry => entry.CurrentLiabilities);
                 const inventory = balanceSheetData.map(entry => entry.Inventory);
+                const accountsReceivable = balanceSheetData.map(entry => entry.AccountsReceivable);
+                const payables = balanceSheetData.map(entry => entry.Payables);
+                const workingCapital = balanceSheetData.map(entry => entry.WorkingCapital);
+                console.log(workingCapital);
                 const labels = balanceSheetData.map(entry => entry.asOfYear); // Assumes a `date` field exists
 
                 // Calculate quick ratio
@@ -81,6 +88,9 @@ const BalanceSheetComponent = () => {
                 setQuickRatioData(quickRatios);
                 setCurrentAssetsData(currentAssets);
                 setCurrentLiabilitiesData(currentLiabilities);
+                setAccountsReceivables(accountsReceivable);
+                setPayablesData(payables);
+                setWorkingCapital(workingCapital);
                 setLabels(labels);
             })
             .catch((error) => {
@@ -288,21 +298,12 @@ const BalanceSheetComponent = () => {
                                             labels: labels,
                                             datasets: [
                                                 {
-                                                    label: "Quick Ratio",
-                                                    data: quickRatioData,
-                                                    borderColor: "rgba(75, 192, 192, 1)",
-                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                                    type: "line",
-                                                    yAxisID: "y1", // Associate with the primary y-axis
-                                                    tension: 0.4, // Optional for smooth curves
-                                                },
-                                                {
                                                     label: "Current Assets",
                                                     data: currentAssetsData,
                                                     backgroundColor: "rgba(54, 162, 235, 0.7)",
                                                     borderColor: "rgba(54, 162, 235, 1)",
                                                     type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                    yAxisID: "y1", // Associate with the secondary y-axis
                                                 },
                                                 {
                                                     label: "Current Liabilities",
@@ -310,8 +311,17 @@ const BalanceSheetComponent = () => {
                                                     backgroundColor: "rgba(255, 99, 132, 0.7)",
                                                     borderColor: "rgba(255, 99, 132, 1)",
                                                     type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
-                                                }
+                                                    yAxisID: "y1", // Associate with the secondary y-axis
+                                                },
+                                                {
+                                                    label: "Quick Ratio",
+                                                    data: quickRatioData,
+                                                    borderColor: "rgba(75, 192, 192, 1)",
+                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                                    type: "line",
+                                                    yAxisID: "y2", // Associate with the primary y-axis
+                                                    tension: 0.4, // Optional for smooth curves
+                                                },
                                             ],
                                         }}
                                         options={{
@@ -319,18 +329,7 @@ const BalanceSheetComponent = () => {
                                             scales: {
                                                 y1: {
                                                     type: "linear",
-                                                    position: "left", // Primary axis
-                                                    title: {
-                                                        display: true,
-                                                        text: "Quick Ratio",
-                                                    },
-                                                    ticks: {
-                                                        beginAtZero: true,
-                                                    },
-                                                },
-                                                y2: {
-                                                    type: "linear",
-                                                    position: "right", // Secondary axis
+                                                    position: "left", // Secondary axis
                                                     title: {
                                                         display: true,
                                                         text: "Current Assets / Liabilities",
@@ -340,6 +339,17 @@ const BalanceSheetComponent = () => {
                                                     },
                                                     grid: {
                                                         drawOnChartArea: false, // Prevent gridlines overlap
+                                                    },
+                                                },
+                                                y2: {
+                                                    type: "linear",
+                                                    position: "right", // Primary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "Quick Ratio",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
                                                     },
                                                 },
                                             },
@@ -358,30 +368,29 @@ const BalanceSheetComponent = () => {
                                             labels: labels,
                                             datasets: [
                                                 {
-                                                    label: "Quick Ratio",
-                                                    data: quickRatioData,
-                                                    borderColor: "rgba(75, 192, 192, 1)",
-                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                                    type: "line",
-                                                    yAxisID: "y1", // Associate with the primary y-axis
-                                                    tension: 0.4, // Optional for smooth curves
+                                                    label: "Accounts Receivable",
+                                                    data: accountsReceivableData,
+                                                    backgroundColor: "rgba(54, 235, 199, 0.7)",
+                                                    borderColor: "rgb(54, 235, 199)",
+                                                    type: "bar",
+                                                    yAxisID: "y1",
                                                 },
                                                 {
-                                                    label: "Current Assets",
-                                                    data: currentAssetsData,
+                                                    label: "Accounts Payable",
+                                                    data: payablesData,
+                                                    backgroundColor: "rgba(235, 93, 54, 0.7)",
+                                                    borderColor: "rgb(235, 93, 54)",
+                                                    type: "bar",
+                                                    yAxisID: "y1",
+                                                },
+                                                {
+                                                    label: "Working Capital",
+                                                    data: workingCaptialData,
                                                     backgroundColor: "rgba(54, 162, 235, 0.7)",
                                                     borderColor: "rgba(54, 162, 235, 1)",
                                                     type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                    yAxisID: "y1",
                                                 },
-                                                {
-                                                    label: "Current Liabilities",
-                                                    data: currentLiabilitiesData,
-                                                    backgroundColor: "rgba(255, 99, 132, 0.7)",
-                                                    borderColor: "rgba(255, 99, 132, 1)",
-                                                    type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
-                                                }
                                             ],
                                         }}
                                         options={{
@@ -389,21 +398,10 @@ const BalanceSheetComponent = () => {
                                             scales: {
                                                 y1: {
                                                     type: "linear",
-                                                    position: "left", // Primary axis
+                                                    position: "left",
                                                     title: {
                                                         display: true,
-                                                        text: "Quick Ratio",
-                                                    },
-                                                    ticks: {
-                                                        beginAtZero: true,
-                                                    },
-                                                },
-                                                y2: {
-                                                    type: "linear",
-                                                    position: "right", // Secondary axis
-                                                    title: {
-                                                        display: true,
-                                                        text: "Current Assets / Liabilities",
+                                                        text: "Working Capital Makeup",
                                                     },
                                                     ticks: {
                                                         beginAtZero: true,

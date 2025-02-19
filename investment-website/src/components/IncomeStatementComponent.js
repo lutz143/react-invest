@@ -383,21 +383,12 @@ const IncomeStatementComponent = () => {
                                             labels: labels,
                                             datasets: [
                                                 {
-                                                    label: "ROS",
-                                                    data: ros,
-                                                    borderColor: "rgba(75, 192, 192, 1)",
-                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
-                                                    type: "line",
-                                                    yAxisID: "y1", // Associate with the primary y-axis
-                                                    tension: 0.4, // Optional for smooth curves
-                                                },
-                                                {
                                                     label: "Total Revenue",
                                                     data: revenue,
                                                     backgroundColor: "rgba(54, 162, 235, 0.7)",
                                                     borderColor: "rgba(54, 162, 235, 1)",
                                                     type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
+                                                    yAxisID: "y1", // Associate with the secondary y-axis
                                                 },
                                                 {
                                                     label: "EBIT",
@@ -405,8 +396,17 @@ const IncomeStatementComponent = () => {
                                                     backgroundColor: "rgba(255, 99, 132, 0.7)",
                                                     borderColor: "rgba(255, 99, 132, 1)",
                                                     type: "bar",
-                                                    yAxisID: "y2", // Associate with the secondary y-axis
-                                                }
+                                                    yAxisID: "y1", // Associate with the secondary y-axis
+                                                },
+                                                {
+                                                    label: "ROS",
+                                                    data: ros,
+                                                    borderColor: "rgba(75, 192, 192, 1)",
+                                                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                                                    type: "line",
+                                                    yAxisID: "y2", // Associate with the primary y-axis
+                                                    tension: 0.4, // Optional for smooth curves
+                                                },
                                             ],
                                         }}
                                         options={{
@@ -414,18 +414,7 @@ const IncomeStatementComponent = () => {
                                             scales: {
                                                 y1: {
                                                     type: "linear",
-                                                    position: "left", // Primary axis
-                                                    title: {
-                                                        display: true,
-                                                        text: "ROS",
-                                                    },
-                                                    ticks: {
-                                                        beginAtZero: true,
-                                                    },
-                                                },
-                                                y2: {
-                                                    type: "linear",
-                                                    position: "right", // Secondary axis
+                                                    position: "left", // Secondary axis
                                                     title: {
                                                         display: true,
                                                         text: "Total Revenue / EBIT",
@@ -435,6 +424,17 @@ const IncomeStatementComponent = () => {
                                                     },
                                                     grid: {
                                                         drawOnChartArea: false, // Prevent gridlines overlap
+                                                    },
+                                                },
+                                                y2: {
+                                                    type: "linear",
+                                                    position: "right", // Primary axis
+                                                    title: {
+                                                        display: true,
+                                                        text: "ROS",
+                                                    },
+                                                    ticks: {
+                                                        beginAtZero: true,
                                                     },
                                                 },
                                             },
