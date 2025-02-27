@@ -378,8 +378,8 @@ const BalanceSheetComponent = () => {
                                                 {
                                                     label: "Accounts Payable",
                                                     data: payablesData,
-                                                    backgroundColor: "rgba(235, 93, 54, 0.7)",
-                                                    borderColor: "rgb(235, 93, 54)",
+                                                    backgroundColor: "rgba(255, 99, 132, 0.7)",
+                                                    borderColor: "rgba(255, 99, 132, 1)",
                                                     type: "bar",
                                                     yAxisID: "y1",
                                                 },
