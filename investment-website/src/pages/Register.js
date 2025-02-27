@@ -4,99 +4,128 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { signup } from '../store/authSlice';
 
-import { FaUser, FaLock  } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 import classes from "./LoginForm.module.css";
 
 function Register() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showWarning, setShowWarning] = useState('');
-  const [isRegistrationSuccessful, setRegistrationSuccessful] = useState(false);
-  const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [showWarning, setShowWarning] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [isRegistrationSuccessful, setRegistrationSuccessful] = useState(false);
+    const dispatch = useDispatch();
 
-  // set state for form validation
-  const [validated] = useState(false);
+    // Function to validate email format
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
 
-  const submitRegistration = e => {
-    e.preventDefault()
-    dispatch(signup({ username, password }))
-    .then((res) => {
-      setUsername('')
-      setPassword('')
-      setRegistrationSuccessful(true)
-    })
-  }
+    const submitRegistration = (e) => {
+        e.preventDefault();
 
-  const needInput = () => {
-    if (!username) {
-      console.log('Whoa, no username');
-      setShowWarning(true);
+        if (!isValidEmail(email)) {
+            setEmailError("Please enter a valid email format.");
+            return; // Prevent form submission
+        } else {
+            setEmailError(""); // Clear error if email is valid
+        }
+
+        dispatch(signup({ username, password, email }))
+            .then((res) => {
+                setUsername('');
+                setPassword('');
+                setEmail('');
+                setRegistrationSuccessful(true);
+            });
+    };
+
+    // Required field validation
+    const needInput = () => {
+        if (!username) {
+            console.log('Whoa, no username!');
+            setShowWarning(true);
+        } else {
+            console.log('Username has been defined');
+            setShowWarning(false);
+        }
+    };
+
+    // Redirect the new user to the profile page after successful registration
+    if (isRegistrationSuccessful) {
+        navigate("/profile");
     }
-    else {
-      console.log('username has been defined');
-      setShowWarning(false);
-    }
-  }
 
-  // redirect the new user to the home page after successful registration
-  if (isRegistrationSuccessful) {
-    navigate("/profile")
-  }
+    return (
+        <PageContainer>
+            <section className={classes.formContainer}>
+                <div className={classes.loginContainer} id={classes.registerContainer}>
+                    <form
+                        noValidate
+                        onSubmit={submitRegistration}
+                    >
+                        <h1>Sign Up</h1>
 
+                        <div className={classes.inputBox}>
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                name="username"
+                                onChange={(e) => setUsername(e.target.value)}
+                                value={username}
+                                required
+                            />
+                            <FaUser className={classes.icon} />
+                        </div>
 
-  return (
-    <PageContainer>
-      <section className={classes.formContainer}>
-        <div className={classes.loginContainer} id={classes.registerContainer}>
-          <form 
-            noValidate 
-            validated={validated} 
-            onSubmit={submitRegistration}
-          >
-            <h1>Sign Up</h1>
-            <div className={classes.inputBox}>
-              <input 
-                type="text"
-                placeholder="Username"
-                name="username"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-                required
-              />
-              <FaUser className={classes.icon}/>
-            </div>
+                        <div className={classes.inputBox}>
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                autoComplete="false"
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
+                                required
+                            />
+                            <FaLock className={classes.icon} />
+                        </div>
 
-            <div className={classes.inputBox}>
-              <input 
-                type="password"
-                placeholder="Password"
-                name="password"
-                autoComplete="false"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                required
-              />
-              <FaLock className={classes.icon}/>
-            </div>
+                        <div className={classes.inputBox}>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                autoComplete="false"
+                                onChange={(e) => setEmail(e.target.value)}
+                                value={email}
+                                required
+                            />
+                            <FaLock className={classes.icon} />
+                        </div>
 
-            <button 
-              onClick={needInput}
-              disabled={!(username && password)}
-              type="submit"
-              variant="success"
-              className={classes.formSubmit}
-            >
-              Register
-            </button>
+                        {/* Display Email Error Message */}
+                        {emailError && <div className={classes.errorMessage}>{emailError}</div>}
 
-            {showWarning && <div className={classes.errorMessage}>Please enter both username and password.</div>}
+                        <button
+                            onClick={needInput}
+                            disabled={!(username && password && email)}
+                            type="submit"
+                            variant="success"
+                            className={classes.formSubmit}
+                        >
+                            Register
+                        </button>
 
-          </form>
-        </div>
-      </section>
-  </PageContainer>
-);
+                        {showWarning && <div className={classes.errorMessage}>Please enter both username and password.</div>}
+
+                    </form>
+                </div>
+            </section>
+        </PageContainer>
+    );
 }
 
-export default Register
+export default Register;
