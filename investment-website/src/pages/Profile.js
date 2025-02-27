@@ -324,16 +324,16 @@ const Profile = () => {
                             </Card.Header>
                             <Card.Body>
                                 <Row>
-                                    <Col xs={12} md={4} className={classes.bodyLeftContainter}>
+                                    <Col xs={12} md={4} className={classes.commentSection}>
                                         <Row className={classes.bodyLeftInnerContainer}>
                                             <Card.Header className={classes.bodyLeftHeader}>
                                                 Your Stock Comments are Below
                                             </Card.Header>
                                         </Row>
-                                        <Row className={classes.bodyLeftInnerContainer}>
+                                        <Row>
                                             <Card.Body>
                                                 {comment.map((comment, index) => (
-                                                    <div key={comment.id} className="align-items-center">
+                                                    <div key={comment.id}>
                                                         <Card.Header>
                                                             <Row className="align-items-center">
                                                                 <div className="d-flex bd-highlight">
@@ -361,7 +361,7 @@ const Profile = () => {
                                     <Col>
                                         <Row>
                                             <Col>
-                                                <div style={{ overflowY: 'scroll', overflowX: 'scroll', maxWidth: '900px' }}>
+                                                <div style={{ overflowY: 'scroll', overflowX: 'scroll', maxWidth: '900px', height: '500px' }}>
                                                     <table {...getTableProps()} style={{ border: '1px solid black', width: '100%' }}>
                                                         <thead>
                                                             {headerGroups.map((headerGroup) => (
