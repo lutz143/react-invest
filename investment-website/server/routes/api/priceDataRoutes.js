@@ -1,19 +1,19 @@
 const router = require('express').Router();
-const stocksController = require('../../controllers/stocksController.js');
+const stocksController = require('../../controllers/financialData.js');
 
 
-// GET a single stock data with Valuation and MetaData attributes
+// GET a single stock monthly price data from the priceDataMonthly table
 router.get('/:id', async (req, res) => {
-  try {
-    const singlePriceData = await stocksController.getSinglePriceData(req, res);
-    if (!singlePriceData) {
-      res.status(404).json({ message: 'No stock found with this id!' });
-      return;
+    try {
+        const singleMonthlyPriceData = await stocksController.getSingleMonthlyStockPriceData(req, res);
+        if (!singleMonthlyPriceData) {
+            res.status(404).json({ message: 'No stock found with this id!' });
+            return;
+        }
+        res.status(200).json(singleMonthlyPriceData);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    res.status(200).json(singlePriceData);
-  } catch (err) {
-    res.status(500).json(err);
-  }
 });
 
 
