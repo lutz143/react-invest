@@ -31,7 +31,7 @@ const Stock = () => {
     const [balanceSheet, setBalanceSheetData] = useState([]);
     const [cashFlow, setCashFlowData] = useState([]);
     const [incomeStatement, setIncomeStatementData] = useState([]);
-    // const [priceData, setPriceData] = useState([]);
+    const [priceData, setPriceData] = useState([]);
     const { id } = useParams();
 
     const specialDecimalFields = ['beta', 'debtToEquity', 'WACC', 'trailingPE', 'previousClose', 'CAGR_CPS', 'NOM_CPS', 'CON_CPS', 'CONF_NOM', 'dividendRate', 'CONF_CAGR']
@@ -105,7 +105,7 @@ const Stock = () => {
         fetchBalanceSheet();
         fetchCashFlow();
         fetchIncomeStatement();
-        // fetchPriceData();
+        fetchPriceData();
     }, []); // Empty dependency array means this effect runs once when the component mounts
 
     const fetchComments = async () => {
@@ -123,19 +123,19 @@ const Stock = () => {
             });
     };
 
-    // const fetchPriceData = async () => {
-    //     // Make a GET request to API endpoint by stock ID
-    //     axios.get(`http://localhost:3001/api/priceData/${id}`)
-    //         .then((response) => {
-    //             const data = response.data.map((priceData) => ({
-    //                 ...priceData,
-    //             }));
-    //             setPriceData(data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error fetching data:", error);
-    //         });
-    // };
+    const fetchPriceData = async () => {
+        // Make a GET request to API endpoint by stock ID
+        axios.get(`http://localhost:3001/api/priceData/${id}`)
+            .then((response) => {
+                const data = response.data.map((priceData) => ({
+                    ...priceData,
+                }));
+                setPriceData(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+    };
 
     const fetchBalanceSheet = async () => {
         axios.get(`http://localhost:3001/api/balanceSheet/xlsx/${id}`)
@@ -536,20 +536,12 @@ const Stock = () => {
                                 <Tab eventKey="cashFlow" title="Cash Flow">
                                     <CashFlow />
                                 </Tab>
-                                {/* <Tab eventKey="priceHistory" title="Price History">
-                  <PriceDataComponent />
-                </Tab> */}
-                                <Tab eventKey="priceGraph" title="Price Graph">
+                                <Tab eventKey="priceHistory" title="Price History">
                                     <PriceGraph />
                                 </Tab>
                             </Tabs>
                         </Card>
                     </Row>
-
-                    {/* <div>
-            <svg ref={svgRef}></svg>
-          </div> */}
-
                     {error ? <p>{error}</p> : null}
                 </Container>
                 <ReactTooltip

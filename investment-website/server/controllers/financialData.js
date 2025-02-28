@@ -1,5 +1,21 @@
 const db = require('../config/connection.js'); // Import database connection
 
+const getSingleMonthlyStockPriceData = async (req, res) => {
+    try {
+        const query = `
+            SELECT id, Ticker, price_date, adjclose, percent_return
+            FROM priceDataMonthly
+            WHERE id = '${req.params.id}'
+        ;`;
+
+        const [rows] = await db.query(query);
+        console.log(rows)
+        return rows;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getAllIncomeData = async () => { // Retrieve all the metadata for the stock
     try {
         const query = `
@@ -158,6 +174,7 @@ const getMostRecentCashFlow = async (req, res) => {
 };
 
 module.exports = {
+    getSingleMonthlyStockPriceData,
     getAllIncomeData, getSingleIncomeStatment, getMostRecentIncomeStatement,
     getAllBalanceSheetData, getSingleBalanceSheet, getMostRecentBalanceSheet,
     getAllCashFlowData, getSingleCashFlow, getMostRecentCashFlow
