@@ -91,36 +91,50 @@ const Profile = () => {
             {
                 Header: "Quantity",
                 accessor: "quantity",
-                Cell: ({ row }) => (
-                    <input
-                        type="number"
-                        className="form-control"
-                        ref={(el) => {
-                            if (!inputRefs.current[row.original.id]) {
-                                inputRefs.current[row.original.id] = {};
-                            }
-                            inputRefs.current[row.original.id]["quantity"] = el;
-                        }}
-                        value={editedValues[row.original.id]?.quantity ?? row.original.quantity}
-                        onChange={(e) => handleInputChange(e, row.original.id, "quantity")}
-                    />
-                )
+                Cell: ({ row }) => {
+                    const [localValue, setLocalValue] = React.useState(row.original.quantity);
+
+                    // Keep localValue in sync with external state when isEditing changes
+                    React.useEffect(() => {
+                        if (isEditing) {
+                            setLocalValue(editedValues[row.original.id]?.quantity ?? row.original.quantity);
+                        }
+                    }, [isEditing, editedValues, row.original.id, row.original.quantity]);
+
+                    return (
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={localValue}
+                            onChange={(e) => setLocalValue(e.target.value)} // Only update local state on change
+                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "quantity")} // Update global state when leaving input
+                        />
+                    );
+                }
             },
             {
                 Header: "Avg Price",
                 accessor: "avg_price",
-                Cell: ({ row }) => (
-                    isEditing ? (
+                Cell: ({ row }) => {
+                    const [localValue, setLocalValue] = React.useState(row.original.avg_price);
+
+                    // Keep localValue in sync with external state when isEditing changes
+                    React.useEffect(() => {
+                        if (isEditing) {
+                            setLocalValue(editedValues[row.original.id]?.avg_price ?? row.original.avg_price);
+                        }
+                    }, [isEditing, editedValues, row.original.id, row.original.avg_price]);
+
+                    return (
                         <input
                             type="number"
                             className="form-control"
-                            value={editedValues[row.original.id]?.avg_price ?? row.original.avg_price}
-                            onChange={(e) => handleInputChange(e, row.original.id, "avg_price")}
+                            value={localValue}
+                            onChange={(e) => setLocalValue(e.target.value)} // Only update local state on change
+                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "avg_price")} // Update global state when leaving input
                         />
-                    ) : (
-                        `$${formatModel.formatDecimal(row.original.avg_price)}`
-                    )
-                )
+                    );
+                }
             },
             {
                 Header: 'Cost Basis',
@@ -183,40 +197,26 @@ const Profile = () => {
     // Track input changes
     const handleInputChange = (e, rowId, field) => {
         const value = e.target.value;
-        console.log(e);
-        console.log(value);
-        console.log(rowId);
-        console.log(field);
 
         setEditedValues(prev => ({
             ...prev,
             [rowId]: {
-                ...prev[rowId], // Preserve existing changes for this row
-                [field]: value // Always pass through the input value regardless if it changed or not
-                // [field]: !value ? value : prev.value,
-                // [field]: value !== "" ? value : undefined // Only store value if not empty
+                ...prev[rowId], // Keep existing values
+                [field]: value, // Update only the changed field
             }
         }));
 
-        // Refocus after state update
-        if (inputRefs.current[rowId]?.[field]) {
-            inputRefs.current[rowId][field].focus();
-        }
+        console.log("Updated editedValues:", editedValues); // Debugging
     };
+
+
 
     // Save all edited data to backend
     const saveChanges = async () => {
         try {
-            await Promise.all(Object.keys(editedValues).map(async (rowId) => {
-                const updatedStock = editedValues[rowId];
+            console.log("Saving changes...", editedValues); // Debugging
 
-                await axios.put(`http://localhost:3001/api/updatePosition/${rowId}`, {
-                    quantity: updatedStock.quantity,
-                    avg_price: updatedStock.avg_price
-                });
-            }));
-
-            // Update UI with new data
+            // ✅ Immediately update UI to reflect changes before sending request
             setTableData(prev =>
                 prev.map(stock => ({
                     ...stock,
@@ -225,12 +225,35 @@ const Profile = () => {
                 }))
             );
 
-            setIsEditing(false); // Exit edit mode
-            setEditedValues({}); // Clear edited values
+            await Promise.all(
+                Object.keys(editedValues).map(async (rowId) => {
+                    const updatedStock = editedValues[rowId];
+                    const existingStock = tableData.find(stock => stock.id === Number(rowId));
+
+                    const updatedQuantity = updatedStock.quantity ?? existingStock.quantity;
+                    const updatedAvgPrice = updatedStock.avg_price ?? existingStock.avg_price;
+
+                    await axios.put(`http://localhost:3001/api/updatePosition/${rowId}`, {
+                        quantity: updatedQuantity,
+                        avg_price: updatedAvgPrice,
+                    });
+                })
+            );
+
+            // ✅ Clear edited values after saving
+            setEditedValues({});
+            setIsEditing(false);
+
+            console.log("Changes saved successfully!");
+
         } catch (error) {
             console.error("Error updating stock:", error);
         }
     };
+
+
+
+
 
 
     // useEffect to fetch comments initially and whenever the component mounts or comments are posted
@@ -297,11 +320,12 @@ const Profile = () => {
                                         <div className="p-2 bd-highlight">
                                             {!isEditing ? (
                                                 <Button onClick={() => {
-                                                    setOriginalData([...tableData]); // Save original state
-                                                    setIsEditing(true);
+                                                    setOriginalData([...tableData]); // Store original data for reset
+                                                    setIsEditing(true); // Ensure editing mode is re-enabled
                                                 }} variant="warning">
                                                     Edit
                                                 </Button>
+
                                             ) : (
                                                 <>
                                                     <Button onClick={() => {
