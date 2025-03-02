@@ -64,7 +64,7 @@ const Profile = () => {
                 setTableData(portfolioData);
                 setEditedValues(
                     Object.fromEntries(portfolioData.map(stock => [stock.id, { quantity: stock.quantity, avg_price: stock.avg_price }]))
-                ); // Initialize edited values properly
+                );
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -94,7 +94,6 @@ const Profile = () => {
                 Cell: ({ row }) => {
                     const [localValue, setLocalValue] = React.useState(row.original.quantity);
 
-                    // Keep localValue in sync with external state when isEditing changes
                     React.useEffect(() => {
                         if (isEditing) {
                             setLocalValue(editedValues[row.original.id]?.quantity ?? row.original.quantity);
@@ -106,8 +105,8 @@ const Profile = () => {
                             type="number"
                             className="form-control"
                             value={localValue}
-                            onChange={(e) => setLocalValue(e.target.value)} // Only update local state on change
-                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "quantity")} // Update global state when leaving input
+                            onChange={(e) => setLocalValue(e.target.value)}
+                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "quantity")}
                         />
                     );
                 }
@@ -118,7 +117,6 @@ const Profile = () => {
                 Cell: ({ row }) => {
                     const [localValue, setLocalValue] = React.useState(row.original.avg_price);
 
-                    // Keep localValue in sync with external state when isEditing changes
                     React.useEffect(() => {
                         if (isEditing) {
                             setLocalValue(editedValues[row.original.id]?.avg_price ?? row.original.avg_price);
@@ -130,8 +128,8 @@ const Profile = () => {
                             type="number"
                             className="form-control"
                             value={localValue}
-                            onChange={(e) => setLocalValue(e.target.value)} // Only update local state on change
-                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "avg_price")} // Update global state when leaving input
+                            onChange={(e) => setLocalValue(e.target.value)}
+                            onBlur={() => handleInputChange({ target: { value: localValue } }, row.original.id, "avg_price")}
                         />
                     );
                 }
@@ -201,12 +199,12 @@ const Profile = () => {
         setEditedValues(prev => ({
             ...prev,
             [rowId]: {
-                ...prev[rowId], // Keep existing values
-                [field]: value, // Update only the changed field
+                ...prev[rowId],
+                [field]: value,
             }
         }));
 
-        console.log("Updated editedValues:", editedValues); // Debugging
+        console.log("Updated editedValues:", editedValues);
     };
 
 
@@ -216,7 +214,6 @@ const Profile = () => {
         try {
             console.log("Saving changes...", editedValues); // Debugging
 
-            // ✅ Immediately update UI to reflect changes before sending request
             setTableData(prev =>
                 prev.map(stock => ({
                     ...stock,
@@ -240,7 +237,6 @@ const Profile = () => {
                 })
             );
 
-            // ✅ Clear edited values after saving
             setEditedValues({});
             setIsEditing(false);
 
@@ -250,11 +246,6 @@ const Profile = () => {
             console.error("Error updating stock:", error);
         }
     };
-
-
-
-
-
 
     // useEffect to fetch comments initially and whenever the component mounts or comments are posted
     useEffect(() => {
