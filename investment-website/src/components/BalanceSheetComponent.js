@@ -75,7 +75,7 @@ const BalanceSheetComponent = () => {
                 const accountsReceivable = balanceSheetData.map(entry => entry.AccountsReceivable);
                 const payables = balanceSheetData.map(entry => entry.Payables);
                 const workingCapital = balanceSheetData.map(entry => entry.WorkingCapital);
-                console.log(workingCapital);
+
                 const labels = balanceSheetData.map(entry => entry.asOfYear); // Assumes a `date` field exists
 
                 // Calculate quick ratio
