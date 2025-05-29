@@ -3,7 +3,6 @@ import PageContainer from "../containers/PageContainer";
 import { Link } from 'react-router-dom';
 import classes from "./Home.module.css";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
-import { useSelector } from "react-redux";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 
@@ -11,9 +10,6 @@ import axios from 'axios';
 
 
 function Home() {
-    const user = useSelector((state) => state.auth.user)
-    const error = useSelector((state) => state.auth.error)
-
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -59,7 +55,7 @@ function Home() {
                                                 <div>NOM Price: {stock.NominalValuePerShare}</div>
                                             </Card.Text>
                                             <Card.Footer className={classes.cardFooter}>
-                                                <Nav.Link as={Link} to={`/valuations/${stock.id}`}>
+                                                <Nav.Link as={Link} to={`/valuations/${stock.ticker_id}`}>
                                                     <Button className={classes.cardButton}>
                                                         {stock.Ticker}
                                                     </Button>

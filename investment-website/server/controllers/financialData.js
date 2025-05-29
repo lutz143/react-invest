@@ -3,9 +3,9 @@ const db = require('../config/connection.js'); // Import database connection
 const getSingleMonthlyStockPriceData = async (req, res) => {
     try {
         const query = `
-            SELECT id, Ticker, price_date, adjclose, percent_return
+            SELECT ticker_id, Ticker, price_date, adjclose, percent_return
             FROM priceDataMonthly
-            WHERE id = '${req.params.id}'
+            WHERE ticker_id = '${req.params.id}'
         ;`;
 
         const [rows] = await db.query(query);
@@ -19,10 +19,10 @@ const getSingleMonthlyStockPriceData = async (req, res) => {
 const getAllIncomeData = async () => { // Retrieve all the metadata for the stock
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
+            SELECT ticker_id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
             FROM incomeStatement
             WHERE periodType <> 'TTM'
-            GROUP BY id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
         ;`;
 
         const [rows] = await db.query(query);
@@ -36,10 +36,10 @@ const getAllIncomeData = async () => { // Retrieve all the metadata for the stoc
 const getSingleIncomeStatment = async (req, res) => {
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
+            SELECT ticker_id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
             FROM incomeStatement
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
-            GROUP BY id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, TotalRevenue, CostOfRevenue, GrossProfit, TotalExpenses, EBIT, BasicEPS, NetIncome
         ;`;
 
         const [rows] = await db.query(query);
@@ -55,7 +55,7 @@ const getMostRecentIncomeStatement = async (req, res) => {
         const query = `
             SELECT *
             FROM incomeStatement
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
             ORDER BY asOfDate DESC LIMIT 1;
         ;`;
 
@@ -72,10 +72,10 @@ const getMostRecentIncomeStatement = async (req, res) => {
 const getAllBalanceSheetData = async () => { // Retrieve all the metadata for the stock
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, Payables, CurrentDebtAndCapitalLeaseObligation as CurrentDebt, LongTermDebt, TotalLiabilitiesNetMinorityInterest as TotalLiabilities, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest as TotalEquity
+            SELECT ticker_id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, Payables, CurrentDebtAndCapitalLeaseObligation as CurrentDebt, LongTermDebt, TotalLiabilitiesNetMinorityInterest as TotalLiabilities, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest as TotalEquity
             FROM balanceSheet
             WHERE periodType <> 'TTM'
-            GROUP BY id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, Payables, CurrentDebtAndCapitalLeaseObligation, LongTermDebt, TotalLiabilitiesNetMinorityInterest, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, Payables, CurrentDebtAndCapitalLeaseObligation, LongTermDebt, TotalLiabilitiesNetMinorityInterest, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest
         ;`;
 
         const [rows] = await db.query(query);
@@ -89,10 +89,10 @@ const getAllBalanceSheetData = async () => { // Retrieve all the metadata for th
 const getSingleBalanceSheet = async (req, res) => {
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, WorkingCapital, Payables, CurrentDebtAndCapitalLeaseObligation as CurrentDebt, LongTermDebt, TotalLiabilitiesNetMinorityInterest as TotalLiabilities, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest as TotalEquity
+            SELECT ticker_id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, WorkingCapital, Payables, CurrentDebtAndCapitalLeaseObligation as CurrentDebt, LongTermDebt, TotalLiabilitiesNetMinorityInterest as TotalLiabilities, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest as TotalEquity
             FROM balanceSheet
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
-            GROUP BY id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, WorkingCapital, Payables, CurrentDebtAndCapitalLeaseObligation, LongTermDebt, TotalLiabilitiesNetMinorityInterest, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, CurrentAssets, CashAndCashEquivalents, AccountsReceivable, Inventory, GrossPPE, TotalAssets, CurrentLiabilities, WorkingCapital, Payables, CurrentDebtAndCapitalLeaseObligation, LongTermDebt, TotalLiabilitiesNetMinorityInterest, RetainedEarnings, CommonStock, AdditionalPaidInCapital, TotalEquityGrossMinorityInterest
         ;`;
 
         const [rows] = await db.query(query);
@@ -108,7 +108,7 @@ const getMostRecentBalanceSheet = async (req, res) => {
         const query = `
             SELECT *
             FROM balanceSheet
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
             ORDER BY asOfDate DESC LIMIT 1;
         ;`;
 
@@ -125,10 +125,10 @@ const getMostRecentBalanceSheet = async (req, res) => {
 const getAllCashFlowData = async () => { // Retrieve all the metadata for the stock
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
+            SELECT ticker_id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
             FROM cashFlow
             WHERE periodType <> 'TTM'
-            GROUP BY id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
         ;`;
 
         const [rows] = await db.query(query);
@@ -142,10 +142,10 @@ const getAllCashFlowData = async () => { // Retrieve all the metadata for the st
 const getSingleCashFlow = async (req, res) => {
     try {
         const query = `
-            SELECT id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
+            SELECT ticker_id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
             FROM cashFlow
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
-            GROUP BY id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
+            GROUP BY ticker_id, Ticker, asOfYear, periodType, OperatingGainsLosses, DepreciationAndAmortization, ChangeInWorkingCapital, CashFlowFromContinuingOperatingActivities, CapitalExpenditure, CashFlowFromContinuingInvestingActivities, CashFlowFromContinuingInvestingActivities, NetIssuancePaymentsOfDebt, NetCommonStockIssuance, CashFlowFromContinuingFinancingActivities, ChangesInCash, EndCashPosition
         ;`;
 
         const [rows] = await db.query(query);
@@ -161,7 +161,7 @@ const getMostRecentCashFlow = async (req, res) => {
         const query = `
             SELECT *
             FROM cashFlow
-            WHERE periodType <> 'TTM' AND id = '${req.params.id}'
+            WHERE periodType <> 'TTM' AND ticker_id = '${req.params.id}'
             ORDER BY asOfDate DESC LIMIT 1;
         ;`;
 
@@ -177,7 +177,7 @@ const getCycleTimeMetrics = async (req, res) => {
     try {
         const query = `
             SELECT 
-                t1.id, t1.Ticker, YEAR(t1.asOfDate) as year, t3.sector, t3.industry,
+                t1.ticker_id, t1.Ticker, YEAR(t1.asOfDate) as year, t3.sector, t3.industry,
                 t1.AccountsReceivable, t1.Inventory, t1.Payables,
                 t2.TotalRevenue, t2.CostOfRevenue, YEAR(t2.asOfDate) as t2Year, 
                 t1.AccountsReceivable / t2.TotalRevenue * 365 AS AR_Days,
@@ -187,11 +187,11 @@ const getCycleTimeMetrics = async (req, res) => {
                 BalanceSheet t1
             INNER JOIN
                 IncomeStatement t2
-            ON t1.id = t2.id AND YEAR(t1.asOfDate) = YEAR(t2.asOfDate)
+            ON t1.ticker_id = t2.ticker_id AND YEAR(t1.asOfDate) = YEAR(t2.asOfDate)
             INNER JOIN
                 MetaData t3        
-            ON t1.id = t3.id
-            WHERE t1.id = '${req.params.id}' AND t1.periodType <> 'TTM' AND t2.periodType <> 'TTM'
+            ON t1.ticker_id = t3.ticker_id
+            WHERE t1.ticker_id = '${req.params.id}' AND t1.periodType <> 'TTM' AND t2.periodType <> 'TTM'
         ;`;
 
         const [rows] = await db.query(query);

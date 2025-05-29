@@ -18,8 +18,8 @@ const getSingleMetaData = async (req, res) => {
             SELECT *
             FROM MetaData
             INNER JOIN ArchiveStockForecast
-            ON MetaData.id = ArchiveStockForecast.id
-            WHERE MetaData.id = '${req.params.id}';`;
+            ON MetaData.ticker_id = ArchiveStockForecast.ticker_id
+            WHERE MetaData.ticker_id = '${req.params.id}';`;
 
         const [[rows]] = await db.query(query);
         console.log(rows)

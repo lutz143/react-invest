@@ -37,8 +37,8 @@ const getUserPortfolio = async (req, res) => {
             LEFT JOIN
                 ArchiveStockForecast
             ON
-                ArchiveStockForecast.id = portfolio.valuation_id
-            WHERE user.id = '${req.params.id}'
+                ArchiveStockForecast.ticker_id = portfolio.valuation_id
+            WHERE user.id = '${req.params.id}' AND user_positions.open_close <> 'CLOSED'
             GROUP BY 
                 user.id, user.username, user.email, portfolio.valuation_id, 
                 ArchiveStockForecast.Ticker,
