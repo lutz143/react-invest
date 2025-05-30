@@ -16,6 +16,7 @@ import CashFlow from "../components/CashFlow";
 import BalanceSheetComponent from "../components/BalanceSheetComponent";
 import IncomeStatementComponent from "../components/IncomeStatementComponent";
 import PriceGraph from "../components/PriceGraph";
+import StockQueries from "../components/StockQueries";
 
 const Stock = () => {
     const user = useSelector((state) => state.auth.user);
@@ -538,6 +539,9 @@ const Stock = () => {
                                 </Tab>
                                 <Tab eventKey="priceHistory" title="Price History">
                                     <PriceGraph />
+                                </Tab>
+                                <Tab eventKey="stockQueries" title="Analysis">
+                                    <StockQueries />
                                 </Tab>
                             </Tabs>
                         </Card>
