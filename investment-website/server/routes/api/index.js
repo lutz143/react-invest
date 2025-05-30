@@ -11,6 +11,7 @@ const balanceSheetRoutes = require('./balanceSheetRoutes');
 const incomeStatementRoutes = require('./incomeStatementRoutes');
 const metricRoutes = require('./metricRoutes')
 const userPositionsRoutes = require('./userPositionRoutes');
+const stockQueryRoutes = require('./stockQueryRoutes');
 
 router.use('/users', userRoutes);
 router.use('/valuations', valuationRoutes);
@@ -24,5 +25,6 @@ router.use('/balanceSheet', balanceSheetRoutes);
 router.use('/incomeStatement', incomeStatementRoutes);
 router.use('/metrics', metricRoutes);
 router.use('/updatePosition', userPositionsRoutes);
+router.use('/queries', stockQueryRoutes);
 
 module.exports = router;
