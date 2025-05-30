@@ -1,14 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  // createHttpLink,
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    // createHttpLink,
 } from "@apollo/client";
 // import { setContext } from "@apollo/client/link/context";
 
 // import classes from "./App.css";
+import ScrollToTop from "./utils/ScrollToTop";
 
 import Header from "./containers/Header";
 import Footer from "./containers/Footer";
@@ -37,29 +38,31 @@ import About from "./pages/About";
 // });
 
 const client = new ApolloClient({
-  uri: '/graphql',
-  cache: new InMemoryCache(),
+    uri: '/graphql',
+    cache: new InMemoryCache(),
 });
 
 
 function App() {
-  return (
-   <ApolloProvider client={ client }>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/valuations/:id" element={<Stock />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/about" element={<About />} />
-          {/* <Route path="/search" element={<SearchResults />} /> */}
-        </Routes>
-        <Footer />
-      </Router>
-    </ApolloProvider>
-  );
+    return (
+        <ApolloProvider client={client}>
+            <Router>
+                <ScrollToTop>
+                    <Header />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/valuations/:id" element={<Stock />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/about" element={<About />} />
+                        {/* <Route path="/search" element={<SearchResults />} /> */}
+                    </Routes>
+                    <Footer />
+                </ScrollToTop>
+            </Router>
+        </ApolloProvider>
+    );
 }
 
 export default App;
