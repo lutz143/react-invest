@@ -24,7 +24,6 @@ const Stock = () => {
     const portfolioIds = useSelector((state) => state.auth.portfolioIds);
     const [stock, setValuation] = useState([]);
     const [comment, setComment] = useState([]);
-    const [ticker, setTicker] = useState([]);
     const [isEditing, setIsEditing] = useState(null);
     const [editedComment, setEditedComment] = useState("");
     const [added, setAdded] = useState([]);
