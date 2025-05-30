@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PageContainer from "../containers/PageContainer";
 import { Link } from 'react-router-dom';
-import classes from "./Home.module.css";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 
-import axios from 'axios';
+import classes from "../css/Home.module.css";
 
 
 function Home() {

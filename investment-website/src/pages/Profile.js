@@ -5,10 +5,10 @@ import { deleteStockFromPortfolio, deleteStock } from "../store/authSlice";
 import { Nav, Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { logout } from "../store/authSlice";
-import classes from "./Profile.module.css";
 import axios from 'axios';
 import moment from 'moment';
 
+import classes from "../css/Profile.module.css";
 import formatModel from '../utils/formatUtils';
 import { useTable } from "react-table";
 import {

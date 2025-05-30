@@ -3,128 +3,128 @@ import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { Card, Container, Row, Col } from "react-bootstrap";
 
-import classes from "../pages/Stock.module.css";
+import classes from "../css/Stock.module.css";
 import formatModel from '../utils/formatUtils';
 
 
 const CashFlowComponent = () => {
-  const [jsonData, setJsonData] = useState([]);
-  const { id } = useParams();
+    const [jsonData, setJsonData] = useState([]);
+    const { id } = useParams();
 
-  useEffect(() => {
-    axios.get(`http://localhost:3001/api/cashFlow/${id}`)
-      .then((response) => {
-        const cashFlowData = response.data;
+    useEffect(() => {
+        axios.get(`http://localhost:3001/api/cashFlow/${id}`)
+            .then((response) => {
+                const cashFlowData = response.data;
 
-        // Iterate through cashFlowData fields and apply formatting
-        const formattedData = Object.keys(cashFlowData).reduce((acc, key) => {
-          if (typeof cashFlowData[key] === 'number') {
-            acc[key] = formatModel.formatInteger(cashFlowData[key]);
-          } else {
-            acc[key] = cashFlowData[key];
-          }
-          return acc;
-        }, {});
+                // Iterate through cashFlowData fields and apply formatting
+                const formattedData = Object.keys(cashFlowData).reduce((acc, key) => {
+                    if (typeof cashFlowData[key] === 'number') {
+                        acc[key] = formatModel.formatInteger(cashFlowData[key]);
+                    } else {
+                        acc[key] = cashFlowData[key];
+                    }
+                    return acc;
+                }, {});
 
-        setJsonData(formattedData);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, [id]);
+                setJsonData(formattedData);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, [id]);
 
-  if(!jsonData) {
-    return <p>Loading...</p>;
-  }
+    if (!jsonData) {
+        return <p>Loading...</p>;
+    }
 
-  return (
+    return (
 
-      <section>
-        <Container>
-          <Card.Body>
-            <Container className='mb-2'>          
-              <Row className="align-items-center">
-                <Col>
-                  <span>
-                    Net Income: {jsonData.NetIncome}
-                  </span>
-                </Col>
-                <Col>
-                  <span>
-                    Net Income from Cont Ops: {jsonData.NetIncomeFromContinuingOperations}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="align-items-center">
-                <Col>
-                  <span>
-                    Free Cash Flow: {jsonData.FreeCashFlow}
-                  </span>
-                </Col>
-                <Col>
-                  <span>
-                    Change in Cash: {jsonData.ChangesInCash}
-                  </span>
-                </Col>
-              </Row>
-              <Row className="align-items-center mb-2">
-                <Col>
-                  <span>
-                    Beg Cash Position: {jsonData.BeginningCashPosition}
-                  </span>
-                </Col>
-                <Col>
-                  <span>
-                    End Cash Position: {jsonData.EndCashPosition}
-                  </span>
-                </Col>
-              </Row>
-              <Row className={classes.cardDivider}></Row>
-              <Container className={classes.cardSubSection}>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                      Cash Div Paid: {jsonData.CashDividendsPaid}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                      Capital Expenditure: {jsonData.CapitalExpenditure}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                      Operating Cash Flow: {jsonData.OperatingCashFlow}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                      Cash Flow from Cont Operating Activity: {jsonData.CashFlowFromContinuingOperatingActivities}
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="align-items-center">
-                  <Col>
-                    <span>
-                      Change in Working Cap: {jsonData.ChangeInWorkingCapital}
-                    </span>
-                  </Col>
-                  <Col>
-                    <span>
-                      Operating Gain/Loss: {jsonData.OperatingGainsLosses}
-                    </span>
-                  </Col>
-                </Row>
-              </Container>
+        <section>
+            <Container>
+                <Card.Body>
+                    <Container className='mb-2'>
+                        <Row className="align-items-center">
+                            <Col>
+                                <span>
+                                    Net Income: {jsonData.NetIncome}
+                                </span>
+                            </Col>
+                            <Col>
+                                <span>
+                                    Net Income from Cont Ops: {jsonData.NetIncomeFromContinuingOperations}
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className="align-items-center">
+                            <Col>
+                                <span>
+                                    Free Cash Flow: {jsonData.FreeCashFlow}
+                                </span>
+                            </Col>
+                            <Col>
+                                <span>
+                                    Change in Cash: {jsonData.ChangesInCash}
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className="align-items-center mb-2">
+                            <Col>
+                                <span>
+                                    Beg Cash Position: {jsonData.BeginningCashPosition}
+                                </span>
+                            </Col>
+                            <Col>
+                                <span>
+                                    End Cash Position: {jsonData.EndCashPosition}
+                                </span>
+                            </Col>
+                        </Row>
+                        <Row className={classes.cardDivider}></Row>
+                        <Container className={classes.cardSubSection}>
+                            <Row className="align-items-center">
+                                <Col>
+                                    <span>
+                                        Cash Div Paid: {jsonData.CashDividendsPaid}
+                                    </span>
+                                </Col>
+                                <Col>
+                                    <span>
+                                        Capital Expenditure: {jsonData.CapitalExpenditure}
+                                    </span>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center">
+                                <Col>
+                                    <span>
+                                        Operating Cash Flow: {jsonData.OperatingCashFlow}
+                                    </span>
+                                </Col>
+                                <Col>
+                                    <span>
+                                        Cash Flow from Cont Operating Activity: {jsonData.CashFlowFromContinuingOperatingActivities}
+                                    </span>
+                                </Col>
+                            </Row>
+                            <Row className="align-items-center">
+                                <Col>
+                                    <span>
+                                        Change in Working Cap: {jsonData.ChangeInWorkingCapital}
+                                    </span>
+                                </Col>
+                                <Col>
+                                    <span>
+                                        Operating Gain/Loss: {jsonData.OperatingGainsLosses}
+                                    </span>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Container>
+                </Card.Body>
+
             </Container>
-          </Card.Body>
+        </section>
 
-        </Container>
-      </section>
-
-  );
+    );
 };
 
 export default CashFlowComponent;

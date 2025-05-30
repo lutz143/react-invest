@@ -8,7 +8,7 @@ import * as XLSX from 'xlsx';
 // import moment from "moment";
 // import * as d3 from 'd3';
 
-import classes from "./Stock.module.css";
+import classes from "../css/Stock.module.css";
 import formatModel from '../utils/formatUtils';
 
 import PageContainer from "../containers/PageContainer";

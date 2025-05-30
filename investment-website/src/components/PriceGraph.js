@@ -3,7 +3,7 @@ import { json, useParams } from "react-router-dom";
 import axios from 'axios';
 import { Card, Container, Row, Col } from "react-bootstrap";
 
-import classes from "../pages/Stock.module.css";
+import classes from "../css/Stock.module.css";
 import formatModel from '../utils/formatUtils';
 
 import { Line } from "react-chartjs-2";

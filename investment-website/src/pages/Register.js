@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { signup } from '../store/authSlice';
 
 import { FaUser, FaLock } from "react-icons/fa";
-import classes from "./LoginForm.module.css";
+import classes from "../css/LoginForm.module.css";
 
 function Register() {
     const navigate = useNavigate();
